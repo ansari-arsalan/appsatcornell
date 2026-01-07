@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Team | APPS @ Cornell</title>
+  <meta name="description" content="Meet the team behind Applied Public Policy Strategies (APPS) @ Cornell." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="header header-compact">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="APPS Home">
+        <img class="brand-mark" src="assets/apps_logo.png" alt="APPS logo" />
+        <div class="brand-text">
+          <div class="brand-title">APPS @ Cornell</div>
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html#who">Who We Are</a>
+        <a href="index.html#mission">Mission & Vision</a>
+        <a href="index.html#services">Services</a>
+        <a class="active" href="team.html">Team</a>
+        <a href="index.html#contact" class="btn btn-outline">Contact</a>
+
+        <!-- Theme toggle -->
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+          <span class="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1 class="page-title">Team</h1>
+      <p class="lead">The people building APPS—and delivering work that’s rigorous, practical, and client-ready.</p>
+
+      <!-- Roster is rendered from script.js (EXEC array) -->
+
+      <h2 class="section-title" style="margin-top:26px;">Executive Board</h2>
+      <div class="team-grid" id="execGrid"></div>
+
+      <h2 class="section-title" style="margin-top:26px;">Project Leads &amp; Members</h2>
+      <div class="team-grid" id="memberGrid"></div>
+      <p class="muted" style="margin-top:10px;">(Coming soon)</p>
+
+      <p class="policy-line" style="margin-top:22px;">
+        This organization is a registered student organization of Cornell University.
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer footer-compact">
+    <div class="container footer-inner">
+      <p class="footer-policy">This organization is a registered student organization of Cornell University.</p>
+      <p class="muted small"><a href="index.html#top">Back to home</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
