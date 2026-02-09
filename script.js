@@ -83,100 +83,80 @@ const EXEC = [
     role: "Co-President",
     major: "Senior • Government",
     bio:
-      "Hobbies: baking, chess, shopping, crafts/sewing, eating sushi. " +
-      "Where I always am on campus: Duffield, Okenshields, Law School. " +
-      "Other activities: Korean Traditional Drumming Club, POLIS, State Policy Advocacy Clinic, TA (InfoSci).",
-    photo: "",
+      "Hobbies: baking, chess, shopping, crafts/sewing, eating sushi.",
+    photo: "assets/Headshots/Headshot - Hannah Kim.jpeg",
   },
   {
     name: "Mia Barratt",
     role: "Co-President",
     major: "Senior • Government",
     bio:
-      "Hobbies: crafting, jewelry-making, baking, chess, puzzles, reading. " +
-      "Where I always am on campus: CIS, Sage Atrium, Law School. " +
-      "Other activities: POLIS, TA (InfoSci & Brooks), Policy Debate. " +
-      "Fun fact: I have 6 goats at home!",
-    photo: "",
+      "Hobbies: crafting, jewelry-making, baking, chess, puzzles, reading.",
+    photo: "assets/Headshots/Mia_Barratt_Headshot - Mia Barratt.jpg",
   },
   {
     name: "Arsalan Ansari",
     role: "Vice-President",
     major: "Senior • Government",
     bio:
-      "Hobbies: poker, guitar, chess, reading, and recently skiing. " +
-      "Where I always am locking in: Mann, Olin, Barnes & Noble. " +
-      "Other activities: LII, CGD, Cornell in Washington, Afghan Students Club, Alexander Hamilton Society, Mafia Club.",
-    photo: "",
+      "Hobbies: poker, guitar, chess, reading, and recently skiing.",
+    photo: "assets/Headshots/mypicture - Arsalan Ansari.jpg",
   },
   {
     name: "Hannah Hope Lee",
     role: "Project Manager",
     major: "Sophomore • A&S • Government & Music",
     bio:
-      "Interests: entertainment law, preservation of classical music, educational inequality in higher education. " +
-      "Hobbies: skiing, singing/opera, hot yoga, art/painting. " +
-      "Denver sports: #sko.",
-    photo: "",
+      "Hobbies: skiing, singing/opera, hot yoga, art/painting.",
+    photo: "assets/Headshots/IMG_3987 - Hannah Lee.jpg",
   },
   {
     name: "Calista Chang",
     role: "Director of Training & Development",
     major: "Sophomore • ILR (minor: Business, InfoSci)",
     bio:
-      "Hobbies: iced coffee, Clairo, wandering around campus. " +
-      "Where I always am on campus: Olin, bus stop bagels, Hotel. " +
-      "Other activities: ASSAT, Emerging Markets Club, Global Delta Securities, Club Tennis, sorority.",
-    photo: "",
+      "Hobbies: iced coffee, Clairo, wandering around campus.",
+    photo: "assets/Headshots/IMG_0043 - Calista Chang.jpeg",
   },
   {
     name: "John Purcell",
     role: "Director of Internal Affairs & Communications",
     major: "Sophomore • Government (A&S)",
     bio:
-      "Hobbies: concerts, baking, thrifting, playing piano. " +
-      "Where I always am on campus: Green Dragon or Zeus. " +
-      "Other activities: Student Assembly, Phi Alpha Delta, Cornell Votes.",
-    photo: "",
+      "Hobbies: concerts, baking, thrifting, playing piano.",
+    photo: "assets/Headshots/John Purcell Headshot copy - John Purcell.JPG",
   },
   {
     name: "Sophia Chen",
     role: "Project Manager",
     major: "Sophomore • AEM",
     bio:
-      "Hobbies: gym, legos, grocery store runs, debrief. " +
-      "Where I always am on campus: Olin, Trillium, Bethe dining hall. " +
-      "Interests: SZA, exploring new food places, music and podcasts.",
-    photo: "",
+      "Hobbies: gym, legos, grocery store runs, debrief.",
+    photo: "assets/Headshots/SOPHIA_CHEN_Headshot - Sophia Chen.jpeg",
   },
   {
     name: "Mandy Wang",
     role: "Director of Membership & Recruitment",
     major: "Sophomore • ILR",
     bio:
-      "Hobbies: learning how to play pool, paint, pottery, movies. " +
-      "Interests: always down to grab food (love matcha & sushi), book stores, art, music (seeing Olivia Dean this summer!).",
-    photo: "",
+      "Hobbies: learning how to play pool, paint, pottery, movies.",
+    photo: "assets/Headshots/Mandy_Wang_Headshot - Mandy Wang.jpg",
   },
   {
     name: "Samuel Lau",
     role: "Director of Finance & Operations",
     major: "Freshman • Economics & Sociology",
     bio:
-      "Hobbies: listening to music, going on long walks, thrifting, eating hot pot. " +
-      "Where I always am on campus: Big Red Barn, Mac’s Cafe, Olin, Mann Library. " +
-      "Interests: museums, trying new Collegetown restaurants, Tate McRae, Lana Del Rey, cats.",
-    photo: "",
+      "Hobbies: listening to music, going on long walks, thrifting, eating hot pot.",
+    photo: "assets/Headshots/Headshot - Samuel Lau.JPG",
   },
   {
     name: "Andy Duryea",
     role: "Director of External Affairs",
     major: "Sophomore • Public Policy",
     bio:
-      "Hobbies: fishing, skiing, listening to music, reading, exploring new places. " +
-      "Where I always am on campus: MVR, Mann, Warren. " +
-      "Other activities: Resident Advisor, Brooks School Ambassador, Brooks School Peer Mentor, Cornell Policy Group.",
-    photo: "",
+      "Hobbies: fishing, skiing, listening to music, reading, exploring new places.",
+    photo: "assets/Headshots/Headshot-Andy Duryea - Andy Duryea.jpeg",
   },
 ];
 
@@ -224,14 +204,12 @@ function createMemberCard(member) {
   major.className = "member-major";
   major.textContent = member.major;
 
-  const bio = document.createElement("p");
-  bio.className = "member-bio";
-  bio.textContent = member.bio;
-
   meta.appendChild(name);
   meta.appendChild(role);
   meta.appendChild(major);
-  meta.appendChild(bio);
+  if (member.bio) {
+    // Bio intentionally omitted from rendering on the team page.
+  }
 
   card.appendChild(avatar);
   card.appendChild(meta);
@@ -256,3 +234,27 @@ if (saved === "dark") {
   apply("light");
 }
 
+// ---- FAQ Accordion (single open + focus + analytics hook) ----
+document.addEventListener("DOMContentLoaded", () => {
+  const items = Array.from(document.querySelectorAll(".faq-accordion details"));
+  if (!items.length) return;
+
+  const first = items.find((item) => item.open) || items[0];
+  if (first && !first.open) first.open = true;
+  const firstSummary = first ? first.querySelector("summary") : null;
+  if (firstSummary) firstSummary.focus({ preventScroll: true });
+
+  items.forEach((item) => {
+    item.addEventListener("toggle", () => {
+      if (item.open) {
+        items.forEach((other) => {
+          if (other !== item) other.open = false;
+        });
+      }
+      const id = item.dataset.faq || "";
+      window.dispatchEvent(
+        new CustomEvent("faq:toggle", { detail: { id, open: item.open } })
+      );
+    });
+  });
+});
