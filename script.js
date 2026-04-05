@@ -218,70 +218,70 @@ const EXEC = [
     role: "Co-President",
     major: "Senior \u2022 Government",
     bio: "Hobbies: baking, chess, shopping, crafts/sewing, eating sushi.",
-    photo: "assets/headshots/Headshot - Hannah Kim Large.jpeg",
+    photo: "assets/headshots/hannah-kim.jpeg",
   },
   {
     name: "Mia Barratt",
     role: "Co-President",
     major: "Senior \u2022 Government",
     bio: "Hobbies: crafting, jewelry-making, baking, chess, puzzles, reading.",
-    photo: "assets/headshots/Mia_Barratt_Headshot - Mia Barratt Large.jpeg",
+    photo: "assets/headshots/mia-barratt.jpeg",
   },
   {
     name: "Arsalan Ansari",
     role: "Vice-President",
     major: "Senior \u2022 Government",
     bio: "Hobbies: poker, guitar, chess, reading, and recently skiing.",
-    photo: "assets/headshots/mypicture - Arsalan Ansari Large.jpeg",
+    photo: "assets/headshots/arsalan-ansari.jpeg",
   },
   {
     name: "Hannah Hope Lee",
     role: "Project Manager",
     major: "Sophomore \u2022 A&S \u2022 Government & Music",
     bio: "Hobbies: skiing, singing/opera, hot yoga, art/painting.",
-    photo: "assets/headshots/IMG_3987 - Hannah Lee Large.jpeg",
+    photo: "assets/headshots/hannah-hope-lee.jpeg",
   },
   {
     name: "Calista Chang",
     role: "Director of Training & Development",
     major: "Sophomore \u2022 ILR (minor: Business, InfoSci)",
     bio: "Hobbies: iced coffee, Clairo, wandering around campus.",
-    photo: "assets/headshots/IMG_0043 - Calista Chang Large.jpeg",
+    photo: "assets/headshots/calista-chang.jpeg",
   },
   {
     name: "John Purcell",
     role: "Director of Internal Affairs & Communications",
     major: "Sophomore \u2022 Government (A&S)",
     bio: "Hobbies: concerts, baking, thrifting, playing piano.",
-    photo: "assets/headshots/John Purcell Headshot copy - John Purcell Large.jpeg",
+    photo: "assets/headshots/john-purcell.jpeg",
   },
   {
     name: "Sophia Chen",
     role: "Project Manager",
     major: "Sophomore \u2022 AEM",
     bio: "Hobbies: gym, legos, grocery store runs, debrief.",
-    photo: "assets/headshots/SOPHIA_CHEN_Headshot - Sophia Chen Large.jpeg",
+    photo: "assets/headshots/sophia-chen.jpeg",
   },
   {
     name: "Mandy Wang",
     role: "Director of Membership & Recruitment",
     major: "Sophomore \u2022 ILR",
     bio: "Hobbies: learning how to play pool, paint, pottery, movies.",
-    photo: "assets/headshots/Mandy_Wang_Headshot - Mandy Wang Large.jpeg",
+    photo: "assets/headshots/mandy-wang.jpeg",
   },
   {
     name: "Samuel Lau",
     role: "Director of Finance & Operations",
     major: "Freshman \u2022 Economics & Sociology",
     bio: "Hobbies: listening to music, going on long walks, thrifting, eating hot pot.",
-    photo: "assets/headshots/Headshot - Samuel Lau Large.jpeg",
+    photo: "assets/headshots/samuel-lau.jpeg",
   },
   {
     name: "Andy Duryea",
     role: "Director of External Affairs",
     major: "Sophomore \u2022 Public Policy",
     bio: "Hobbies: fishing, skiing, listening to music, reading, exploring new places.",
-    photo: "assets/headshots/Headshot-Andy Duryea - Andy Duryea Large.jpeg",
+    photo: "assets/headshots/andy-duryea.jpeg",
   },
 ];
 
@@ -293,7 +293,7 @@ const MEMBERS = [
     major: "Environment & Sustainability, Minor in Public Policy",
     pronouns: "he/him",
     linkedin: "www.linkedin.com/in/bransen-fitzwater",
-    photo: "assets/headshots/Headshot - Bransen Fitzwater Large.jpeg",
+    photo: "assets/headshots/bransen-fitzwater.jpeg",
   },
   {
     name: "Emily Cho",
@@ -302,7 +302,7 @@ const MEMBERS = [
     major: "Government",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/emily-cho-17eyc1779",
-    photo: "assets/headshots/DSC05403 2 - Emily Cho Large.jpeg",
+    photo: "assets/headshots/emily-cho.jpeg",
   },
   {
     name: "Eneanya Obioha",
@@ -312,7 +312,7 @@ const MEMBERS = [
     pronouns: "she/her",
     linkedin:
       "https://www.linkedin.com/in/eneanya-obioha?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-    photo: "assets/headshots/IMG_0450 - Eneanya Obioha Large.jpeg",
+    photo: "assets/headshots/eneanya-obioha.jpeg",
   },
   {
     name: "Flora Kim",
@@ -321,7 +321,7 @@ const MEMBERS = [
     major: "Public Policy / International Relations",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/fk247",
-    photo: "assets/headshots/Flora_Kim_Headshot - Flora Kim Large.jpeg",
+    photo: "assets/headshots/flora-kim.jpeg",
   },
   {
     name: "Annelie Chang",
@@ -330,7 +330,7 @@ const MEMBERS = [
     major: "Public Policy",
     pronouns: "she/her",
     linkedin: "linkedin.com/in/annelie-chang-511b78371",
-    photo: "assets/headshots/IMG_7221 - Annelie Chang Large.jpeg",
+    photo: "assets/headshots/annelie-chang.jpeg",
   },
   {
     name: "Charlie Rogers",
@@ -339,7 +339,7 @@ const MEMBERS = [
     major: "Environment & Sustainability / Public Policy and Urban & Regional Studies",
     pronouns: "he/him",
     linkedin: "LinkedIn.com/in/crogers116",
-    photo: "assets/headshots/DSCF0607 from Google Drive - Charlie Rogers Large.jpeg",
+    photo: "assets/headshots/charlie-rogers.jpeg",
   },
   {
     name: "Chi-Ray Hsu",
@@ -349,7 +349,7 @@ const MEMBERS = [
     pronouns: "she/her",
     linkedin:
       "https://www.linkedin.com/in/chi-ray-hsu-378bb8394?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-    photo: "assets/headshots/ch2298@cornell.edu-a912eb67 - chiray Large.jpeg",
+    photo: "assets/headshots/chi-ray-hsu.jpeg",
   },
   {
     name: "Christopher J. Corona-Plancarte",
@@ -357,7 +357,7 @@ const MEMBERS = [
     graduationYear: 2029,
     major: "Public Policy",
     pronouns: "he/him",
-    photo: "assets/headshots/Kegley250926Cornell 0158 2 - Christopher Corona-Plancarte Large.jpeg",
+    photo: "assets/headshots/christopher-j-corona-plancarte.jpeg",
   },
   {
     name: "Ella Kim",
@@ -366,14 +366,14 @@ const MEMBERS = [
     major: "Environment & Sustainability, Minor in International Relations",
     pronouns: "she/her",
     linkedin: "linkedin.com/in/ellakim7",
-    photo: "assets/headshots/Ella-Kim-Headshot - Ella Kim Large.jpeg",
+    photo: "assets/headshots/ella-kim.jpeg",
   },
   {
     name: "Elizabeth Chow",
     role: "Policy Analyst",
     graduationYear: 2029,
     major: "Public Policy",
-    photo: "assets/headshots/IMG_4484 - Elizabeth Chow Large.jpeg",
+    photo: "assets/headshots/elizabeth-chow.jpeg",
   },
   {
     name: "Emma Yu",
@@ -382,7 +382,7 @@ const MEMBERS = [
     major: "Public Policy",
     pronouns: "she/her",
     linkedin: "https://www.linkedin.com/in/emma-yu-020598335/",
-    photo: "assets/headshots/IMG_9679 - Emma Yu Large.jpeg",
+    photo: "assets/headshots/emma-yu.jpeg",
   },
   {
     name: "Gabrielle Abraham",
@@ -391,14 +391,14 @@ const MEMBERS = [
     major: "Government, Minor in PAM",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/gabrielle-abraham376",
-    photo: "assets/headshots/IMG_6130 - Gabby Abraham Large.jpeg",
+    photo: "assets/headshots/gabrielle-abraham.jpeg",
   },
   {
     name: "Gargi Singh",
     role: "Policy Analyst",
     graduationYear: 2029,
     major: "Public Policy, Minors in Business and Law & Society",
-    photo: "assets/headshots/Gargi_Singh_Headshot - Gargi Singh Large.jpeg",
+    photo: "assets/headshots/gargi-singh.jpeg",
   },
   {
     name: "Jackie Cho",
@@ -407,7 +407,7 @@ const MEMBERS = [
     major: "ILR / Art History",
     pronouns: "she/her",
     linkedin: "http://linkedin.com/in/jackie-cho57",
-    photo: "assets/headshots/IMG_4798 - Jackie Cho Large.jpeg",
+    photo: "assets/headshots/jackie-cho.jpeg",
   },
   {
     name: "Jackson De Guzman",
@@ -417,7 +417,7 @@ const MEMBERS = [
     pronouns: "he/him/any",
     linkedin:
       "https://www.linkedin.com/in/jackson-de-guzman-3ab289291?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
-    photo: "assets/headshots/Epson_01112025151524 - Jackson De Guzman Large.jpeg",
+    photo: "assets/headshots/jackson-de-guzman.jpeg",
   },
   {
     name: "Julia Ostroff",
@@ -425,7 +425,7 @@ const MEMBERS = [
     graduationYear: 2029,
     major: "Computer Science & Government",
     linkedin: "https://www.linkedin.com/in/julia-rachel-ostroff/",
-    photo: "assets/headshots/Julia Headshot - Julia Ostroff Large.jpeg",
+    photo: "assets/headshots/julia-ostroff.jpeg",
   },
   {
     name: "Judy Li",
@@ -433,7 +433,7 @@ const MEMBERS = [
     graduationYear: 2029,
     major: "Public Policy",
     linkedin: "www.linkedin.com/in/judy-li-8b5912345",
-    photo: "assets/headshots/IMG_0013 - Judy Li Large.jpeg",
+    photo: "assets/headshots/judy-li.jpeg",
   },
   {
     name: "Madeline Shukovsky",
@@ -442,7 +442,7 @@ const MEMBERS = [
     major: "Public Policy",
     pronouns: "she/her",
     linkedin: "LinkedIn.com/in/madeline-shukovsky",
-    photo: "assets/headshots/IMG_5396 - Madeline Large.jpeg",
+    photo: "assets/headshots/madeline-shukovsky.jpeg",
   },
   {
     name: "Marianna Wineinger",
@@ -451,7 +451,7 @@ const MEMBERS = [
     major: "Public Policy / Portuguese + Law and Society",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/marianna-wineinger-92029b383",
-    photo: "assets/headshots/Screenshot 2026-03-10 000457 - Marianna Wineinger Large.jpeg",
+    photo: "assets/headshots/marianna-wineinger.jpeg",
   },
   {
     name: "Marianne Custodio",
@@ -459,7 +459,7 @@ const MEMBERS = [
     graduationYear: 2029,
     major: "Economics & Public Policy",
     pronouns: "she/her",
-    photo: "assets/headshots/headshot - Marianne Custodio Large.jpeg",
+    photo: "assets/headshots/marianne-custodio.jpeg",
   },
   {
     name: "Muntasir Ansary",
@@ -467,7 +467,7 @@ const MEMBERS = [
     graduationYear: 2029,
     major: "Biometry & Statistics",
     pronouns: "he/him",
-    photo: "assets/headshots/Muntasir_Ansary_Headshot - Muntasir Ansary Large.jpeg",
+    photo: "assets/headshots/muntasir-ansary.jpeg",
   },
   {
     name: "Shreyash Shrestha",
@@ -476,7 +476,7 @@ const MEMBERS = [
     major: "Industrial and Labor Relations",
     pronouns: "he/him",
     linkedin: "https://www.linkedin.com/in/shreyashshrestha/",
-    photo: "assets/headshots/Shreyash_Shrestha_Headshot - Shreyash Shrestha Large.jpeg",
+    photo: "assets/headshots/shreyash-shrestha.jpeg",
   },
   {
     name: "Sophia Kim",
@@ -485,7 +485,7 @@ const MEMBERS = [
     major: "BME, Minor in Health Policy",
     pronouns: "she/her",
     linkedin: "https://www.linkedin.com/in/sophiayjkim/",
-    photo: "assets/headshots/Screenshot 2026-03-06 at 1.49.18 PM - Sophia Kim Large.jpeg",
+    photo: "assets/headshots/sophia-kim.jpeg",
   },
   {
     name: "Tami Omole",
@@ -494,11 +494,12 @@ const MEMBERS = [
     major: "Public Policy / Aerospace Engineering",
     pronouns: "she/they",
     linkedin: "http://linkedin.com/in/tami-omole-558a00282",
-    photo: "assets/headshots/DSCN3468 - Tami Omole Large.jpeg",
+    photo: "assets/headshots/tami-omole.jpeg",
   },
 ];
 
 const MOBILE_NAV_BREAKPOINT = 900;
+const HEADSHOT_VERSION = "20260405-2";
 
 function initialsFromName(name) {
   return name
@@ -585,16 +586,23 @@ function createMemberCard(member, index) {
   const avatar = document.createElement("div");
   avatar.className = "member-avatar";
 
-  if (member.photo) {
-    const img = document.createElement("img");
-    img.src = member.photo;
-    img.alt = `${member.name} headshot`;
-    img.loading = "lazy";
-    avatar.appendChild(img);
-  } else {
+  function showInitialsFallback() {
+    avatar.innerHTML = "";
     const span = document.createElement("span");
     span.textContent = initialsFromName(member.name);
     avatar.appendChild(span);
+  }
+
+  if (member.photo) {
+    const img = document.createElement("img");
+    img.src = `${member.photo}?v=${HEADSHOT_VERSION}`;
+    img.alt = `${member.name} headshot`;
+    img.loading = "eager";
+    img.decoding = "async";
+    img.addEventListener("error", showInitialsFallback, { once: true });
+    avatar.appendChild(img);
+  } else {
+    showInitialsFallback();
   }
 
   const meta = document.createElement("div");
