@@ -72,13 +72,6 @@
   .center{text-align:center}
   .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
   
-  /* Announcement */
-  .announce{background:rgba(255,255,255,.04);border-bottom:1px solid var(--line)}
-  .announce-inner{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px 0;flex-wrap:wrap}
-  .announce-badge{font-weight:700;letter-spacing:.12em;font-size:.78rem;color:var(--accent2)}
-  .announce-text{color:var(--muted)}
-  .announce-link{border-bottom:1px solid rgba(255,255,255,.35)}
-  
   /* Header */
   .header{position:sticky;top:0;z-index:50;background:rgba(11,13,16,.72);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .header-compact{position:sticky}
