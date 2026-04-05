@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Team | APPS @ Cornell</title>
   <meta name="description" content="Meet the team behind Applied Public Policy Strategies (APPS) @ Cornell." />
+  <meta property="og:title" content="Team | APPS @ Cornell" />
+  <meta property="og:description" content="Meet the team behind Applied Public Policy Strategies (APPS) @ Cornell." />
+  <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" rel="stylesheet" />
@@ -12,7 +15,9 @@
 </head>
 
 <body>
-  <header class="header header-compact">
+  <div id="top" aria-hidden="true"></div>
+
+  <header class="header header-compact" id="siteHeader">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="APPS Home">
         <img class="brand-mark" src="assets/apps_logo.png" alt="APPS logo" />
@@ -21,16 +26,29 @@
         </div>
       </a>
 
-      <nav class="nav">
+      <button
+        class="nav-toggle"
+        id="navToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="siteNav"
+        aria-label="Open navigation menu"
+      >
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
+        <span class="sr-only">Open menu</span>
+      </button>
+
+      <nav class="nav" id="siteNav">
         <a href="index.html#who">Who We Are</a>
         <a href="index.html#mission">Mission & Vision</a>
         <a href="index.html#services">Services</a>
-        <a class="active" href="team.html">Team</a>
+        <a class="active" aria-current="page" href="team.html">Team</a>
         <a href="index.html#contact" class="btn btn-outline">Contact</a>
 
-        <!-- Theme toggle -->
         <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
-          <span class="theme-icon" aria-hidden="true">☾</span>
+          <span class="theme-icon" aria-hidden="true">&#9790;</span>
         </button>
       </nav>
     </div>
@@ -38,18 +56,16 @@
 
   <main class="section">
     <div class="container">
-      <h1 class="page-title">Team</h1>
-      <p class="lead">The people building APPS and delivering work that’s rigorous, practical, and client-ready.</p>
+      <h1 class="page-title reveal">Team</h1>
+      <p class="lead reveal">The people building APPS and delivering work that's rigorous, practical, and client-ready.</p>
 
-      <!-- Roster is rendered from script.js (EXEC and MEMBERS arrays) -->
-
-      <h2 class="section-title" style="margin-top:26px;">Executive Board</h2>
+      <h2 class="section-title reveal" style="margin-top:26px;">Executive Board</h2>
       <div class="team-grid" id="execGrid"></div>
 
-      <h2 class="section-title" style="margin-top:26px;">Project Leads &amp; Members</h2>
+      <h2 class="section-title reveal" style="margin-top:26px;">Project Leads &amp; Members</h2>
       <div class="team-grid" id="memberGrid"></div>
 
-      <p class="policy-line" style="margin-top:22px;">
+      <p class="policy-line reveal" style="margin-top:22px;">
         This organization is a registered student organization of Cornell University.
       </p>
     </div>
@@ -58,9 +74,16 @@
   <footer class="footer footer-compact">
     <div class="container footer-inner">
       <p class="footer-policy">This organization is a registered student organization of Cornell University.</p>
-      <p class="muted small"><a href="index.html#top">Back to home</a></p>
+      <p class="muted small"><a href="#top">Back to top</a></p>
     </div>
   </footer>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
 
   <script src="script.js"></script>
 </body>
