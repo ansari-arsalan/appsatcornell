@@ -8,33 +8,36 @@
   <meta property="og:title" content="APPS @ Cornell" />
   <meta property="og:description" content="Applied Public Policy Strategies (APPS) @ Cornell - student-run public policy consulting and research." />
   <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
   <div id="top" aria-hidden="true"></div>
-  <!-- Top Announcement (optional, Cornell Consulting-inspired) -->
-  <div class="announce" role="status" aria-live="polite">
-    <div class="container announce-inner">
-      <span class="announce-badge">APPS</span>
-      <span class="announce-text">Now recruiting partners for Spring engagements.</span>
-      <a class="announce-link" href="#contact">Contact us</a>
-    </div>
-  </div>
 
   <!-- Header -->
-  <header class="header" id="top">
+  <header class="header" id="siteHeader">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="APPS Home">
-        <!-- Replace with your real logo -->
         <img class="brand-mark" src="assets/apps_logo.png" alt="APPS logo" />
         <div class="brand-text">
           <div class="brand-title">APPS @ Cornell</div>
         </div>
       </a>
 
-      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav">
-        <span></span><span></span><span></span>
+      <button
+        class="nav-toggle"
+        id="navToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="siteNav"
+        aria-label="Open navigation menu"
+      >
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
         <span class="sr-only">Open menu</span>
       </button>
 
@@ -45,24 +48,22 @@
         <a href="team.html">Team</a>
         <a href="#contact" class="btn btn-outline">Contact</a>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
-          <span class="theme-icon" aria-hidden="true">☾</span>
-          <span class="theme-label">Theme</span>
-        </button>        
+          <span class="theme-icon" aria-hidden="true">&#9790;</span>
+        </button>
       </nav>
     </div>
   </header>
 
-  <!-- Hero (Cornell Consulting-style: full-bleed image + overlay + big title) -->
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-media" aria-hidden="true">
-      <!-- Replace assets/hero.jpg with your hero photo -->
       <img src="assets/apps_logo.png" alt="" />
       <div class="hero-overlay"></div>
     </div>
 
     <div class="container hero-content">
-      <p class="hero-kicker">Student-run • Public policy consulting • Data-driven impact</p>
-      <h1 class="hero-title">Applied Public Policy Strategies (APPS)</h1>
+      <p class="hero-kicker">Student-run &bull; Public policy consulting &bull; Data-driven impact</p>
+      <h1 class="hero-title">Applied Public Policy<br>Strategies <span class="gradient-text">(APPS)</span></h1>
       <p class="hero-lede">
         We partner with organizations to solve real-world governance and policy problems, turning research and analysis into usable recommendations.
       </p>
@@ -72,18 +73,41 @@
         <a class="btn btn-ghost" href="team.html">Meet the team</a>
       </div>
 
-      <!-- POLICY REQUIREMENT LINE (visible, not buried) -->
       <p class="policy-line">
-        The one and only government, policy, public economics consulting group. 
+        The one and only government, policy, public economics consulting group.
         Registered student organization of Cornell University.
       </p>
     </div>
   </section>
 
-  <!-- Who We Are (two-column, like Cornell Consulting) -->
+  <!-- Stats -->
+  <section class="stats reveal">
+    <div class="container">
+      <div class="stats-grid stagger-children">
+        <div class="stat">
+          <div class="stat-num" data-target="35">0</div>
+          <div class="stat-label">Members</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-target="5">0</div>
+          <div class="stat-label">Active Projects</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-target="10">0</div>
+          <div class="stat-label">Client Partners</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-target="7">0</div>
+          <div class="stat-label">Colleges Represented</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Are -->
   <section class="section" id="who">
     <div class="container grid-2">
-      <div>
+      <div class="reveal-left">
         <h2 class="section-title">WHO WE ARE</h2>
         <p class="lead">
           APPS is a student-led public policy consulting organization that brings together interdisciplinary teams to support clients with strategy, research, and implementation design.
@@ -93,10 +117,10 @@
         </p>
       </div>
 
-      <div class="card">
+      <div class="card reveal-right">
         <h3 class="card-title">FOR CLIENTS</h3>
         <p class="muted">
-          We deliver scoped, semester-based engagements: problem definition → research & analysis → recommendations and implementation-ready deliverables.
+          We deliver scoped, semester-based engagements: problem definition &rarr; research &amp; analysis &rarr; recommendations and implementation-ready deliverables.
         </p>
         <div class="divider"></div>
         <h3 class="card-title">FOR MEMBERS</h3>
@@ -107,76 +131,69 @@
     </div>
   </section>
 
-  <!-- Marquee strip (Cornell Consulting-style) -->
+  <!-- Marquee strip -->
   <section class="marquee" aria-label="APPS marquee">
     <div class="marquee-track">
-      <span>APPS @ Cornell</span><span>•</span>
-      <span>Policy</span><span>•</span>
-      <span>Evidence</span><span>•</span>
-      <span>Delivery</span><span>•</span>
-      <span>Impact</span><span>•</span>
-      <span>APPS @ Cornell</span><span>•</span>
-      <span>Policy</span><span>•</span>
-      <span>Evidence</span><span>•</span>
-      <span>Delivery</span><span>•</span>
-      <span>Impact</span><span>•</span>
+      <span>APPS @ Cornell</span><span>&bull;</span>
+      <span>Policy</span><span>&bull;</span>
+      <span>Evidence</span><span>&bull;</span>
+      <span>Delivery</span><span>&bull;</span>
+      <span>Impact</span><span>&bull;</span>
+      <span>APPS @ Cornell</span><span>&bull;</span>
+      <span>Policy</span><span>&bull;</span>
+      <span>Evidence</span><span>&bull;</span>
+      <span>Delivery</span><span>&bull;</span>
+      <span>Impact</span><span>&bull;</span>
     </div>
   </section>
 
-  <!-- Mission & Vision (FULL text required - placeholders) -->
+  <!-- Mission & Vision -->
   <section class="section section-alt" id="mission">
     <div class="container">
-      <h2 class="section-title">MISSION &amp; VISION</h2>
+      <h2 class="section-title reveal">MISSION &amp; VISION</h2>
 
-      <div class="grid-2">
+      <div class="grid-2 stagger-children">
         <div class="card">
           <h3 class="card-title">MISSION</h3>
           <p class="muted">
-            <!-- PASTE YOUR FULL MISSION HERE (verbatim) -->
-            With the ever-evolving policy and governance sphere, Applied Public Policy Strategies (APPS) 
-            empowers students to deliver innovative, data-driven solutions to complex government and 
-            policy challenges. By combining strategic consulting skills with a passion for public service, 
-            we foster impactful change and develop the next generation of civic-minded leaders at 
-            Cornell and beyond. Working with leading think tanks, non-profits, governments, 
-            and industry innovators, we strive to drive meaningful policy outcomes and create 
-            sustainable solutions that address today’s most pressing challenges.
-
+            With the ever-evolving policy and governance sphere, Applied Public Policy Strategies (APPS)
+            empowers students to deliver innovative, data-driven solutions to complex government and
+            policy challenges. By combining strategic consulting skills with a passion for public service,
+            we foster impactful change and develop the next generation of civic-minded leaders at
+            Cornell and beyond. Working with leading think tanks, non-profits, governments,
+            and industry innovators, we strive to drive meaningful policy outcomes and create
+            sustainable solutions that address today's most pressing challenges.
           </p>
         </div>
 
         <div class="card">
           <h3 class="card-title">VISION</h3>
           <p class="muted">
-            <!-- PASTE YOUR FULL VISION HERE (verbatim) -->
-            A student-led and pre-professional organization at 
+            A student-led and pre-professional organization at
             Cornell dedicated to exploring how emerging technologies and
             economic challenges are transforming governance, economics, law, and public policy.
-            We serve as a platform for students interested in public sector consulting, 
+            We serve as a platform for students interested in public sector consulting,
             legal and policy analysis, and ethical tech innovation.
-
           </p>
         </div>
       </div>
-
-      <p class="muted small" style="margin-top:14px;">
-      </p>
     </div>
   </section>
 
-  <!-- Services (echo “OUR SERVICES” + image band + button) -->
+  <!-- Services -->
   <section class="section" id="services">
     <div class="container">
-      <h2 class="section-title">OUR SERVICES</h2>
+      <h2 class="section-title reveal">OUR SERVICES</h2>
 
-      <section class="banner">
+      <section class="banner reveal-scale">
         <img
           src="assets/banner.png"
           alt="Applied Public Policy Strategies - policy consulting and governance"
           class="banner-image"
         />
-      
+
         <div class="banner-overlay"></div>
-      
+
         <div class="banner-content">
           <img
             src="assets/apps_logo.png"
@@ -185,9 +202,8 @@
           />
         </div>
       </section>
-      
 
-      <div class="cards-3">
+      <div class="cards-3 stagger-children">
         <div class="card">
           <h3 class="card-title">Policy Research</h3>
           <p class="muted">Literature syntheses, benchmarking, stakeholder mapping, and policy option design.</p>
@@ -203,18 +219,17 @@
       </div>
 
       <div class="center" style="margin-top:18px;">
-        <a class="btn btn-solid" href="team.html">Learn more about our team</a>
+        <a class="btn btn-solid reveal" href="team.html">Learn more about our team</a>
       </div>
     </div>
   </section>
 
-  <!-- Approach (learn / grow / deliver vibe, similar rhythm) -->
+  <!-- How We Work -->
   <section class="section section-alt">
     <div class="container">
-      <h2 class="section-title">HOW WE WORK</h2>
+      <h2 class="section-title reveal">HOW WE WORK</h2>
 
-      
-      <div class="grid-3">
+      <div class="grid-3 stagger-children">
         <div class="media-card">
           <div class="media-placeholder">
             <img src="assets/discover.png" alt="Discover - client scoping at Cornell" loading="lazy" />
@@ -222,7 +237,7 @@
           <h3>DISCOVER</h3>
           <p class="muted">Scope the problem with clients, define success metrics, and align on deliverables.</p>
         </div>
-        
+
         <div class="media-card">
           <div class="media-placeholder">
             <img src="assets/analyze.png" alt="Analyze - research and analysis workflow" loading="lazy" />
@@ -230,7 +245,7 @@
           <h3>ANALYZE</h3>
           <p class="muted">Run structured research + data analysis, pressure-test assumptions, and iterate with feedback.</p>
         </div>
-        
+
         <div class="media-card">
           <div class="media-placeholder">
             <img src="assets/deliver.png" alt="Deliver - client-ready recommendations" loading="lazy" />
@@ -238,10 +253,6 @@
           <h3>DELIVER</h3>
           <p class="muted">Ship client-ready memos, decks, toolkits, and implementation plans built for action.</p>
         </div>
-        
-        </div>
-
-
       </div>
     </div>
   </section>
@@ -249,8 +260,8 @@
   <!-- FAQ -->
   <section class="section" id="faq">
     <div class="container">
-      <h2 class="section-title">FAQ</h2>
-      <div class="faq-intro">
+      <h2 class="section-title reveal">FAQ</h2>
+      <div class="faq-intro reveal">
         <h3 class="faq-title">Applied Public Policy Strategies at Cornell</h3>
         <p class="muted">
           Welcome to Applied Public Policy Strategies at Cornell (APPS). We are a student-run organization
@@ -259,7 +270,7 @@
         </p>
       </div>
 
-      <div class="faq-columns">
+      <div class="faq-columns reveal">
         <div class="faq-accordion faq-column">
           <h3 class="faq-group">FAQs (Prospective Clients)</h3>
 
@@ -414,20 +425,21 @@
   <!-- Contact -->
   <section class="section" id="contact">
     <div class="container grid-2">
-      <div>
+      <div class="reveal-left">
         <h2 class="section-title">CONTACT</h2>
         <p class="lead">Interested in partnering with APPS, joining, or learning more?</p>
         <p class="muted">We typically respond within a few days during the semester.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal-right">
         <h3 class="card-title">Email</h3>
-        <p class="muted"><a href="mailto:appliedpps@gmail.com">appliedpps@gmail.com</a> <span class="small muted"></span></p>
+        <p class="muted">
+          <a href="mailto:appliedpps@gmail.com">appliedpps@gmail.com</a>
+        </p>
         <div class="divider"></div>
         <h3 class="card-title">Social</h3>
 
         <div class="social-links">
-          <!-- LinkedIn -->
           <a
             href="https://www.linkedin.com/company/applied-public-policy-strategies-cornell"
             target="_blank"
@@ -439,8 +451,7 @@
             </svg>
             <span>LinkedIn</span>
           </a>
-        
-          <!-- Instagram -->
+
           <a
             href="https://www.instagram.com/appsatcornell/"
             target="_blank"
@@ -453,28 +464,28 @@
             <span>Instagram</span>
           </a>
         </div>
-
-        <p class="muted small" style="margin-top:10px;">
-          Suggested additions: newsletter signup and a simple interest form.
-        </p>
-        
       </div>
     </div>
   </section>
 
-  <!-- Footer (Cornell Consulting style: centered + policy line) -->
   <footer class="footer">
     <div class="container footer-inner">
       <p class="footer-tagline"><em>Student-run consulting for policy impact.</em></p>
       <p class="footer-policy">This organization is a registered student organization of Cornell University.</p>
-      <p class="footer-divider">-----</p>
+      <div class="footer-divider-line"></div>
       <p class="muted small">
-        If you are having trouble accessing information on this website or need materials in an alternate format,
-        please contact us at <a href="mailto:apps@cornell.edu">appliedpps@gmail.com</a>.
+        If you are having trouble accessing information on this website or need accommodation,
+        please contact <a href="mailto:appliedpps@gmail.com">appliedpps@gmail.com</a>.
       </p>
-      <p class="muted small"><a href="#top">Back to top</a></p>
     </div>
   </footer>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
 
   <script src="script.js"></script>
 </body>
