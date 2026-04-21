@@ -216,70 +216,90 @@ const EXEC = [
   {
     name: "Hannah Kim",
     role: "Co-President",
-    major: "Senior \u2022 Government",
+    year: "Senior",
+    college: "College of Arts and Sciences",
+    major: "Government",
     bio: "Hobbies: baking, chess, shopping, crafts/sewing, eating sushi.",
     photo: "assets/headshots/hannah-kim.jpeg",
   },
   {
     name: "Mia Barratt",
     role: "Co-President",
-    major: "Senior \u2022 Government",
+    year: "Senior",
+    college: "College of Arts and Sciences",
+    major: "Government",
     bio: "Hobbies: crafting, jewelry-making, baking, chess, puzzles, reading.",
     photo: "assets/headshots/mia-barratt.jpeg",
   },
   {
     name: "Arsalan Ansari",
     role: "Vice-President",
-    major: "Senior \u2022 Government",
+    year: "Senior",
+    college: "College of Arts and Sciences",
+    major: "Government",
     bio: "Hobbies: poker, guitar, chess, reading, and recently skiing.",
     photo: "assets/headshots/arsalan-ansari.jpeg",
   },
   {
     name: "Hannah Hope Lee",
     role: "Project Manager",
-    major: "Sophomore \u2022 A&S \u2022 Government & Music",
+    year: "Sophomore",
+    college: "College of Arts and Sciences",
+    major: "Government & Music",
     bio: "Hobbies: skiing, singing/opera, hot yoga, art/painting.",
     photo: "assets/headshots/hannah-hope-lee.jpeg",
   },
   {
     name: "Calista Chang",
     role: "Director of Training & Development",
-    major: "Sophomore \u2022 ILR (minor: Business, InfoSci)",
+    year: "Sophomore",
+    college: "School of Industrial and Labor Relations",
+    major: "ILR, minors in Business and Information Science",
     bio: "Hobbies: iced coffee, Clairo, wandering around campus.",
     photo: "assets/headshots/calista-chang.jpeg",
   },
   {
     name: "John Purcell",
     role: "Director of Internal Affairs & Communications",
-    major: "Sophomore \u2022 Government (A&S)",
+    year: "Sophomore",
+    college: "College of Arts and Sciences",
+    major: "Government",
     bio: "Hobbies: concerts, baking, thrifting, playing piano.",
     photo: "assets/headshots/john-purcell.jpeg",
   },
   {
     name: "Sophia Chen",
     role: "Project Manager",
-    major: "Sophomore \u2022 AEM",
+    year: "Sophomore",
+    college: "Dyson School of Applied Economics and Management",
+    major: "Applied Economics and Management",
     bio: "Hobbies: gym, legos, grocery store runs, debrief.",
     photo: "assets/headshots/sophia-chen.jpeg",
   },
   {
     name: "Mandy Wang",
     role: "Director of Membership & Recruitment",
-    major: "Sophomore \u2022 ILR",
+    year: "Sophomore",
+    college: "School of Industrial and Labor Relations",
+    major: "ILR",
     bio: "Hobbies: learning how to play pool, paint, pottery, movies.",
     photo: "assets/headshots/mandy-wang.jpeg",
   },
   {
     name: "Samuel Lau",
     role: "Director of Finance & Operations",
-    major: "Freshman \u2022 Economics & Sociology",
+    year: "Freshman",
+    college: "College of Arts and Sciences",
+    major: "Economics & Sociology",
     bio: "Hobbies: listening to music, going on long walks, thrifting, eating hot pot.",
     photo: "assets/headshots/samuel-lau.jpeg",
   },
   {
     name: "Andy Duryea",
     role: "Director of External Affairs",
-    major: "Sophomore \u2022 Public Policy",
+    year: "Sophomore",
+    college: "Jeb E. Brooks School of Public Policy",
+    major: "Public Policy",
     bio: "Hobbies: fishing, skiing, listening to music, reading, exploring new places.",
     photo: "assets/headshots/andy-duryea.jpeg",
   },
@@ -290,6 +310,7 @@ const MEMBERS = [
     name: "Bransen Fitzwater",
     role: "Project Manager",
     graduationYear: 2028,
+    college: "College of Agriculture and Life Sciences",
     major: "Environment & Sustainability, Minor in Public Policy",
     pronouns: "he/him",
     linkedin: "www.linkedin.com/in/bransen-fitzwater",
@@ -299,6 +320,7 @@ const MEMBERS = [
     name: "Emily Cho",
     role: "Project Manager",
     graduationYear: 2028,
+    college: "College of Arts and Sciences",
     major: "Government",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/emily-cho-17eyc1779",
@@ -308,6 +330,7 @@ const MEMBERS = [
     name: "Eneanya Obioha",
     role: "Project Manager",
     graduationYear: 2028,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy, Law and Society",
     pronouns: "she/her",
     linkedin:
@@ -318,6 +341,7 @@ const MEMBERS = [
     name: "Flora Kim",
     role: "Project Manager",
     graduationYear: 2028,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy / International Relations",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/fk247",
@@ -327,6 +351,7 @@ const MEMBERS = [
     name: "Annelie Chang",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     pronouns: "she/her",
     linkedin: "linkedin.com/in/annelie-chang-511b78371",
@@ -336,6 +361,7 @@ const MEMBERS = [
     name: "Charlie Rogers",
     role: "Policy Analyst",
     graduationYear: 2028,
+    college: "College of Agriculture and Life Sciences",
     major: "Environment & Sustainability / Public Policy and Urban & Regional Studies",
     pronouns: "he/him",
     linkedin: "LinkedIn.com/in/crogers116",
@@ -345,6 +371,7 @@ const MEMBERS = [
     name: "Chi-Ray Hsu",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Arts and Sciences",
     major: "Government",
     pronouns: "she/her",
     linkedin:
@@ -355,6 +382,7 @@ const MEMBERS = [
     name: "Christopher J. Corona-Plancarte",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     pronouns: "he/him",
     photo: "assets/headshots/christopher-j-corona-plancarte.jpeg",
@@ -363,6 +391,7 @@ const MEMBERS = [
     name: "Ella Kim",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Agriculture and Life Sciences",
     major: "Environment & Sustainability, Minor in International Relations",
     pronouns: "she/her",
     linkedin: "linkedin.com/in/ellakim7",
@@ -372,6 +401,7 @@ const MEMBERS = [
     name: "Elizabeth Chow",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     photo: "assets/headshots/elizabeth-chow.jpeg",
   },
@@ -379,6 +409,7 @@ const MEMBERS = [
     name: "Emma Yu",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     pronouns: "she/her",
     linkedin: "https://www.linkedin.com/in/emma-yu-020598335/",
@@ -388,6 +419,7 @@ const MEMBERS = [
     name: "Gabrielle Abraham",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Arts and Sciences",
     major: "Government, Minor in PAM",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/gabrielle-abraham376",
@@ -397,6 +429,7 @@ const MEMBERS = [
     name: "Gargi Singh",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy, Minors in Business and Law & Society",
     photo: "assets/headshots/gargi-singh.jpeg",
   },
@@ -404,6 +437,7 @@ const MEMBERS = [
     name: "Jackie Cho",
     role: "Policy Analyst",
     graduationYear: 2027,
+    college: "School of Industrial and Labor Relations",
     major: "ILR / Art History",
     pronouns: "she/her",
     linkedin: "http://linkedin.com/in/jackie-cho57",
@@ -413,6 +447,7 @@ const MEMBERS = [
     name: "Jackson De Guzman",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy, Minor in Urban and Regional Studies",
     pronouns: "he/him/any",
     linkedin:
@@ -423,6 +458,7 @@ const MEMBERS = [
     name: "Julia Ostroff",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Arts and Sciences",
     major: "Computer Science & Government",
     linkedin: "https://www.linkedin.com/in/julia-rachel-ostroff/",
     photo: "assets/headshots/julia-ostroff.jpeg",
@@ -431,6 +467,7 @@ const MEMBERS = [
     name: "Judy Li",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     linkedin: "www.linkedin.com/in/judy-li-8b5912345",
     photo: "assets/headshots/judy-li.jpeg",
@@ -439,6 +476,7 @@ const MEMBERS = [
     name: "Madeline Shukovsky",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     pronouns: "she/her",
     linkedin: "LinkedIn.com/in/madeline-shukovsky",
@@ -448,6 +486,7 @@ const MEMBERS = [
     name: "Marianna Wineinger",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy / Portuguese + Law and Society",
     pronouns: "she/her",
     linkedin: "www.linkedin.com/in/marianna-wineinger-92029b383",
@@ -457,6 +496,7 @@ const MEMBERS = [
     name: "Marianne Custodio",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Arts and Sciences",
     major: "Economics & Public Policy",
     pronouns: "she/her",
     photo: "assets/headshots/marianne-custodio.jpeg",
@@ -465,6 +505,7 @@ const MEMBERS = [
     name: "Muntasir Ansary",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Agriculture and Life Sciences",
     major: "Biometry & Statistics",
     pronouns: "he/him",
     photo: "assets/headshots/muntasir-ansary.jpeg",
@@ -473,6 +514,7 @@ const MEMBERS = [
     name: "Shreyash Shrestha",
     role: "Policy Analyst",
     graduationYear: 2028,
+    college: "School of Industrial and Labor Relations",
     major: "Industrial and Labor Relations",
     pronouns: "he/him",
     linkedin: "https://www.linkedin.com/in/shreyashshrestha/",
@@ -482,6 +524,7 @@ const MEMBERS = [
     name: "Sophia Kim",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Engineering",
     major: "BME, Minor in Health Policy",
     pronouns: "she/her",
     linkedin: "https://www.linkedin.com/in/sophiayjkim/",
@@ -491,6 +534,7 @@ const MEMBERS = [
     name: "Tami Omole",
     role: "Policy Analyst",
     graduationYear: 2029,
+    college: "College of Engineering",
     major: "Public Policy / Aerospace Engineering",
     pronouns: "she/they",
     linkedin: "http://linkedin.com/in/tami-omole-558a00282",
@@ -526,9 +570,10 @@ function getYearInCollege(graduationYear, now = new Date()) {
   return years[diff] || `Class of ${graduationYear}`;
 }
 
-function formatMajorLine(member) {
-  if (!member.graduationYear) return member.major;
-  return `${getYearInCollege(member.graduationYear)} \u2022 ${member.major}`;
+function getDisplayYear(member, now = new Date()) {
+  if (member.year) return member.year;
+  if (member.graduationYear) return getYearInCollege(member.graduationYear, now);
+  return "";
 }
 
 function normalizeUrl(url) {
@@ -616,32 +661,23 @@ function createMemberCard(member, index) {
   role.className = "member-role";
   role.textContent = member.role;
 
+  const year = document.createElement("p");
+  year.className = "member-detail";
+  year.textContent = getDisplayYear(member);
+
+  const college = document.createElement("p");
+  college.className = "member-detail";
+  college.textContent = member.college || "";
+
   const major = document.createElement("p");
-  major.className = "member-major";
-  major.textContent = formatMajorLine(member);
+  major.className = "member-detail";
+  major.textContent = member.major;
 
   meta.appendChild(name);
   meta.appendChild(role);
+  if (year.textContent) meta.appendChild(year);
+  if (college.textContent) meta.appendChild(college);
   meta.appendChild(major);
-  if (member.pronouns) {
-    const pronouns = document.createElement("p");
-    pronouns.className = "member-pronouns";
-    pronouns.textContent = member.pronouns;
-    meta.appendChild(pronouns);
-  }
-  if (member.linkedin) {
-    const linkWrap = document.createElement("p");
-    linkWrap.className = "member-link";
-
-    const link = document.createElement("a");
-    link.href = normalizeUrl(member.linkedin);
-    link.target = "_blank";
-    link.rel = "noreferrer noopener";
-    link.textContent = "LinkedIn";
-
-    linkWrap.appendChild(link);
-    meta.appendChild(linkWrap);
-  }
 
   card.appendChild(avatar);
   card.appendChild(meta);
