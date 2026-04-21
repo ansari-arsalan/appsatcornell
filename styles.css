@@ -444,12 +444,12 @@
   .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
   .member-card{
     display:flex;
-    gap:14px;
+    gap:12px;
     align-items:flex-start;
     background:rgba(255,255,255,.04);
     border:1px solid var(--line);
     border-radius:18px;
-    padding:14px;
+    padding:12px;
     transition:transform .3s var(--ease-out-expo), box-shadow .3s ease, border-color .3s ease;
   }
   .member-card:hover{
@@ -480,10 +480,16 @@
   .member-card:hover .member-avatar img{
     transform:scale(1.06);
   }
-  .member-meta{display:flex;flex-direction:column;gap:4px}
-  .member-name{margin:0;font-weight:700;font-family:'Libre Baskerville',Georgia,serif;font-size:.98rem;}
-  .member-role{margin:0;color:var(--accent2);font-weight:600;font-size:.88rem;}
-  .member-major,.member-bio,.member-detail{margin:0;color:var(--muted);font-size:.85rem;}
+  .member-meta{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    min-width:0;
+    line-height:1.25;
+  }
+  .member-name{margin:0 0 1px;font-weight:700;font-family:'Libre Baskerville',Georgia,serif;font-size:.98rem;line-height:1.15;}
+  .member-role{margin:0 0 4px;color:var(--accent2);font-weight:600;font-size:.88rem;line-height:1.2;}
+  .member-major,.member-bio,.member-detail{margin:0;color:var(--muted);font-size:.85rem;line-height:1.28;}
   .member-pronouns,.member-link{margin:0;color:var(--muted);font-size:.82rem;}
   .member-link a{text-decoration:underline;text-underline-offset:2px;transition:color .2s ease;}
   .member-link a:hover{color:var(--accent2);}
