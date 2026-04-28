@@ -301,7 +301,7 @@ const MEMBERS = [
     name: "Charlie Rogers",
     role: "Policy Analyst",
     graduationYear: 2028,
-    college: "College of Agriculture and Life Sciences",
+    college: "College of Arts and Sciences",
     major: "Environment & Sustainability / Public Policy and Urban & Regional Studies",
     pronouns: "he/him",
     linkedin: "LinkedIn.com/in/crogers116",
