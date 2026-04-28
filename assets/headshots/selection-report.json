@@ -1,0 +1,536 @@
+{
+  "config": {
+    "max_long_edge": 900,
+    "jpeg_quality": 74
+  },
+  "results": [
+    {
+      "folder": "AD",
+      "output": "andy-duryea.jpeg",
+      "selected_source": "DSC07522.JPG",
+      "reference_used": "andy-duryea.jpeg",
+      "hash_distance": 463,
+      "old_size_bytes": 302118,
+      "new_size_bytes": 61147,
+      "bytes_saved": 240971,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 928.322,
+      "center_sharpness": 1235.298,
+      "mean_luma": 150.759,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 1139.934,
+      "status": "exported"
+    },
+    {
+      "folder": "C-R H",
+      "output": "chi-ray-hsu.jpeg",
+      "selected_source": "DSC07409.JPG",
+      "reference_used": "chi-ray-hsu.jpeg",
+      "hash_distance": 478,
+      "old_size_bytes": 179803,
+      "new_size_bytes": 47892,
+      "bytes_saved": 131911,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 653.45,
+      "center_sharpness": 654.256,
+      "mean_luma": 116.54,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 677.098,
+      "status": "exported"
+    },
+    {
+      "folder": "CC",
+      "output": "calista-chang.jpeg",
+      "selected_source": "DSC07411.JPG",
+      "reference_used": "calista-chang.jpeg",
+      "hash_distance": 498,
+      "old_size_bytes": 177269,
+      "new_size_bytes": 42832,
+      "bytes_saved": 134437,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 532.607,
+      "center_sharpness": 831.11,
+      "mean_luma": 103.012,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 664.606,
+      "status": "exported"
+    },
+    {
+      "folder": "EC",
+      "output": "emily-cho.jpeg",
+      "selected_source": "DSC07261.JPG",
+      "reference_used": "emily-cho.jpeg",
+      "hash_distance": 489,
+      "old_size_bytes": 114111,
+      "new_size_bytes": 51410,
+      "bytes_saved": 62701,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 816.209,
+      "center_sharpness": 844.813,
+      "mean_luma": 119.919,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 872.021,
+      "status": "exported"
+    },
+    {
+      "folder": "EK",
+      "output": "ella-kim.jpeg",
+      "selected_source": "DSC07429.JPG",
+      "reference_used": "ella-kim.jpeg",
+      "hash_distance": 391,
+      "old_size_bytes": 167607,
+      "new_size_bytes": 44306,
+      "bytes_saved": 123301,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 474.181,
+      "center_sharpness": 678.143,
+      "mean_luma": 103.98,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 558.763,
+      "status": "exported"
+    },
+    {
+      "folder": "EO",
+      "output": "eneanya-obioha.jpeg",
+      "selected_source": "DSC07394.JPG",
+      "reference_used": "eneanya-obioha.jpeg",
+      "hash_distance": 426,
+      "old_size_bytes": 153211,
+      "new_size_bytes": 41940,
+      "bytes_saved": 111271,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 534.653,
+      "center_sharpness": 850.051,
+      "mean_luma": 116.576,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 688.023,
+      "status": "exported"
+    },
+    {
+      "folder": "EY",
+      "output": "emma-yu.jpeg",
+      "selected_source": "DSC07266.JPG",
+      "reference_used": "emma-yu.jpeg",
+      "hash_distance": 492,
+      "old_size_bytes": 101125,
+      "new_size_bytes": 48555,
+      "bytes_saved": 52570,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 666.879,
+      "center_sharpness": 972.168,
+      "mean_luma": 116.859,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 829.206,
+      "status": "exported"
+    },
+    {
+      "folder": "FK",
+      "output": "flora-kim.jpeg",
+      "selected_source": "DSC07343.JPG",
+      "reference_used": "flora-kim.jpeg",
+      "hash_distance": 465,
+      "old_size_bytes": 177016,
+      "new_size_bytes": 41630,
+      "bytes_saved": 135386,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 498.374,
+      "center_sharpness": 634.42,
+      "mean_luma": 113.775,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 564.606,
+      "status": "exported"
+    },
+    {
+      "folder": "GS",
+      "output": "gargi-singh.jpeg",
+      "selected_source": "DSC07578.JPG",
+      "reference_used": "gargi-singh.jpeg",
+      "hash_distance": 444,
+      "old_size_bytes": 549209,
+      "new_size_bytes": 53719,
+      "bytes_saved": 495490,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 723.855,
+      "center_sharpness": 1182.712,
+      "mean_luma": 102.37,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 946.496,
+      "status": "exported"
+    },
+    {
+      "folder": "JG",
+      "output": "jackson-de-guzman.jpeg",
+      "selected_source": "DSC07352.JPG",
+      "reference_used": "jackson-de-guzman.jpeg",
+      "hash_distance": 460,
+      "old_size_bytes": 286378,
+      "new_size_bytes": 43519,
+      "bytes_saved": 242859,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 464.804,
+      "center_sharpness": 769.351,
+      "mean_luma": 103.882,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 593.612,
+      "status": "exported"
+    },
+    {
+      "folder": "JO",
+      "output": "julia-ostroff.jpeg",
+      "selected_source": "DSC07275.JPG",
+      "reference_used": "julia-ostroff.jpeg",
+      "hash_distance": 501,
+      "old_size_bytes": 21643,
+      "new_size_bytes": 47016,
+      "bytes_saved": -25373,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 690.108,
+      "center_sharpness": 799.513,
+      "mean_luma": 124.978,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 774.729,
+      "status": "exported"
+    },
+    {
+      "folder": "JP",
+      "output": "john-purcell.jpeg",
+      "selected_source": "DSC07362.JPG",
+      "reference_used": "john-purcell.jpeg",
+      "hash_distance": 492,
+      "old_size_bytes": 123973,
+      "new_size_bytes": 44831,
+      "bytes_saved": 79142,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 558.522,
+      "center_sharpness": 770.931,
+      "mean_luma": 122.343,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 673.702,
+      "status": "exported"
+    },
+    {
+      "folder": "LC",
+      "output": "elizabeth-chow.jpeg",
+      "selected_source": "DSC07320.JPG",
+      "reference_used": "elizabeth-chow.jpeg",
+      "hash_distance": 451,
+      "old_size_bytes": 198203,
+      "new_size_bytes": 41409,
+      "bytes_saved": 156794,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 432.647,
+      "center_sharpness": 671.925,
+      "mean_luma": 102.45,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 527.437,
+      "status": "exported"
+    },
+    {
+      "folder": "MA",
+      "output": "muntasir-ansary.jpeg",
+      "selected_source": "DSC07376.JPG",
+      "reference_used": "muntasir-ansary.jpeg",
+      "hash_distance": 485,
+      "old_size_bytes": 162510,
+      "new_size_bytes": 41149,
+      "bytes_saved": 121361,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 533.683,
+      "center_sharpness": 852.146,
+      "mean_luma": 125.582,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 697.342,
+      "status": "exported"
+    },
+    {
+      "folder": "MB",
+      "output": "mia-barratt.jpeg",
+      "selected_source": "DSC07447.JPG",
+      "reference_used": "mia-barratt.jpeg",
+      "hash_distance": 473,
+      "old_size_bytes": 251661,
+      "new_size_bytes": 40326,
+      "bytes_saved": 211335,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 435.732,
+      "center_sharpness": 780.502,
+      "mean_luma": 104.343,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 580.194,
+      "status": "exported"
+    },
+    {
+      "folder": "MC",
+      "output": "marianne-custodio.jpeg",
+      "selected_source": "DSC07388.JPG",
+      "reference_used": "marianne-custodio.jpeg",
+      "hash_distance": 495,
+      "old_size_bytes": 100256,
+      "new_size_bytes": 39708,
+      "bytes_saved": 60548,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 472.984,
+      "center_sharpness": 736.985,
+      "mean_luma": 114.423,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 594.906,
+      "status": "exported"
+    },
+    {
+      "folder": "MS",
+      "output": "madeline-shukovsky.jpeg",
+      "selected_source": "DSC07278.JPG",
+      "reference_used": "madeline-shukovsky.jpeg",
+      "hash_distance": 497,
+      "old_size_bytes": 225761,
+      "new_size_bytes": 40645,
+      "bytes_saved": 185116,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 368.417,
+      "center_sharpness": 580.346,
+      "mean_luma": 95.674,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 437.701,
+      "status": "exported"
+    },
+    {
+      "folder": "MWa",
+      "output": "mandy-wang.jpeg",
+      "selected_source": "DSC07741.JPG",
+      "reference_used": "mandy-wang.jpeg",
+      "hash_distance": 451,
+      "old_size_bytes": 108621,
+      "new_size_bytes": 40510,
+      "bytes_saved": 68111,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 456.431,
+      "center_sharpness": 699.806,
+      "mean_luma": 109.989,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 562.982,
+      "status": "exported"
+    },
+    {
+      "folder": "MWi",
+      "output": "marianna-wineinger.jpeg",
+      "selected_source": "DSC07799.JPG",
+      "reference_used": "marianna-wineinger.jpeg",
+      "hash_distance": 498,
+      "old_size_bytes": 21089,
+      "new_size_bytes": 44210,
+      "bytes_saved": -23121,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 624.95,
+      "center_sharpness": 949.986,
+      "mean_luma": 109.576,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 784.687,
+      "status": "exported"
+    },
+    {
+      "folder": "SC",
+      "output": "sophia-chen.jpeg",
+      "selected_source": "DSC07311.JPG",
+      "reference_used": "sophia-chen.jpeg",
+      "hash_distance": 484,
+      "old_size_bytes": 119291,
+      "new_size_bytes": 41135,
+      "bytes_saved": 78156,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 389.336,
+      "center_sharpness": 603.072,
+      "mean_luma": 99.058,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 464.909,
+      "status": "exported"
+    },
+    {
+      "folder": "SK",
+      "output": "sophia-kim.jpeg",
+      "selected_source": "DSC07286.JPG",
+      "reference_used": "sophia-kim.jpeg",
+      "hash_distance": 478,
+      "old_size_bytes": 155614,
+      "new_size_bytes": 54283,
+      "bytes_saved": 101331,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 1246.726,
+      "center_sharpness": 1885.002,
+      "mean_luma": 99.1,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 1599.123,
+      "status": "exported"
+    },
+    {
+      "folder": "TO",
+      "output": "tami-omole.jpeg",
+      "selected_source": "DSC07789.JPG",
+      "reference_used": "tami-omole.jpeg",
+      "hash_distance": 500,
+      "old_size_bytes": 379328,
+      "new_size_bytes": 57852,
+      "bytes_saved": 321476,
+      "source_dimensions": [
+        6000,
+        4000
+      ],
+      "output_dimensions": [
+        900,
+        600
+      ],
+      "sharpness": 1485.863,
+      "center_sharpness": 2297.622,
+      "mean_luma": 124.233,
+      "aspect_ratio": 1.5,
+      "heuristic_score": 1965.374,
+      "status": "exported"
+    }
+  ]
+}
