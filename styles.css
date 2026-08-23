@@ -559,6 +559,16 @@
   .footer-policy{margin:0 0 8px;color:rgba(233,238,246,.85)}
   .footer-divider-line{height:1px;background:var(--line);margin:12px auto;width:60px;}
 
+
+  .footer-policy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  }
+
+  .footer-policy a:hover {
+  color: var(--accent);
+  }
   /* Back to top button */
   .back-to-top{
     position:fixed;
