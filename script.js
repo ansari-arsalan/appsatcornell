@@ -154,13 +154,13 @@ function initActiveNav() {
 // ---- Executive Board Data ----
 const EXEC = [
   {
-    name: "Hannah Kim",
+    name: "Andy Duryea",
     role: "Co-President",
-    year: "Senior",
-    college: "College of Arts and Sciences",
-    major: "Government",
-    bio: "Hobbies: baking, chess, shopping, crafts/sewing, eating sushi.",
-    photo: "assets/headshots/hannah-kim.jpeg",
+    year: "Junior",
+    college: "Jeb E. Brooks School of Public Policy",
+    major: "Public Policy",
+    bio: "Hobbies: fishing, skiing, listening to music, reading, exploring new places.",
+    photo: "assets/headshots/DSC07293.JPG",
   },
   {
     name: "Mia Barratt",
