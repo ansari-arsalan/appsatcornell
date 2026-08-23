@@ -238,16 +238,6 @@ const EXEC = [
 
 const MEMBERS = [
   {
-    name: "Bransen Fitzwater",
-    role: "Project Manager",
-    graduationYear: 2028,
-    college: "College of Agriculture and Life Sciences",
-    major: "Environment & Sustainability, Minor in Public Policy",
-    pronouns: "he/him",
-    linkedin: "www.linkedin.com/in/bransen-fitzwater",
-    photo: "assets/headshots/bransen-fitzwater.jpeg",
-  },
-  {
     name: "Emily Cho",
     role: "Project Manager",
     graduationYear: 2028,
