@@ -249,7 +249,7 @@ const MEMBERS = [
   },
   {
     name: "Annelie Chang",
-    role: "Policy Analyst",
+    role: "Project Manager",
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
