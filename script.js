@@ -278,7 +278,7 @@ const MEMBERS = [
   },
   {
     name: "Ella Kim",
-    role: "Policy Analyst",
+    role: "Project Manager",
     graduationYear: 2029,
     college: "College of Agriculture and Life Sciences",
     major: "Environment & Sustainability, Minor in International Relations",
@@ -308,7 +308,7 @@ const MEMBERS = [
   },
   {
     name: "Gargi Singh",
-    role: "Policy Analyst",
+    role: "Project Manager",
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy, Minors in Business and Law & Society",
@@ -392,7 +392,7 @@ const MEMBERS = [
   },
   {
     name: "Sophia Kim",
-    role: "Policy Analyst",
+    role: "Project Manager",
     graduationYear: 2029,
     college: "College of Engineering",
     major: "BME, Minor in Health Policy",
