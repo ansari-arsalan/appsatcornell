@@ -442,110 +442,6 @@ const MEMBERS = [
  
 const MOBILE_NAV_BREAKPOINT = 900;
 const HEADSHOT_VERSION = "20260405-2";
- 
-/* ---------------------------------------------------------
-   4. RECRUITMENT DATA  (edit these arrays each cycle)
-   --------------------------------------------------------- */
- 
-const RECRUITMENT_CYCLE = "Fall 2026";
- 
-/* Public-facing dates only. Internal to-dos (Instagram posts,
-   takeovers, big/little features) are intentionally left out. */
-const RECRUITMENT_TIMELINE = [
-  {
-    date: "2026-08-24",
-    title: "Coffee chat form opens",
-    detail:
-      "First day of classes. Submit the form and a current member will email you to set up a time.",
-    tag: "Open",
-  },
-  {
-    date: "2026-09-03",
-    title: "Tabling - Day 1",
-    detail: "Come find us on campus and ask us anything, no sign-up needed.",
-    tag: "Meet us",
-  },
-  {
-    date: "2026-09-04",
-    title: "Tabling - Day 2",
-    detail: "Second day of tabling. Recruitment timeline handouts available.",
-    tag: "Meet us",
-  },
-  {
-    date: "2026-09-05",
-    title: "Clubfest",
-    detail: "Stop by the APPS table to meet exec and current analysts.",
-    tag: "Meet us",
-  },
-  {
-    date: "2026-09-07",
-    title: "Labor Day - no APPS events",
-    detail: "Enjoy the long weekend. Recruitment picks back up Tuesday.",
-    tag: "Break",
-  },
-  {
-    date: "2026-09-08",
-    title: "Application opens",
-    detail: "The written application goes live. Give yourself time to draft it.",
-    tag: "Apply",
-  },
-  {
-    date: "2026-09-11",
-    title: "Intro to the Policy Space + Resume Review",
-    detail:
-      "A walkthrough of policy career paths, with members reviewing resumes on the spot. Bring a printed copy.",
-    tag: "Workshop",
-  },
-  {
-    date: "2026-09-14",
-    title: "Casing Workshop",
-    detail:
-      "How we structure a policy case, walked through end to end. The single most useful prep for Round 3.",
-    tag: "Workshop",
-  },
-  {
-    date: "2026-09-15",
-    title: "Tabling - Day 3 + First Info Session",
-    detail:
-      "Full overview of APPS, our project model, and the application, with Q&A.",
-    tag: "Info session",
-  },
-  {
-    date: "2026-09-17",
-    title: "Apps w/ APPS: Speed Dating with Members",
-    detail:
-      "Appetizers and rotating conversations with current members, followed by the second info session.",
-    tag: "Social",
-  },
-  {
-    date: "2026-09-18",
-    title: "Recruitment office hours + APPLICATION CLOSES",
-    detail:
-      "Last chance to ask questions before you submit. Applications close at the end of the day.",
-    tag: "Deadline",
-  },
-  {
-    date: "2026-09-18",
-    title: "Round 1 - Resume Review",
-    detail: "We review every submitted application and resume.",
-    tag: "Round 1",
-  },
-  {
-    date: "2026-09-19",
-    title: "Round 2 - Behavioral Interview",
-    detail:
-      "A conversational interview about your interests, your experience, and why APPS.",
-    tag: "Round 2",
-  },
-  {
-    date: "2026-09-20",
-    title: "Round 3 - Casing Interview",
-    detail:
-      "A short policy case worked through with two members. Structure over answers.",
-    tag: "Round 3",
-  },
-];
- 
 const RECRUITMENT_EXPECTATIONS = [
   {
     title: "No policy background required",
@@ -553,23 +449,23 @@ const RECRUITMENT_EXPECTATIONS = [
   },
   {
     title: "Three rounds, one weekend",
-    body: "Resume review, a behavioral interview, and a casing interview all happen between September 18 and 20. Plan your weekend accordingly.",
+    body: "Resume review, a behavioral interview, and a group case interview.",
   },
   {
-    title: "Come to at least one event",
+    title: "Show your interest in APPS",
     body: "A coffee chat, info session, or workshop is the easiest way to figure out whether APPS is right for you, and it makes your application stronger.",
   },
   {
     title: "Prep is provided",
-    body: "The resume review and casing workshop exist so that nobody has to interview cold. Everything you need to know for Round 3 is taught on September 14.",
+    body: "The resume review and casing workshop are events to prepare you for our resume and group rounds.",
   },
   {
     title: "Expect a real time commitment",
-    body: "New members join a project team and work with a real client through the semester, plus weekly general body meetings.",
+    body: "New members join a project team and work with a real client through the semester, plus new member education meetings.",
   },
   {
-    title: "We answer every question",
-    body: "Office hours on September 18 are open to anyone, including people who have not started the application yet.",
+    title: "DEI Office Hours",
+    body: "Office hours open to anyone with questions regarding accommodations and DEI-related topics.",
   },
 ];
  
@@ -584,159 +480,15 @@ const COFFEE_CHAT_STEPS = [
   },
   {
     title: "A member emails you",
-    body: "We match you with someone who shares your interests. Expect an email like the one shown here within a few days.",
+    body: "We match you with someone who shares your interests. Expect an email from us within a few days!",
   },
   {
     title: "Pick a time and a format",
-    body: "Reply with the slot that works and whether you would rather meet in person or over Zoom. Either is completely fine.",
+    body: "Reply with the slot that works and whether you would rather meet in person or over Zoom.",
   },
   {
     title: "Chat for about 30 minutes",
-    body: "It is a conversation, not an evaluation. Coffee is on us.",
-  },
-];
- 
-const COFFEE_CHAT_EMAIL = {
-  subject: "APPS Coffee Chat",
-  body: [
-    "Hello [your name],",
-    "",
-    "Thank you for your interest in Applied Public Policy Strategies at Cornell (APPS)! I saw your coffee chat request and wanted to reach out to you because of our shared interest in [your policy interests].",
-    "",
-    "Please let me know which of the times listed below works best for you, as well as whether you would prefer to meet in person or virtually:",
-    "",
-    "  - Friday (9/4): 11:30AM - 1PM, 3PM - 5PM",
-    "  - [two to three more time slots]",
-    "",
-    "If you have any questions, please let me know! I look forward to connecting!",
-    "",
-    "Best regards,",
-    "[APPS member]",
-  ].join("\n"),
-};
- 
-const COFFEE_CHAT_TIPS = [
-  "Reply within a day or two, even if it is just to say which times work. Members are juggling their own schedules.",
-  "Name two or three policy areas you actually care about rather than saying you are open to anything. It gives the conversation somewhere to go.",
-  "Bring two or three real questions. What a project semester looks like week to week, how teams are staffed, and what surprised them about APPS are all fair game.",
-  "Ask about the work, not just the club. What did their team actually deliver to the client?",
-  "It is fine to say you are still figuring out whether policy is for you. Most of us were.",
-  "Send a short thank-you note afterward. One or two sentences is plenty.",
-  "Chat with more than one member if you can. Different project teams have very different experiences.",
-];
- 
-/* ---------------------------------------------------------
-   6. INTERVIEW DATA
-   --------------------------------------------------------- */
- 
-const INTERVIEW_ROUNDS = [
-  {
-    round: "Round 1",
-    name: "Resume Review",
-    when: "September 18",
-    summary:
-      "We read your application and resume together. This round is about clarity and fit, not prestige.",
-    tips: [
-      "Keep it to one page and lead with what you did, not what the organization was.",
-      "Quantify where you honestly can. Numbers make a bullet legible in ten seconds.",
-      "Show the through-line. If your resume looks scattered, use the application to explain the thread.",
-      "Bring it to the September 11 resume review session and have a member mark it up before you submit.",
-      "Proofread twice. Then have someone else proofread it.",
-    ],
-  },
-  {
-    round: "Round 2",
-    name: "Behavioral Interview",
-    when: "September 19",
-    summary:
-      "A conversation with two members about your interests, how you work on a team, and why APPS specifically.",
-    tips: [
-      "Have a real answer to 'why APPS' that is not 'consulting experience.' Name a policy area or a project that drew you in.",
-      "Prepare two or three stories you can adapt: a team conflict, something you led, something that did not work.",
-      "Use structure. Situation, what you did, what happened. Keep answers to about two minutes.",
-      "Be specific about your own contribution. 'We' hides you.",
-      "Ask us something at the end. It is the easiest signal that you are actually interested.",
-      "Nerves are normal and are not scored. Take the pause you need.",
-    ],
-  },
-  {
-    round: "Round 3",
-    name: "Casing Interview",
-    when: "September 20",
-    summary:
-      "A short policy case worked through out loud with two members. We are watching how you think, not whether you land the right answer.",
-    tips: [
-      "Go to the September 14 casing workshop. Everything tested here is taught there.",
-      "Restate the prompt and confirm the goal before you start solving. It costs fifteen seconds and prevents most wrong turns.",
-      "Lay out your structure before diving in. Three clear buckets beat ten scattered ideas.",
-      "Think out loud. Silence is the only way to lose points for reasoning we cannot see.",
-      "Name your assumptions and say when you are unsure. That reads as rigor, not weakness.",
-      "Consider who is affected and who pays. Stakeholders and tradeoffs are what make it a policy case.",
-      "Land the plane. Give a recommendation and one sentence on why, even if you ran short on time.",
-    ],
-  },
-];
- 
-/* ---------------------------------------------------------
-   7. PAST PROJECTS  (PLACEHOLDER DATA - replace with real ones)
-   --------------------------------------------------------- */
- 
-const PROJECTS_ARE_PLACEHOLDER = true; // set to false once real projects are in
- 
-const PAST_PROJECTS = [
-  {
-    title: "Housing Affordability in Tompkins County",
-    client: "Regional housing nonprofit",
-    area: "Housing",
-    term: "Spring 2026",
-    summary:
-      "Mapped where zoning constraints bind hardest on new multifamily supply and modeled the unit impact of three reform options.",
-    deliverable: "Zoning reform memo and briefing deck for the county board",
-  },
-  {
-    title: "Municipal Decarbonization Roadmap",
-    client: "City sustainability office",
-    area: "Climate & Energy",
-    term: "Spring 2026",
-    summary:
-      "Benchmarked building electrification programs across five comparable cities and costed a phased retrofit incentive.",
-    deliverable: "Implementation roadmap with a five-year cost model",
-  },
-  {
-    title: "Childcare Access for Student Parents",
-    client: "Statewide advocacy coalition",
-    area: "Family & Labor",
-    term: "Fall 2025",
-    summary:
-      "Surveyed subsidy eligibility gaps and quantified the enrollment effect of extending coverage to part-time students.",
-    deliverable: "Legislative brief and testimony support materials",
-  },
-  {
-    title: "Transit Equity and Route Redesign",
-    client: "Regional transit authority",
-    area: "Transportation",
-    term: "Fall 2025",
-    summary:
-      "Analyzed ridership and travel-time data to identify underserved corridors and evaluated two service restructuring scenarios.",
-    deliverable: "Route recommendation report with equity impact analysis",
-  },
-  {
-    title: "Small Business Recovery Grants",
-    client: "Local economic development agency",
-    area: "Economic Development",
-    term: "Spring 2025",
-    summary:
-      "Evaluated uptake of a pandemic-era grant program and diagnosed why eligible minority-owned businesses applied at lower rates.",
-    deliverable: "Program evaluation and outreach redesign proposal",
-  },
-  {
-    title: "Rural Broadband Adoption",
-    client: "Digital equity initiative",
-    area: "Technology Policy",
-    term: "Spring 2025",
-    summary:
-      "Separated availability gaps from affordability gaps across rural census tracts and priced a device-plus-subsidy pilot.",
-    deliverable: "Adoption strategy memo and pilot design",
+    body: "A brief informal conversation where you can ask questions to learn more about the club. This is the time for us to get to learn about you too!",
   },
 ];
  
