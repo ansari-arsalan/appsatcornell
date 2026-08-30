@@ -474,6 +474,30 @@ const MEMBERS = [
     major: "Public Policy",
     photo: "assets/headshots/annelie-chang.jpeg",
   },
+   {
+    name: "Ella Kim",
+    role: "Project Manager",
+    graduationYear: 2029,
+    college: "College of Agriculture and Life Sciences",
+    major: "Environment & Sustainability, Minor in International Relations",
+    photo: "assets/headshots/ella-kim.jpeg",
+  },
+ {
+    name: "Gargi Singh",
+    role: "Project Manager",
+    graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
+    major: "Public Policy, Minors in Business and Law & Society",
+    photo: "assets/headshots/gargi-singh.jpeg",
+  },
+   {
+    name: "Sophia Kim",
+    role: "Project Manager",
+    graduationYear: 2029,
+    college: "College of Engineering",
+    major: "BME, Minor in Health Policy",
+    photo: "assets/headshots/sophia-kim.jpeg",
+  },
   {
     name: "Charlie Rogers",
     role: "Policy Analyst",
@@ -491,14 +515,6 @@ const MEMBERS = [
     photo: "assets/headshots/christopher-j-corona-plancarte.jpeg",
   },
   {
-    name: "Ella Kim",
-    role: "Project Manager",
-    graduationYear: 2029,
-    college: "College of Agriculture and Life Sciences",
-    major: "Environment & Sustainability, Minor in International Relations",
-    photo: "assets/headshots/ella-kim.jpeg",
-  },
-  {
     name: "Emma Yu",
     role: "Policy Analyst",
     graduationYear: 2029,
@@ -513,14 +529,6 @@ const MEMBERS = [
     college: "College of Arts and Sciences",
     major: "Government, Minor in PAM",
     photo: "assets/headshots/gabrielle-abraham.jpeg",
-  },
-  {
-    name: "Gargi Singh",
-    role: "Project Manager",
-    graduationYear: 2029,
-    college: "Jeb E. Brooks School of Public Policy",
-    major: "Public Policy, Minors in Business and Law & Society",
-    photo: "assets/headshots/gargi-singh.jpeg",
   },
   {
     name: "Jackie Cho",
@@ -587,14 +595,6 @@ const MEMBERS = [
     photo: "assets/headshots/shreyash-shrestha.jpeg",
   },
   {
-    name: "Sophia Kim",
-    role: "Project Manager",
-    graduationYear: 2029,
-    college: "College of Engineering",
-    major: "BME, Minor in Health Policy",
-    photo: "assets/headshots/sophia-kim.jpeg",
-  },
-  {
     name: "Tami Omole",
     role: "Policy Analyst",
     graduationYear: 2029,
@@ -628,13 +628,13 @@ const SERVICES = [
 
 const STAKEHOLDER_TYPES = [
   "Nonprofit, policy, social justice, and advocacy organizations",
+   "Government agencies",
   "Think tanks",
   "Private organizations and companies",
   "Publications",
 ];
 
 const POLICY_AREAS = [
-  "Local (Ithaca/Tompkins) Project",
   "Economic & Workforce Development Policy",
   "Technology Policy",
   "Health & Social Justice Policy",
