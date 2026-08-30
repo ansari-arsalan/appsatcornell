@@ -1,36 +1,37 @@
 /* =========================================================
    APPS Site Script
-   - Light theme lock (+ fallback light tokens for older CSS)
-   - Scroll-triggered animations
-   - Back to top button
-   - Active nav highlighting
-   - Team page roster rendering
-   - Quick links (coffee chat form, Linktree, Instagram)
-   - Interview tips (Rounds 1-3)
-   - Stakeholders, published work, and member spotlights
-     (rendered on stakeholders.html)
 
-   NOTE: the links / interview sections inject their own markup AND
-   their own styles, so no changes to index.html or styles.css are
-   required. If a section with a matching id already exists in the
-   HTML, the content is rendered inside it instead of being
-   appended.
+   Contents
+     1.  Theme (light)
+     2.  Page cleanup (stats band, running text line, hero photo)
+     3.  Core behaviour (reveal, back to top, header, nav)
+     4.  People data (exec + members)
+     5.  Services data
+     6.  Stakeholders, published work, testimonials
+     7.  Quick links
+     8.  Helpers
+     9.  Injected styles
+     10. Renderers
+     11. Boot
 
-   Auto-injection only happens on the site root (index.html). Any
-   other page can opt in with <body data-apps-sections="on"> or opt
-   out with "off".
+   All new sections inject their own markup AND their own styles.
+   No changes to index.html or styles.css are required. If a section
+   with a matching id already exists in the HTML, content renders
+   inside it instead of being appended.
 
-   REMOVED in this version: the animated stat counters, the
-   placeholder "Past projects" section, the recruitment timeline,
-   and the coffee chat walkthrough. The coffee chat now lives as a
-   link in QUICK_LINKS; real client work lives on stakeholders.html.
+   Sections auto-append on the site root (index.html) only. Any other
+   page can opt in with <body data-apps-sections="on"> or out with
+   "off".
+
+   stakeholders.html has been retired. Delete that file; its content
+   now lives in the "Our Work" section on the main page, and any nav
+   link pointing at it is removed automatically.
    ========================================================= */
 
 /* ---------------------------------------------------------
    1. THEME
    --------------------------------------------------------- */
 
-// ---- Light Theme ----
 (function initTheme() {
   const root = document.documentElement;
   root.setAttribute("data-theme", "light");
@@ -38,14 +39,12 @@
   try {
     localStorage.setItem("apps_theme", "light");
   } catch (err) {
-    /* storage unavailable - theme attribute is enough */
+    /* storage unavailable - the attribute is enough */
   }
 })();
 
-/* Fallback light values for the most common token names.
-   This block is PREPENDED to <head>, so if styles.css already
-   defines its own :root[data-theme="light"] palette, that one
-   wins. It only fills gaps for sites whose CSS was dark-only. */
+/* Fallback light values for common token names. PREPENDED to <head>,
+   so a light palette already defined in styles.css wins. */
 const LIGHT_TOKEN_FALLBACK = `
 :root[data-theme="light"] {
   color-scheme: light;
@@ -81,16 +80,132 @@ function injectLightTokens() {
 }
 
 /* ---------------------------------------------------------
-   2. EXISTING BEHAVIOUR
+   2. PAGE CLEANUP
    --------------------------------------------------------- */
 
-// ---- Scroll-triggered reveal animations ----
+const CLEANUP = {
+  // Remove the entire stats section (the animated counters).
+  removeStatsSection: true,
+  // Remove the scrolling line of text running across the site.
+  removeRunningText: true,
+  // Replace the front page photo. Set to "" to leave it alone.
+  heroPhoto: "assets/apps-group-photo.jpg",
+  // Set true to also stop the front page photo from animating.
+  stopHeroMotion: false,
+  // Remove nav links pointing at the retired stakeholders page.
+  removeStakeholdersLink: true,
+};
+
+/* Removes the whole stats band, not just the numbers. Walks up from
+   any [data-target] counter to its enclosing <section> (or a wrapper
+   whose class mentions "stat") and removes that. */
+function removeStatsSection() {
+  if (!CLEANUP.removeStatsSection) return;
+  const counters = document.querySelectorAll("[data-target]");
+  if (!counters.length) return;
+
+  const doomed = new Set();
+  counters.forEach((el) => {
+    const section =
+      el.closest("section") ||
+      el.closest('[class*="stat"]') ||
+      el.parentElement;
+    if (section && section !== document.body) doomed.add(section);
+  });
+  doomed.forEach((el) => el.remove());
+}
+
+/* Removes a marquee / ticker: the line of words scrolling across the
+   page. Covers the <marquee> tag and the usual class names. If yours
+   survives, add its class to EXTRA below. */
+const RUNNING_TEXT_SELECTORS = [
+  "marquee",
+  ".marquee",
+  ".ticker",
+  ".scroller",
+  ".scrolling-text",
+  ".scroll-text",
+  ".text-scroll",
+  ".running-text",
+  ".news-ticker",
+  ".banner-scroll",
+  '[class*="marquee"]',
+  '[class*="ticker"]',
+  // EXTRA: add your own selector here, e.g. ".announcement-bar"
+];
+
+function removeRunningText() {
+  if (!CLEANUP.removeRunningText) return;
+  document.querySelectorAll(RUNNING_TEXT_SELECTORS.join(", ")).forEach((el) => {
+    const section = el.closest("section");
+    // Remove the wrapper section only if the ticker is basically all it holds.
+    if (section && section.textContent.trim() === el.textContent.trim()) {
+      section.remove();
+    } else {
+      el.remove();
+    }
+  });
+}
+
+/* Swaps the front page photo. Takes the first image found in the hero
+   area. If your hero image sits somewhere unusual, add a selector. */
+const HERO_PHOTO_SELECTORS = [
+  ".hero img",
+  "#hero img",
+  ".hero-image img",
+  ".hero-photo img",
+  "header.hero img",
+  "main > section:first-of-type img",
+];
+
+function swapHeroPhoto() {
+  if (!CLEANUP.heroPhoto) return;
+  let img = null;
+  for (const selector of HERO_PHOTO_SELECTORS) {
+    img = document.querySelector(selector);
+    if (img) break;
+  }
+  if (!img) return;
+
+  img.src = CLEANUP.heroPhoto;
+  img.srcset = "";
+  img.alt = "Applied Public Policy Strategies members";
+
+  if (CLEANUP.stopHeroMotion) {
+    // The motion itself is defined in styles.css. This overrides it.
+    img.style.animation = "none";
+    img.style.transform = "none";
+    img.style.transition = "none";
+    const wrap = img.parentElement;
+    if (wrap) {
+      wrap.style.animation = "none";
+      wrap.style.transform = "none";
+    }
+    [img, wrap].forEach((el) => {
+      if (!el) return;
+      ["reveal", "reveal-left", "reveal-right", "reveal-scale"].forEach((c) =>
+        el.classList.remove(c)
+      );
+    });
+  }
+}
+
+function removeStakeholdersLink() {
+  if (!CLEANUP.removeStakeholdersLink) return;
+  document
+    .querySelectorAll('a[href*="stakeholders.html"]')
+    .forEach((a) => a.remove());
+}
+
+/* ---------------------------------------------------------
+   3. CORE BEHAVIOUR
+   --------------------------------------------------------- */
+
 function initScrollReveal() {
   const revealSelectors =
     ".reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children";
   const elements = document.querySelectorAll(revealSelectors);
   if (!elements.length) return;
-  // Respect prefers-reduced-motion
   const reduced =
     typeof window.matchMedia === "function" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -112,53 +227,11 @@ function initScrollReveal() {
   elements.forEach((el) => observer.observe(el));
 }
 
-/* ---- Stats removed ----
-   The animated counters are gone. This pass clears any leftover
-   [data-target] stat markup still sitting in index.html so the page
-   does not show frozen numbers. It removes the nearest ancestor
-   whose class mentions "stat", then drops the wrapper if it is left
-   empty. Set REMOVE_LEGACY_STATS to false if you would rather
-   delete the markup from index.html by hand. */
-const REMOVE_LEGACY_STATS = true;
-
-function removeLegacyStats() {
-  if (!REMOVE_LEGACY_STATS) return;
-  const counters = document.querySelectorAll("[data-target]");
-  if (!counters.length) return;
-
-  const parents = new Set();
-  counters.forEach((el) => {
-    const item = el.closest('[class*="stat"]') || el;
-    if (item.parentElement) parents.add(item.parentElement);
-    item.remove();
-  });
-
-  parents.forEach((parent) => {
-    if (parent.children.length) return;
-    const wrapper = parent.closest('[class*="stat"]') || parent;
-    const host = wrapper.parentElement;
-    wrapper.remove();
-    // If the whole stats band is now just a heading, drop it too.
-    if (
-      host &&
-      /stat/i.test(host.className + " " + host.id) &&
-      host.textContent.trim().length < 40
-    ) {
-      host.remove();
-    }
-  });
-}
-
-// ---- Back to top button ----
 function initBackToTop() {
   const btn = document.getElementById("backToTop");
   if (!btn) return;
   function toggle() {
-    if (window.scrollY > 400) {
-      btn.classList.add("visible");
-    } else {
-      btn.classList.remove("visible");
-    }
+    btn.classList.toggle("visible", window.scrollY > 400);
   }
   window.addEventListener("scroll", toggle, { passive: true });
   toggle();
@@ -167,7 +240,6 @@ function initBackToTop() {
   });
 }
 
-// ---- Header scroll shadow ----
 function initHeaderScroll() {
   const header = document.getElementById("siteHeader");
   if (!header) return;
@@ -178,7 +250,6 @@ function initHeaderScroll() {
   toggle();
 }
 
-// ---- Active nav link highlighting on scroll ----
 function initActiveNav() {
   const sections = document.querySelectorAll("section[id]");
   const navLinks = document.querySelectorAll(".nav a[href^='#']");
@@ -187,28 +258,59 @@ function initActiveNav() {
     const scrollY = window.scrollY + 120;
     let currentId = "";
     sections.forEach((section) => {
-      if (section.offsetTop <= scrollY) {
-        currentId = section.id;
-      }
+      if (section.offsetTop <= scrollY) currentId = section.id;
     });
     navLinks.forEach((link) => {
-      const href = link.getAttribute("href");
-      if (href === "#" + currentId) {
-        link.classList.add("active");
-      } else {
-        link.classList.remove("active");
-      }
+      link.classList.toggle(
+        "active",
+        link.getAttribute("href") === "#" + currentId
+      );
     });
   }
   window.addEventListener("scroll", update, { passive: true });
   update();
 }
 
+const MOBILE_NAV_BREAKPOINT = 900;
+
+function initMobileNav() {
+  const button = document.getElementById("navToggle");
+  const nav = document.getElementById("siteNav");
+  if (!button || !nav) return;
+  function setOpen(open) {
+    nav.classList.toggle("is-open", open);
+    button.setAttribute("aria-expanded", String(open));
+    button.setAttribute(
+      "aria-label",
+      open ? "Close navigation menu" : "Open navigation menu"
+    );
+  }
+  setOpen(false);
+  button.addEventListener("click", () => {
+    setOpen(button.getAttribute("aria-expanded") !== "true");
+  });
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+  document.addEventListener("click", (event) => {
+    if (!nav.contains(event.target) && !button.contains(event.target)) {
+      setOpen(false);
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > MOBILE_NAV_BREAKPOINT) setOpen(false);
+  });
+}
+
 /* ---------------------------------------------------------
-   3. PEOPLE DATA
+   4. PEOPLE DATA
    --------------------------------------------------------- */
 
-// ---- Executive Board Data ----
+const HEADSHOT_VERSION = "20260405-2";
+
 const EXEC = [
   {
     name: "Andy Duryea",
@@ -216,7 +318,6 @@ const EXEC = [
     year: "Junior",
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    bio: "Hobbies: fishing, skiing, listening to music, reading, exploring new places.",
     photo: "assets/headshots/DSC07293.JPG",
   },
   {
@@ -225,7 +326,6 @@ const EXEC = [
     year: "Junior",
     college: "School of Industrial and Labor Relations",
     major: "ILR",
-    bio: "Hobbies: learning how to play pool, paint, pottery, movies.",
     photo: "assets/headshots/mandy-wang.jpeg",
   },
   {
@@ -234,7 +334,6 @@ const EXEC = [
     year: "Junior",
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    bio: "Hobbies: poker, guitar, chess, reading, and recently skiing.",
     photo: "assets/headshots/eneanya-obioha.jpeg",
   },
   {
@@ -243,16 +342,14 @@ const EXEC = [
     year: "Junior",
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    bio: "Hobbies: skiing, singing/opera, hot yoga, art/painting.",
     photo: "assets/headshots/flora-kim.jpeg",
   },
   {
     name: "Samuel Lau",
     role: "Director of Finance",
     year: "Sophomore",
-    college: "College of Arts and Science",
+    college: "College of Arts and Sciences",
     major: "Economics & Sociology",
-    bio: "Hobbies: iced coffee, Clairo, wandering around campus.",
     photo: "assets/headshots/samuel-lau.jpeg",
   },
   {
@@ -261,7 +358,6 @@ const EXEC = [
     year: "Junior",
     college: "College of Arts and Sciences",
     major: "Government",
-    bio: "Hobbies: concerts, baking, thrifting, playing piano.",
     photo: "assets/headshots/john-purcell.jpeg",
   },
   {
@@ -270,7 +366,6 @@ const EXEC = [
     year: "Sophomore",
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    bio: "Hobbies: gym, legos, grocery store runs, debrief.",
     photo: "assets/headshots/elizabeth-chow.jpeg",
   },
   {
@@ -279,7 +374,6 @@ const EXEC = [
     year: "Sophomore",
     college: "College of Arts and Sciences",
     major: "Government",
-    bio: "Hobbies: learning how to play pool, paint, pottery, movies.",
     photo: "assets/headshots/chi-ray-hsu.jpeg",
   },
   {
@@ -288,7 +382,6 @@ const EXEC = [
     year: "Sophomore",
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    bio: "Hobbies: listening to music, going on long walks, thrifting, eating hot pot.",
     photo: "assets/headshots/jackson-de-guzman.jpeg",
   },
 ];
@@ -300,8 +393,6 @@ const MEMBERS = [
     graduationYear: 2028,
     college: "College of Arts and Sciences",
     major: "Government",
-    pronouns: "she/her",
-    linkedin: "https://www.linkedin.com/in/emily-cho-17eyc1779",
     photo: "assets/headshots/emily-cho.jpeg",
   },
   {
@@ -310,8 +401,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    pronouns: "she/her",
-    linkedin: "linkedin.com/in/annelie-chang-511b78371",
     photo: "assets/headshots/annelie-chang.jpeg",
   },
   {
@@ -320,8 +409,6 @@ const MEMBERS = [
     graduationYear: 2028,
     college: "College of Arts and Sciences",
     major: "Environment & Sustainability / Public Policy and Urban & Regional Studies",
-    pronouns: "he/him",
-    linkedin: "LinkedIn.com/in/crogers116",
     photo: "assets/headshots/charlie-rogers.jpeg",
   },
   {
@@ -330,7 +417,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    pronouns: "he/him",
     photo: "assets/headshots/christopher-j-corona-plancarte.jpeg",
   },
   {
@@ -339,8 +425,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Agriculture and Life Sciences",
     major: "Environment & Sustainability, Minor in International Relations",
-    pronouns: "she/her",
-    linkedin: "linkedin.com/in/ellakim7",
     photo: "assets/headshots/ella-kim.jpeg",
   },
   {
@@ -349,8 +433,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    pronouns: "she/her",
-    linkedin: "https://www.linkedin.com/in/emma-yu-020598335/",
     photo: "assets/headshots/emma-yu.jpeg",
   },
   {
@@ -359,8 +441,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Arts and Sciences",
     major: "Government, Minor in PAM",
-    pronouns: "she/her",
-    linkedin: "https://www.linkedin.com/in/gabrielle-abraham376",
     photo: "assets/headshots/gabrielle-abraham.jpeg",
   },
   {
@@ -377,8 +457,6 @@ const MEMBERS = [
     graduationYear: 2027,
     college: "School of Industrial and Labor Relations",
     major: "ILR / Art History",
-    pronouns: "she/her",
-    linkedin: "http://linkedin.com/in/jackie-cho57",
     photo: "assets/headshots/jackie-cho.jpeg",
   },
   {
@@ -387,7 +465,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Arts and Sciences",
     major: "Computer Science & Government",
-    linkedin: "https://www.linkedin.com/in/julia-rachel-ostroff/",
     photo: "assets/headshots/julia-ostroff.jpeg",
   },
   {
@@ -396,7 +473,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    linkedin: "https://www.linkedin.com/in/judy-li-8b5912345",
     photo: "assets/headshots/judy-li.jpeg",
   },
   {
@@ -405,8 +481,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
-    pronouns: "she/her",
-    linkedin: "LinkedIn.com/in/madeline-shukovsky",
     photo: "assets/headshots/madeline-shukovsky.jpeg",
   },
   {
@@ -415,8 +489,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy / Portuguese + Law and Society",
-    pronouns: "she/her",
-    linkedin: "https://www.linkedin.com/in/marianna-wineinger-92029b383",
     photo: "assets/headshots/marianna-wineinger.jpeg",
   },
   {
@@ -425,7 +497,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Arts and Sciences",
     major: "Economics & Public Policy",
-    pronouns: "she/her",
     photo: "assets/headshots/marianne-custodio.jpeg",
   },
   {
@@ -434,7 +505,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Agriculture and Life Sciences",
     major: "Biometry & Statistics",
-    pronouns: "he/him",
     photo: "assets/headshots/muntasir-ansary.jpeg",
   },
   {
@@ -443,8 +513,6 @@ const MEMBERS = [
     graduationYear: 2028,
     college: "School of Industrial and Labor Relations",
     major: "Industrial and Labor Relations",
-    pronouns: "he/him",
-    linkedin: "https://www.linkedin.com/in/shreyashshrestha/",
     photo: "assets/headshots/shreyash-shrestha.jpeg",
   },
   {
@@ -453,8 +521,6 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Engineering",
     major: "BME, Minor in Health Policy",
-    pronouns: "she/her",
-    linkedin: "https://www.linkedin.com/in/sophiayjkim/",
     photo: "assets/headshots/sophia-kim.jpeg",
   },
   {
@@ -463,104 +529,54 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Engineering",
     major: "Public Policy / Aerospace Engineering",
-    pronouns: "she/they",
-    linkedin: "http://linkedin.com/in/tami-omole-558a00282",
     photo: "assets/headshots/tami-omole.jpeg",
   },
 ];
 
-const MOBILE_NAV_BREAKPOINT = 900;
-const HEADSHOT_VERSION = "20260405-2";
-
 /* ---------------------------------------------------------
-   4. QUICK LINKS
-   Edit these to change what shows in the Links section.
+   5. SERVICES
    --------------------------------------------------------- */
 
-const QUICK_LINKS = [
+const SERVICES_INTRO =
+  "APPS is a government consulting club that partners with stakeholders to push policy, develop media and press outreach, and conduct research.";
+
+const SERVICES = [
   {
-    label: "Coffee Chat Sign-Up",
-    description:
-      "Request a 30-minute chat with a current member. No experience or policy background needed.",
-    url: "https://forms.gle/g5RmVdpGE8hxAd428",
-    cta: "Open the form",
-    primary: true,
+    title: "Policy",
+    body: "We work directly with stakeholders to advance their policy objectives, including stakeholder mapping, legislative analysis, and actionable recommendations.",
   },
   {
-    label: "APPS Linktree",
-    description:
-      "Every current link in one place: application, info sessions, socials, and event sign-ups.",
-    url: "https://linktr.ee/appsatcornell",
-    cta: "See all links",
+    title: "Media and Press Outreach",
+    body: "Op-eds through ghost writing, co-authoring, and authoring. Talking points, press kits, and messaging frameworks. Narrative framing, message testing, and civic education initiatives.",
   },
   {
-    label: "@appsatcornell",
-    description:
-      "Recruitment announcements, project spotlights, and event reminders.",
-    url: "https://www.instagram.com/appsatcornell/",
-    cta: "Follow on Instagram",
+    title: "Research",
+    body: "Data analysis and policy research, delivered as briefs, reports, and supporting materials that stakeholders use in their published work.",
   },
 ];
 
-/* ---------------------------------------------------------
-   6. INTERVIEW DATA
-   --------------------------------------------------------- */
+const STAKEHOLDER_TYPES = [
+  "Nonprofit, policy, social justice, and advocacy organizations",
+  "Think tanks",
+  "Private organizations and companies",
+  "Publications",
+];
 
-const INTERVIEW_ROUNDS = [
-  {
-    round: "Round 1",
-    name: "Resume Review",
-    when: "September 18",
-    summary:
-      "We read your application and resume together. This round is about clarity and fit, not prestige.",
-    tips: [
-      "Keep it to one page and lead with what you did, not what the organization was.",
-      "Quantify where you honestly can. Numbers make a bullet legible in ten seconds.",
-      "Show the through-line. If your resume looks scattered, use the application to explain the thread.",
-      "Bring it to the September 11 resume review session and have a member mark it up before you submit.",
-      "Proofread twice. Then have someone else proofread it.",
-    ],
-  },
-  {
-    round: "Round 2",
-    name: "Behavioral Interview",
-    when: "September 19",
-    summary:
-      "A conversation with two members about your interests, how you work on a team, and why APPS specifically.",
-    tips: [
-      "Have a real answer to 'why APPS' that is not 'consulting experience.' Name a policy area or a project that drew you in.",
-      "Prepare two or three stories you can adapt: a team conflict, something you led, something that did not work.",
-      "Use structure. Situation, what you did, what happened. Keep answers to about two minutes.",
-      "Be specific about your own contribution. 'We' hides you.",
-      "Ask us something at the end. It is the easiest signal that you are actually interested.",
-      "Nerves are normal and are not scored. Take the pause you need.",
-    ],
-  },
-  {
-    round: "Round 3",
-    name: "Casing Interview",
-    when: "September 20",
-    summary:
-      "A short policy case worked through out loud with two members. We are watching how you think, not whether you land the right answer.",
-    tips: [
-      "Go to the September 14 casing workshop. Everything tested here is taught there.",
-      "Restate the prompt and confirm the goal before you start solving. It costs fifteen seconds and prevents most wrong turns.",
-      "Lay out your structure before diving in. Three clear buckets beat ten scattered ideas.",
-      "Think out loud. Silence is the only way to lose points for reasoning we cannot see.",
-      "Name your assumptions and say when you are unsure. That reads as rigor, not weakness.",
-      "Consider who is affected and who pays. Stakeholders and tradeoffs are what make it a policy case.",
-      "Land the plane. Give a recommendation and one sentence on why, even if you ran short on time.",
-    ],
-  },
+const POLICY_AREAS = [
+  "Local (Ithaca/Tompkins) Project",
+  "Economic & Workforce Development Policy",
+  "Technology Policy",
+  "Health & Social Justice Policy",
+  "Education Policy",
+  "Environmental Policy",
+  "Housing & Infrastructure Policy",
 ];
 
 /* ---------------------------------------------------------
-   7. STAKEHOLDERS / PARTNERS
-   Rendered on stakeholders.html.
+   6. STAKEHOLDERS, PUBLISHED WORK, TESTIMONIALS
 
-   Logos: drop image files at the paths below (assets/logos/).
-   If a file is missing or fails to load, the card falls back to a
-   typeset wordmark, so the page never shows a broken image.
+   Logos: place files at assets/logos/. A missing file falls back to
+   a typeset wordmark, so nothing breaks.
    --------------------------------------------------------- */
 
 const STAKEHOLDERS = [
@@ -568,49 +584,40 @@ const STAKEHOLDERS = [
     name: "LGBT Tech",
     legalName: "LGBT Technology Institute",
     url: "https://www.lgbttech.org/",
-    focus: "Technology policy & digital equity",
-    about:
-      "LGBT Tech bridges the technology gap for LGBTQ+ individuals through partnerships with tech companies, non-profit groups, policy makers, scholars, and innovators. Its policy work spans data privacy, online safety, algorithmic bias, and digital inclusion.",
+    area: "Technology Policy",
     engagement:
-      "APPS provided research support for LGBT Tech's broader work on artificial intelligence and civil rights. Our analysis helped shape the development of the principles published in their 2026 Roadmap.",
+      "Research support for LGBT Tech's work on artificial intelligence and civil rights. Our analysis contributed to the principles published in their 2026 Roadmap.",
     logo: "assets/logos/lgbt-tech.png",
   },
   {
     name: "Center for the Study of Social Policy",
     legalName: "CSSP",
     url: "https://cssp.org/",
-    focus: "Family autonomy, economic & health justice",
-    about:
-      "CSSP is a national policy organization advancing just policies in family autonomy, economic justice, and health justice.",
+    area: "Health & Social Justice Policy",
     engagement:
-      "APPS supported a rapid response study on how immigration enforcement is affecting families' health and access to care in California, and analyzed key care policy features for CSSP to consider in a national care agenda. The partnership is continuing into new initiatives.",
+      "A rapid response study on family health and access to care in California, and analysis of care policy features for a national care agenda. The partnership is ongoing.",
     logo: "assets/logos/cssp.png",
   },
   {
     name: "Institute for Policy Studies",
     legalName: "Charity Reform Initiative",
     url: "https://ips-dc.org/project/charity-reform-initiative/",
-    focus: "Philanthropy & wealth inequality",
-    about:
-      "The Charity Reform Initiative at IPS is the only research program of its kind examining the relationship between philanthropy and wealth inequality.",
+    area: "Economic Policy",
     engagement:
-      "Over one semester, APPS compiled detailed research profiles on 15+ billionaires. IPS is using our data to inform their future reports.",
+      "Research profiles on 15+ billionaires compiled over one semester. IPS is using the data in future reports.",
     logo: "assets/logos/ips.png",
   },
   {
     name: "Engine",
     legalName: "Engine Advocacy & Foundation",
     url: "https://www.engine.is/",
-    focus: "Startup & technology policy",
-    about:
-      "Engine is a non-profit that gives startups a voice in technology policy, connecting founders with policymakers in Washington and in the states.",
+    area: "Technology Policy",
     engagement:
-      "APPS supported Engine's policy research on the regulatory environment facing early-stage technology companies.",
+      "Policy research on the regulatory environment facing early-stage technology companies.",
     logo: "assets/logos/engine.png",
   },
 ];
 
-/* ---- Published work ---- */
 const PUBLICATIONS = [
   {
     title: "Roadmap: Civil Rights Governance for Artificial Intelligence",
@@ -624,13 +631,7 @@ const PUBLICATIONS = [
   },
 ];
 
-const PUBLICATION_INDEX = {
-  label: "All LGBT Tech research & reports",
-  url: "https://www.lgbttech.org/research-and-reports",
-};
-
-/* ---- Member spotlights (from @appsatcornell) ---- */
-const SPOTLIGHTS = [
+const TESTIMONIALS = [
   {
     quote:
       "Our team worked with the Institute of Policy Studies under their Charity Reform team—the only one of its kind that researches the relationship between philanthropy and wealth inequality. We were able to provide detailed information on 15+ billionaires this semester—a testament to everyone's hard work and dedication! Moving forward, IPS will be using our data to inform their future reports.",
@@ -646,6 +647,35 @@ const SPOTLIGHTS = [
     role: "Project Manager",
     partner: "Center for the Study of Social Policy",
     photo: "assets/headshots/flora-kim.jpeg",
+  },
+];
+
+/* ---------------------------------------------------------
+   7. QUICK LINKS
+   --------------------------------------------------------- */
+
+const QUICK_LINKS = [
+  {
+    label: "Coffee Chat Sign-Up",
+    description:
+      "Request a conversation with a current member. No prior policy experience is required.",
+    url: "https://forms.gle/g5RmVdpGE8hxAd428",
+    cta: "Open the form",
+    primary: true,
+  },
+  {
+    label: "APPS Linktree",
+    description:
+      "Application, info sessions, event sign-ups, and the resource guide.",
+    url: "https://linktr.ee/appsatcornell",
+    cta: "See all links",
+  },
+  {
+    label: "@appsatcornell",
+    description:
+      "Recruitment announcements, project updates, and event reminders.",
+    url: "https://www.instagram.com/appsatcornell/",
+    cta: "Follow on Instagram",
   },
 ];
 
@@ -668,26 +698,16 @@ function getAcademicYearEnd(now = new Date()) {
 
 function getYearInCollege(graduationYear, now = new Date()) {
   const diff = Number(graduationYear) - getAcademicYearEnd(now);
-  const years = {
-    3: "Freshman",
-    2: "Sophomore",
-    1: "Junior",
-    0: "Senior",
-  };
-  return years[diff] || `Class of ${graduationYear}`;
+  return (
+    { 3: "Freshman", 2: "Sophomore", 1: "Junior", 0: "Senior" }[diff] ||
+    `Class of ${graduationYear}`
+  );
 }
 
 function getDisplayYear(member, now = new Date()) {
   if (member.year) return member.year;
   if (member.graduationYear) return getYearInCollege(member.graduationYear, now);
   return "";
-}
-
-function normalizeUrl(url) {
-  if (!url) return "";
-  const trimmed = url.trim();
-  if (!trimmed) return "";
-  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 }
 
 function escapeHtml(value) {
@@ -698,35 +718,8 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
-function parseLocalDate(iso) {
-  const parts = String(iso).split("-").map(Number);
-  return new Date(parts[0], parts[1] - 1, parts[2]);
-}
-
-function startOfToday() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-}
-
-function formatEventDate(iso) {
-  const date = parseLocalDate(iso);
-  return date.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function getTimelineStatus(iso) {
-  const date = parseLocalDate(iso).getTime();
-  const today = startOfToday().getTime();
-  if (date < today) return "past";
-  if (date === today) return "today";
-  return "upcoming";
-}
-
 /* ---------------------------------------------------------
-   9. INJECTED SECTION STYLES
+   9. INJECTED STYLES
    --------------------------------------------------------- */
 
 const APPS_SECTION_STYLES = `
@@ -766,50 +759,8 @@ const APPS_SECTION_STYLES = `
   font-size: 1.02rem;
   line-height: 1.65;
   color: var(--apps-muted);
-  max-width: 62ch;
+  max-width: 66ch;
   margin: 0 0 2.25rem;
-}
-.apps-note {
-  font-size: 0.82rem;
-  color: var(--apps-muted);
-  border-left: 3px solid var(--apps-accent);
-  padding: 0.35rem 0 0.35rem 0.8rem;
-  margin: 0 0 1.75rem;
-  background: var(--apps-accent-soft);
-  border-radius: 0 6px 6px 0;
-}
-
-/* --- Card grids --- */
-.apps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-  align-items: stretch;
-}
-.apps-grid--wide {
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-}
-@media (max-width: 520px) {
-  .apps-grid--wide { grid-template-columns: 1fr; }
-}
-.apps-card {
-  background: var(--apps-surface);
-  border: 1px solid var(--apps-line);
-  border-radius: 14px;
-  padding: 1.25rem;
-  box-shadow: var(--apps-shadow);
-}
-.apps-card__title {
-  margin: 0 0 0.45rem;
-  font-size: 1rem;
-  font-weight: 650;
-  color: var(--apps-ink);
-}
-.apps-card__body {
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--apps-muted);
 }
 .apps-subhead {
   font-size: 1.1rem;
@@ -817,78 +768,46 @@ const APPS_SECTION_STYLES = `
   margin: 2.75rem 0 1rem;
   color: var(--apps-ink);
 }
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+.apps-card {
+  background: var(--apps-surface);
+  border: 1px solid var(--apps-line);
+  border-radius: 14px;
+  padding: 1.4rem;
+  box-shadow: var(--apps-shadow);
+}
+.apps-card__title { margin: 0 0 0.5rem; font-size: 1.02rem; font-weight: 650; }
+.apps-card__body { margin: 0; font-size: 0.93rem; line-height: 1.65; color: var(--apps-muted); }
 
-/* --- Tip lists --- */
-.apps-tips { list-style: none; margin: 0; padding: 0; }
-.apps-tips li {
+/* Plain lists */
+.apps-list { list-style: none; margin: 0; padding: 0; }
+.apps-list li {
   position: relative;
-  padding-left: 1.6rem;
-  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
   font-size: 0.93rem;
   line-height: 1.6;
   color: var(--apps-muted);
 }
-.apps-tips li::before {
+.apps-list li::before {
   content: "";
   position: absolute;
   left: 0;
   top: 0.55rem;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--apps-accent);
 }
-.apps-tips--two { columns: 2; column-gap: 2.5rem; }
-.apps-tips--two li { break-inside: avoid; }
-@media (max-width: 720px) {
-  .apps-tips--two { columns: 1; }
-}
+.apps-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem 2.5rem; }
 
-/* --- Interview rounds --- */
-.apps-round {
-  border: 1px solid var(--apps-line);
-  border-radius: 14px;
-  background: var(--apps-surface);
-  box-shadow: var(--apps-shadow);
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-.apps-round__head {
-  padding: 1.15rem 1.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 0.9rem;
-  border-bottom: 1px solid var(--apps-line);
-  background: var(--apps-tint);
-}
-.apps-round__badge {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--apps-accent);
-  background: var(--apps-accent-soft);
-  border-radius: 999px;
-  padding: 0.22rem 0.6rem;
-}
-.apps-round__name { margin: 0; font-size: 1.05rem; font-weight: 650; }
-.apps-round__when { margin-left: auto; font-size: 0.82rem; color: var(--apps-muted); font-weight: 600; }
-.apps-round__body { padding: 1.15rem 1.25rem 1.35rem; }
-.apps-round__summary {
-  margin: 0 0 1rem;
-  font-size: 0.93rem;
-  line-height: 1.65;
-  color: var(--apps-muted);
-  max-width: 72ch;
-}
-
-/* --- Quick links --- */
-.apps-links {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
+/* Quick links */
+.apps-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
 .apps-link {
   display: flex;
   flex-direction: column;
@@ -907,129 +826,65 @@ const APPS_SECTION_STYLES = `
   border-color: #cbd5e1;
   box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 36px rgba(16, 24, 40, 0.09);
 }
-.apps-link--primary {
-  border-color: var(--apps-accent);
-  background: var(--apps-accent-soft);
-}
-.apps-link--primary:hover { border-color: var(--apps-accent); }
-.apps-link__label {
-  margin: 0;
-  font-size: 1.08rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--apps-ink);
-}
-.apps-link__desc {
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--apps-muted);
-}
-.apps-link__cta {
-  margin-top: auto;
-  padding-top: 0.85rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--apps-accent);
-}
+.apps-link--primary { border-color: var(--apps-accent); background: var(--apps-accent-soft); }
+.apps-link__label { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--apps-ink); }
+.apps-link__desc { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--apps-muted); }
+.apps-link__cta { margin-top: auto; padding-top: 0.85rem; font-size: 0.85rem; font-weight: 700; color: var(--apps-accent); }
 
-/* --- Logo wall --- */
+/* Logo wall */
 .apps-logos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 1rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.25rem;
 }
 .apps-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 118px;
+  min-height: 112px;
   padding: 1.25rem;
   background: var(--apps-surface);
   border: 1px solid var(--apps-line);
   border-radius: 14px;
   text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition: transform 0.18s ease, border-color 0.18s ease;
 }
-.apps-logo:hover {
-  transform: translateY(-2px);
-  border-color: #cbd5e1;
-  box-shadow: var(--apps-shadow);
-}
-.apps-logo img {
-  max-width: 100%;
-  max-height: 68px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-.apps-logo__wordmark {
-  text-align: center;
-  font-weight: 700;
-  font-size: 0.95rem;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  color: var(--apps-ink);
-}
+.apps-logo:hover { transform: translateY(-2px); border-color: #cbd5e1; }
+.apps-logo img { max-width: 100%; max-height: 64px; width: auto; height: auto; object-fit: contain; }
+.apps-logo__wordmark { text-align: center; font-weight: 700; font-size: 0.92rem; line-height: 1.3; color: var(--apps-ink); }
 .apps-logo__wordmark span {
   display: block;
   margin-top: 0.3rem;
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--apps-accent);
 }
 
-/* --- Partner detail cards --- */
-.apps-partner {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  background: var(--apps-surface);
-  border: 1px solid var(--apps-line);
-  border-radius: 14px;
-  padding: 1.4rem;
-  box-shadow: var(--apps-shadow);
+/* Engagement rows */
+.apps-engagement {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+  gap: 1rem 1.75rem;
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--apps-line);
 }
-.apps-partner__focus {
+.apps-engagement:last-of-type { border-bottom: 1px solid var(--apps-line); }
+@media (max-width: 700px) { .apps-engagement { grid-template-columns: 1fr; gap: 0.35rem; } }
+.apps-engagement__org { margin: 0; font-size: 0.98rem; font-weight: 650; }
+.apps-engagement__area {
+  margin: 0.2rem 0 0;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--apps-accent);
 }
-.apps-partner__name { margin: 0; font-size: 1.08rem; font-weight: 650; line-height: 1.3; }
-.apps-partner__legal { margin: 0; font-size: 0.8rem; color: var(--apps-muted); font-weight: 600; }
-.apps-partner__about { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--apps-muted); }
-.apps-partner__work {
-  margin: 0.35rem 0 0;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--apps-line);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--apps-ink);
-}
-.apps-partner__work b {
-  display: block;
-  font-size: 0.68rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--apps-muted);
-  margin-bottom: 0.3rem;
-}
-.apps-partner__link {
-  margin-top: auto;
-  padding-top: 0.9rem;
-  font-size: 0.85rem;
-  font-weight: 650;
-  color: var(--apps-accent);
-  text-decoration: none;
-}
-.apps-partner__link:hover { text-decoration: underline; }
+.apps-engagement__body { margin: 0; font-size: 0.93rem; line-height: 1.65; color: var(--apps-muted); }
 
-/* --- Publications --- */
+/* Publications */
 .apps-pub {
   display: block;
   background: var(--apps-surface);
@@ -1041,12 +896,8 @@ const APPS_SECTION_STYLES = `
   text-decoration: none;
   color: inherit;
   box-shadow: var(--apps-shadow);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.apps-pub:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 36px rgba(16, 24, 40, 0.09);
-}
+.apps-pub:hover { box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 36px rgba(16, 24, 40, 0.09); }
 .apps-pub__meta {
   font-size: 0.68rem;
   font-weight: 700;
@@ -1055,7 +906,7 @@ const APPS_SECTION_STYLES = `
   color: var(--apps-accent);
   margin-bottom: 0.4rem;
 }
-.apps-pub__title { margin: 0 0 0.25rem; font-size: 1.05rem; font-weight: 650; line-height: 1.35; }
+.apps-pub__title { margin: 0 0 0.25rem; font-size: 1.02rem; font-weight: 650; line-height: 1.35; }
 .apps-pub__sub { margin: 0 0 0.7rem; font-size: 0.9rem; color: var(--apps-muted); }
 .apps-pub__credit {
   margin: 0;
@@ -1065,26 +916,12 @@ const APPS_SECTION_STYLES = `
   border-left: 2px solid var(--apps-line);
   padding-left: 0.8rem;
 }
-.apps-pub__cta {
-  display: inline-block;
-  margin-top: 0.8rem;
-  font-size: 0.83rem;
-  font-weight: 700;
-  color: var(--apps-accent);
-}
-.apps-pub-index {
-  display: inline-block;
-  font-size: 0.88rem;
-  font-weight: 650;
-  color: var(--apps-accent);
-  text-decoration: none;
-}
-.apps-pub-index:hover { text-decoration: underline; }
+.apps-pub__cta { display: inline-block; margin-top: 0.8rem; font-size: 0.83rem; font-weight: 700; color: var(--apps-accent); }
 
-/* --- Spotlights --- */
-.apps-spotlight {
+/* Testimonials */
+.apps-quote {
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-columns: 88px minmax(0, 1fr);
   gap: 1.4rem;
   align-items: start;
   background: var(--apps-surface);
@@ -1094,12 +931,10 @@ const APPS_SECTION_STYLES = `
   margin-bottom: 1rem;
   box-shadow: var(--apps-shadow);
 }
-@media (max-width: 640px) {
-  .apps-spotlight { grid-template-columns: 1fr; gap: 1rem; }
-}
-.apps-spotlight__avatar {
-  width: 96px;
-  height: 96px;
+@media (max-width: 640px) { .apps-quote { grid-template-columns: 1fr; gap: 1rem; } }
+.apps-quote__avatar {
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   overflow: hidden;
   background: var(--apps-tint);
@@ -1110,27 +945,19 @@ const APPS_SECTION_STYLES = `
   font-weight: 700;
   color: var(--apps-muted);
 }
-.apps-spotlight__avatar img { width: 100%; height: 100%; object-fit: cover; }
-.apps-spotlight__quote {
+.apps-quote__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.apps-quote__text {
   margin: 0 0 1rem;
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   line-height: 1.7;
   color: var(--apps-ink);
   max-width: 74ch;
 }
-.apps-spotlight__quote::before {
-  content: "\\201C";
-  color: var(--apps-accent);
-  font-size: 2.4rem;
-  line-height: 0;
-  vertical-align: -0.35rem;
-  margin-right: 0.15rem;
-}
-.apps-spotlight__name { margin: 0; font-size: 0.95rem; font-weight: 700; }
-.apps-spotlight__role { margin: 0; font-size: 0.83rem; color: var(--apps-muted); }
-.apps-spotlight__partner {
+.apps-quote__name { margin: 0; font-size: 0.93rem; font-weight: 700; }
+.apps-quote__role { margin: 0; font-size: 0.82rem; color: var(--apps-muted); }
+.apps-quote__partner {
   margin: 0.3rem 0 0;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1147,135 +974,9 @@ function injectSectionStyles() {
 }
 
 /* ---------------------------------------------------------
-   10. EXISTING RENDERERS
+   10. RENDERERS
    --------------------------------------------------------- */
 
-function initMobileNav() {
-  const button = document.getElementById("navToggle");
-  const nav = document.getElementById("siteNav");
-  if (!button || !nav) return;
-  function setOpen(open) {
-    nav.classList.toggle("is-open", open);
-    button.setAttribute("aria-expanded", String(open));
-    button.setAttribute(
-      "aria-label",
-      open ? "Close navigation menu" : "Open navigation menu"
-    );
-  }
-  setOpen(false);
-  button.addEventListener("click", () => {
-    const isOpen = button.getAttribute("aria-expanded") === "true";
-    setOpen(!isOpen);
-  });
-  nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => setOpen(false));
-  });
-  document.addEventListener("click", (event) => {
-    if (!nav.contains(event.target) && !button.contains(event.target)) {
-      setOpen(false);
-    }
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setOpen(false);
-  });
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > MOBILE_NAV_BREAKPOINT) setOpen(false);
-  });
-}
-
-function createMemberCard(member, index) {
-  const card = document.createElement("article");
-  card.className = "member-card";
-  card.style.animationDelay = `${index * 0.04}s`;
-  const avatar = document.createElement("div");
-  avatar.className = "member-avatar";
-  function showInitialsFallback() {
-    avatar.innerHTML = "";
-    const span = document.createElement("span");
-    span.textContent = initialsFromName(member.name);
-    avatar.appendChild(span);
-  }
-  if (member.photo) {
-    const img = document.createElement("img");
-    img.src = `${member.photo}?v=${HEADSHOT_VERSION}`;
-    img.alt = `${member.name} headshot`;
-    img.loading = "eager";
-    img.decoding = "async";
-    img.addEventListener("error", showInitialsFallback, { once: true });
-    avatar.appendChild(img);
-  } else {
-    showInitialsFallback();
-  }
-  const meta = document.createElement("div");
-  meta.className = "member-meta";
-  const name = document.createElement("h3");
-  name.className = "member-name";
-  name.textContent = member.name;
-  const role = document.createElement("p");
-  role.className = "member-role";
-  role.textContent = member.role;
-  const year = document.createElement("p");
-  year.className = "member-detail";
-  year.textContent = getDisplayYear(member);
-  const college = document.createElement("p");
-  college.className = "member-detail";
-  college.textContent = member.college || "";
-  const major = document.createElement("p");
-  major.className = "member-detail";
-  major.textContent = member.major;
-  meta.appendChild(name);
-  meta.appendChild(role);
-  if (year.textContent) meta.appendChild(year);
-  if (college.textContent) meta.appendChild(college);
-  meta.appendChild(major);
-  card.appendChild(avatar);
-  card.appendChild(meta);
-  return card;
-}
-
-function renderExec() {
-  const grid = document.getElementById("execGrid");
-  if (!grid) return;
-  grid.innerHTML = "";
-  EXEC.forEach((m, i) => grid.appendChild(createMemberCard(m, i)));
-}
-
-function renderMembers() {
-  const grid = document.getElementById("memberGrid");
-  if (!grid) return;
-  grid.innerHTML = "";
-  MEMBERS.forEach((m, i) => grid.appendChild(createMemberCard(m, i)));
-}
-
-function initFaqAccordion() {
-  const items = Array.from(document.querySelectorAll(".faq-accordion details"));
-  if (!items.length) return;
-  const first = items.find((item) => item.open) || items[0];
-  if (first && !first.open) first.open = true;
-  const firstSummary = first ? first.querySelector("summary") : null;
-  if (firstSummary) firstSummary.focus({ preventScroll: true });
-  items.forEach((item) => {
-    item.addEventListener("toggle", () => {
-      if (item.open) {
-        items.forEach((other) => {
-          if (other !== item) other.open = false;
-        });
-      }
-      const id = item.dataset.faq || "";
-      window.dispatchEvent(
-        new CustomEvent("faq:toggle", { detail: { id, open: item.open } })
-      );
-    });
-  });
-}
-
-/* ---------------------------------------------------------
-   11. SECTION MOUNTING
-   --------------------------------------------------------- */
-
-/* Should the recruitment sections auto-append on this page?
-   Default: only on the site root. Override per page with
-   <body data-apps-sections="on"> or "off". */
 function shouldAutoInject() {
   const flag = document.body.dataset.appsSections;
   if (flag === "on") return true;
@@ -1284,10 +985,6 @@ function shouldAutoInject() {
   return page === "" || page === "index.html";
 }
 
-/* Returns the <section> to render into. If the page already has an
-   element with this id, we use it. Otherwise we create a section and
-   append it to the end of <main> (or <body>), before the footer —
-   but only on pages where auto-injection is allowed. */
 function getSectionHost(id, options = {}) {
   const existing = document.getElementById(id);
   if (existing) {
@@ -1313,93 +1010,150 @@ function getSectionHost(id, options = {}) {
   return section;
 }
 
-function sectionShell(section, { eyebrow, heading, lede, note }) {
+function sectionShell(section, { eyebrow, heading, lede }) {
   const inner = document.createElement("div");
   inner.className = "apps-block__inner reveal";
   let html = "";
   if (eyebrow) html += `<p class="apps-eyebrow">${escapeHtml(eyebrow)}</p>`;
   if (heading) html += `<h2 class="apps-h2">${escapeHtml(heading)}</h2>`;
   if (lede) html += `<p class="apps-lede">${escapeHtml(lede)}</p>`;
-  if (note) html += `<p class="apps-note">${escapeHtml(note)}</p>`;
   inner.innerHTML = html;
   section.appendChild(inner);
   return inner;
 }
 
-function tipList(tips, extraClass = "") {
+function bulletList(items) {
   const ul = document.createElement("ul");
-  ul.className = `apps-tips ${extraClass}`.trim();
-  ul.innerHTML = tips.map((t) => `<li>${escapeHtml(t)}</li>`).join("");
+  ul.className = "apps-list";
+  ul.innerHTML = items.map((t) => `<li>${escapeHtml(t)}</li>`).join("");
   return ul;
 }
 
-/* ---------------------------------------------------------
-   12. NEW SECTION RENDERERS
-   --------------------------------------------------------- */
+/* ---- Team rosters ---- */
+function createMemberCard(member, index) {
+  const card = document.createElement("article");
+  card.className = "member-card";
+  card.style.animationDelay = `${index * 0.04}s`;
 
-function renderInterviewTips() {
-  const section = getSectionHost("interview-tips");
-  if (!section) return;
-  const inner = sectionShell(section, {
-    eyebrow: "Interviews",
-    heading: "How to prepare for each round",
-    lede:
-      "We would rather interview people who know what is coming. Here is what each round looks like and what we are actually listening for.",
-  });
+  const avatar = document.createElement("div");
+  avatar.className = "member-avatar";
+  function showInitialsFallback() {
+    avatar.innerHTML = "";
+    const span = document.createElement("span");
+    span.textContent = initialsFromName(member.name);
+    avatar.appendChild(span);
+  }
+  if (member.photo) {
+    const img = document.createElement("img");
+    img.src = `${member.photo}?v=${HEADSHOT_VERSION}`;
+    img.alt = `${member.name} headshot`;
+    img.loading = "eager";
+    img.decoding = "async";
+    img.addEventListener("error", showInitialsFallback, { once: true });
+    avatar.appendChild(img);
+  } else {
+    showInitialsFallback();
+  }
 
-  INTERVIEW_ROUNDS.forEach((round) => {
-    const card = document.createElement("article");
-    card.className = "apps-round";
-    card.innerHTML = `
-      <div class="apps-round__head">
-        <span class="apps-round__badge">${escapeHtml(round.round)}</span>
-        <h3 class="apps-round__name">${escapeHtml(round.name)}</h3>
-        <span class="apps-round__when">${escapeHtml(round.when)}</span>
-      </div>
-      <div class="apps-round__body">
-        <p class="apps-round__summary">${escapeHtml(round.summary)}</p>
-      </div>`;
-    card.querySelector(".apps-round__body").appendChild(tipList(round.tips));
-    inner.appendChild(card);
-  });
+  const meta = document.createElement("div");
+  meta.className = "member-meta";
+  const name = document.createElement("h3");
+  name.className = "member-name";
+  name.textContent = member.name;
+  const role = document.createElement("p");
+  role.className = "member-role";
+  role.textContent = member.role;
+  const year = document.createElement("p");
+  year.className = "member-detail";
+  year.textContent = getDisplayYear(member);
+  const college = document.createElement("p");
+  college.className = "member-detail";
+  college.textContent = member.college || "";
+  const major = document.createElement("p");
+  major.className = "member-detail";
+  major.textContent = member.major;
+
+  meta.appendChild(name);
+  meta.appendChild(role);
+  if (year.textContent) meta.appendChild(year);
+  if (college.textContent) meta.appendChild(college);
+  meta.appendChild(major);
+  card.appendChild(avatar);
+  card.appendChild(meta);
+  return card;
 }
 
-/* ---- Quick links ---- */
-function renderQuickLinks() {
-  if (!QUICK_LINKS.length) return;
-  const section = getSectionHost("get-involved", { tint: true });
+function renderExec() {
+  const grid = document.getElementById("execGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  EXEC.forEach((m, i) => grid.appendChild(createMemberCard(m, i)));
+}
+
+function renderMembers() {
+  const grid = document.getElementById("memberGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  MEMBERS.forEach((m, i) => grid.appendChild(createMemberCard(m, i)));
+}
+
+/* ---- Services ---- */
+function renderServices() {
+  const section = getSectionHost("services");
   if (!section) return;
   const inner = sectionShell(section, {
-    eyebrow: "Get Involved",
-    heading: "Start here",
-    lede:
-      "The fastest way in is a coffee chat with a current member. Everything else lives on our Linktree.",
+    eyebrow: "Services",
+    heading: "What we do",
+    lede: SERVICES_INTRO,
   });
 
   const grid = document.createElement("div");
-  grid.className = "apps-links";
-  grid.innerHTML = QUICK_LINKS.map(
-    (link) => `
-      <a class="apps-link${link.primary ? " apps-link--primary" : ""}"
-         href="${escapeHtml(link.url)}"
-         target="_blank" rel="noopener noreferrer">
-        <p class="apps-link__label">${escapeHtml(link.label)}</p>
-        <p class="apps-link__desc">${escapeHtml(link.description || "")}</p>
-        <span class="apps-link__cta">${escapeHtml(
-          link.cta || "Open"
-        )} &rarr;</span>
-      </a>`
+  grid.className = "apps-grid";
+  grid.innerHTML = SERVICES.map(
+    (s) => `
+      <article class="apps-card">
+        <h3 class="apps-card__title">${escapeHtml(s.title)}</h3>
+        <p class="apps-card__body">${escapeHtml(s.body)}</p>
+      </article>`
   ).join("");
   inner.appendChild(grid);
+
+  const cols = document.createElement("div");
+  cols.className = "apps-cols";
+
+  const left = document.createElement("div");
+  const leftHead = document.createElement("h3");
+  leftHead.className = "apps-subhead";
+  leftHead.textContent = "Stakeholders we work with";
+  left.appendChild(leftHead);
+  left.appendChild(bulletList(STAKEHOLDER_TYPES));
+
+  const right = document.createElement("div");
+  const rightHead = document.createElement("h3");
+  rightHead.className = "apps-subhead";
+  rightHead.textContent = "Policy areas";
+  right.appendChild(rightHead);
+  right.appendChild(bulletList(POLICY_AREAS));
+
+  cols.appendChild(left);
+  cols.appendChild(right);
+  inner.appendChild(cols);
 }
 
-/* ---- Stakeholders: logo wall ---- */
-function renderStakeholderLogos() {
-  const host = document.getElementById("stakeholderLogos");
-  if (!host || !STAKEHOLDERS.length) return;
-  host.className = "apps-logos";
-  host.innerHTML = "";
+/* ---- Our work: logos, engagements, publications, testimonials ---- */
+function renderWork() {
+  const section = getSectionHost("work", { tint: true });
+  if (!section) return;
+  const inner = sectionShell(section, {
+    eyebrow: "Our Work",
+    heading: "Stakeholders and published work",
+    lede:
+      "Each project team is scoped with a stakeholder and ends in a deliverable. Some of that research appears in published policy work.",
+  });
 
+  // Logo wall
+  const logos = document.createElement("div");
+  logos.className = "apps-logos";
   STAKEHOLDERS.forEach((org) => {
     const link = document.createElement("a");
     link.className = "apps-logo";
@@ -1432,185 +1186,198 @@ function renderStakeholderLogos() {
     } else {
       showWordmark();
     }
-    host.appendChild(link);
+    logos.appendChild(link);
   });
-}
+  inner.appendChild(logos);
 
-/* ---- Stakeholders: detail cards ---- */
-function renderStakeholderCards() {
-  const host = document.getElementById("stakeholderGrid");
-  if (!host || !STAKEHOLDERS.length) return;
-  host.className = "apps-grid apps-grid--wide";
-  host.innerHTML = STAKEHOLDERS.map(
+  // Engagement rows
+  const engagements = document.createElement("div");
+  engagements.innerHTML = STAKEHOLDERS.map(
     (org) => `
-      <article class="apps-partner">
-        <span class="apps-partner__focus">${escapeHtml(org.focus || "")}</span>
-        <h3 class="apps-partner__name">${escapeHtml(org.name)}</h3>
-        ${
-          org.legalName
-            ? `<p class="apps-partner__legal">${escapeHtml(org.legalName)}</p>`
-            : ""
-        }
-        <p class="apps-partner__about">${escapeHtml(org.about || "")}</p>
-        ${
-          org.engagement
-            ? `<p class="apps-partner__work"><b>What APPS did</b>${escapeHtml(
-                org.engagement
-              )}</p>`
-            : ""
-        }
-        <a class="apps-partner__link" href="${escapeHtml(
-          org.url
-        )}" target="_blank" rel="noopener noreferrer">Visit ${escapeHtml(
-      org.name
-    )} &rarr;</a>
-      </article>`
+      <div class="apps-engagement">
+        <div>
+          <p class="apps-engagement__org">${escapeHtml(org.name)}</p>
+          <p class="apps-engagement__area">${escapeHtml(org.area || "")}</p>
+        </div>
+        <p class="apps-engagement__body">${escapeHtml(org.engagement || "")}</p>
+      </div>`
   ).join("");
-}
+  inner.appendChild(engagements);
 
-/* ---- Published work ---- */
-function renderPublications() {
-  const host = document.getElementById("publicationList");
-  if (!host || !PUBLICATIONS.length) return;
-  host.innerHTML =
-    PUBLICATIONS.map(
+  // Publications
+  if (PUBLICATIONS.length) {
+    const head = document.createElement("h3");
+    head.className = "apps-subhead";
+    head.textContent = "Published work";
+    inner.appendChild(head);
+
+    const list = document.createElement("div");
+    list.innerHTML = PUBLICATIONS.map(
       (pub) => `
-      <a class="apps-pub" href="${escapeHtml(
-        pub.url
-      )}" target="_blank" rel="noopener noreferrer">
-        <div class="apps-pub__meta">${escapeHtml(pub.publisher || "")}${
+        <a class="apps-pub" href="${escapeHtml(
+          pub.url
+        )}" target="_blank" rel="noopener noreferrer">
+          <div class="apps-pub__meta">${escapeHtml(pub.publisher || "")}${
         pub.year ? " &middot; " + escapeHtml(pub.year) : ""
       }</div>
-        <h3 class="apps-pub__title">${escapeHtml(pub.title)}</h3>
-        ${
-          pub.subtitle
-            ? `<p class="apps-pub__sub">${escapeHtml(pub.subtitle)}</p>`
-            : ""
-        }
-        ${
-          pub.credit
-            ? `<p class="apps-pub__credit">${escapeHtml(pub.credit)}</p>`
-            : ""
-        }
-        <span class="apps-pub__cta">Read the report (PDF) &rarr;</span>
-      </a>`
-    ).join("") +
-    (PUBLICATION_INDEX
-      ? `<a class="apps-pub-index" href="${escapeHtml(
-          PUBLICATION_INDEX.url
-        )}" target="_blank" rel="noopener noreferrer">${escapeHtml(
-          PUBLICATION_INDEX.label
-        )} &rarr;</a>`
-      : "");
+          <h4 class="apps-pub__title">${escapeHtml(pub.title)}</h4>
+          ${pub.subtitle ? `<p class="apps-pub__sub">${escapeHtml(pub.subtitle)}</p>` : ""}
+          ${pub.credit ? `<p class="apps-pub__credit">${escapeHtml(pub.credit)}</p>` : ""}
+          <span class="apps-pub__cta">Read the report (PDF) &rarr;</span>
+        </a>`
+    ).join("");
+    inner.appendChild(list);
+  }
+
+  // Testimonials
+  if (TESTIMONIALS.length) {
+    const head = document.createElement("h3");
+    head.className = "apps-subhead";
+    head.textContent = "From our project managers";
+    inner.appendChild(head);
+
+    TESTIMONIALS.forEach((item) => {
+      const card = document.createElement("article");
+      card.className = "apps-quote";
+
+      const avatar = document.createElement("div");
+      avatar.className = "apps-quote__avatar";
+      function showInitials() {
+        avatar.innerHTML = "";
+        avatar.textContent = initialsFromName(item.name);
+      }
+      if (item.photo) {
+        const img = document.createElement("img");
+        img.src = `${item.photo}?v=${HEADSHOT_VERSION}`;
+        img.alt = `${item.name} headshot`;
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.addEventListener("error", showInitials, { once: true });
+        avatar.appendChild(img);
+      } else {
+        showInitials();
+      }
+
+      const body = document.createElement("div");
+      body.innerHTML = `
+        <blockquote class="apps-quote__text">${escapeHtml(item.quote)}</blockquote>
+        <p class="apps-quote__name">${escapeHtml(item.name)}</p>
+        <p class="apps-quote__role">${escapeHtml(item.role || "")}</p>
+        ${item.partner ? `<p class="apps-quote__partner">${escapeHtml(item.partner)}</p>` : ""}`;
+
+      card.appendChild(avatar);
+      card.appendChild(body);
+      inner.appendChild(card);
+    });
+  }
 }
 
-/* ---- Member spotlights ---- */
-function renderSpotlights() {
-  const host = document.getElementById("spotlightList");
-  if (!host || !SPOTLIGHTS.length) return;
-  host.innerHTML = "";
-
-  SPOTLIGHTS.forEach((item) => {
-    const card = document.createElement("article");
-    card.className = "apps-spotlight";
-
-    const avatar = document.createElement("div");
-    avatar.className = "apps-spotlight__avatar";
-    function showInitials() {
-      avatar.innerHTML = "";
-      avatar.textContent = initialsFromName(item.name);
-    }
-    if (item.photo) {
-      const img = document.createElement("img");
-      img.src = `${item.photo}?v=${HEADSHOT_VERSION}`;
-      img.alt = `${item.name} headshot`;
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.addEventListener("error", showInitials, { once: true });
-      avatar.appendChild(img);
-    } else {
-      showInitials();
-    }
-
-    const body = document.createElement("div");
-    body.innerHTML = `
-      <blockquote class="apps-spotlight__quote">${escapeHtml(
-        item.quote
-      )}</blockquote>
-      <p class="apps-spotlight__name">${escapeHtml(item.name)}</p>
-      <p class="apps-spotlight__role">${escapeHtml(item.role || "")}</p>
-      ${
-        item.partner
-          ? `<p class="apps-spotlight__partner">${escapeHtml(item.partner)}</p>`
-          : ""
-      }`;
-
-    card.appendChild(avatar);
-    card.appendChild(body);
-    host.appendChild(card);
+/* ---- Get involved ---- */
+function renderQuickLinks() {
+  if (!QUICK_LINKS.length) return;
+  const section = getSectionHost("get-involved");
+  if (!section) return;
+  const inner = sectionShell(section, {
+    eyebrow: "Get Involved",
+    heading: "Start here",
+    lede:
+      "A coffee chat with a current member is the most direct way to learn about APPS. All other resources are on our Linktree.",
   });
+
+  const grid = document.createElement("div");
+  grid.className = "apps-links";
+  grid.innerHTML = QUICK_LINKS.map(
+    (link) => `
+      <a class="apps-link${link.primary ? " apps-link--primary" : ""}"
+         href="${escapeHtml(link.url)}"
+         target="_blank" rel="noopener noreferrer">
+        <p class="apps-link__label">${escapeHtml(link.label)}</p>
+        <p class="apps-link__desc">${escapeHtml(link.description || "")}</p>
+        <span class="apps-link__cta">${escapeHtml(link.cta || "Open")} &rarr;</span>
+      </a>`
+  ).join("");
+  inner.appendChild(grid);
 }
 
-/* Adds nav links for any sections this script created, so the new
-   content is reachable from the header on single-page layouts.
-   Also adds a Stakeholders link pointing at the partner page. */
+/* ---- Nav ----
+   "Get Involved" is placed immediately to the right of the Team link.
+   Services and Our Work go before Team if they are not already there. */
 function addNavLinks() {
   const nav = document.getElementById("siteNav") || document.querySelector(".nav");
   if (!nav) return;
 
-  const links = [
-    { id: "get-involved", label: "Get Involved" },
-    { id: "interview-tips", label: "Interviews" },
-  ];
-  links.forEach(({ id, label }) => {
-    const section = document.getElementById(id);
-    if (!section || section.dataset.appsInjected !== "true") return;
-    if (nav.querySelector(`a[href="#${id}"]`)) return;
+  function findTeamLink() {
+    return Array.from(nav.querySelectorAll("a")).find((a) => {
+      const href = (a.getAttribute("href") || "").toLowerCase();
+      return href.includes("team") || a.textContent.trim().toLowerCase() === "team";
+    });
+  }
+
+  function makeLink(id, label) {
     const a = document.createElement("a");
     a.href = `#${id}`;
     a.textContent = label;
-    nav.appendChild(a);
+    return a;
+  }
+
+  const teamLink = findTeamLink();
+
+  // Services and Our Work: insert before Team, in order.
+  [
+    { id: "services", label: "Services" },
+    { id: "work", label: "Our Work" },
+  ].forEach(({ id, label }) => {
+    const section = document.getElementById(id);
+    if (!section || section.dataset.appsInjected !== "true") return;
+    if (nav.querySelector(`a[href="#${id}"]`)) return;
+    const link = makeLink(id, label);
+    if (teamLink) {
+      nav.insertBefore(link, teamLink);
+    } else {
+      nav.appendChild(link);
+    }
   });
 
-  const onPartnerPage = !!document.getElementById("stakeholderGrid");
-  if (!onPartnerPage && !nav.querySelector('a[href*="stakeholders.html"]')) {
-    const a = document.createElement("a");
-    a.href = STAKEHOLDERS_PAGE;
-    a.textContent = "Stakeholders";
-    nav.appendChild(a);
+  // Get Involved: immediately after Team.
+  const involved = document.getElementById("get-involved");
+  if (involved && !nav.querySelector('a[href="#get-involved"]')) {
+    const link = makeLink("get-involved", "Get Involved");
+    if (teamLink && teamLink.nextSibling) {
+      nav.insertBefore(link, teamLink.nextSibling);
+    } else if (teamLink) {
+      nav.appendChild(link);
+    } else {
+      nav.appendChild(link);
+    }
   }
 }
 
-const STAKEHOLDERS_PAGE = "stakeholders.html";
-
 /* ---------------------------------------------------------
-   13. BOOT
+   11. BOOT
    --------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
   injectLightTokens();
   injectSectionStyles();
 
-  removeLegacyStats();
+  // Cleanup first, so nothing below re-measures removed markup.
+  removeStatsSection();
+  removeRunningText();
+  removeStakeholdersLink();
+  swapHeroPhoto();
 
   initMobileNav();
   renderExec();
   renderMembers();
 
-  // Stakeholders page content (no-ops on pages without these ids).
-  renderStakeholderLogos();
-  renderStakeholderCards();
-  renderPublications();
-  renderSpotlights();
-
-  // New sections must mount before scroll-reveal and nav wiring.
+  // Sections mount before scroll-reveal and nav wiring.
+  renderServices();
+  renderWork();
   renderQuickLinks();
-  renderInterviewTips();
   addNavLinks();
 
   initScrollReveal();
   initBackToTop();
   initHeaderScroll();
   initActiveNav();
-  initFaqAccordion();
 });
