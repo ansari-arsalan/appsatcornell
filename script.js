@@ -8,6 +8,7 @@
    - Team page roster rendering
    ========================================================= */
 
+
 // ---- Light Theme ----
 (function initTheme() {
   const root = document.documentElement;
@@ -19,7 +20,11 @@
     /* storage unavailable - theme attribute is enough */
   }
 })();
-
+ 
+/* Fallback light values for the most common token names.
+   This block is PREPENDED to <head>, so if styles.css already
+   defines its own :root[data-theme="light"] palette, that one
+   wins. It only fills gaps for sites whose CSS was dark-only. */
 const LIGHT_TOKEN_FALLBACK = `
 :root[data-theme="light"] {
   color-scheme: light;
@@ -65,7 +70,10 @@ function initScrollReveal() {
   const elements = document.querySelectorAll(revealSelectors);
   if (!elements.length) return;
   // Respect prefers-reduced-motion
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const reduced =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) {
     elements.forEach((el) => el.classList.add("visible"));
     return;
   }
@@ -83,41 +91,34 @@ function initScrollReveal() {
   elements.forEach((el) => observer.observe(el));
 }
  
-// ---- Animated counter for stats ----
-function initCounters() {
+const REMOVE_LEGACY_STATS = true;
+ 
+function removeLegacyStats() {
+  if (!REMOVE_LEGACY_STATS) return;
   const counters = document.querySelectorAll("[data-target]");
   if (!counters.length) return;
-  function animateCounter(el) {
-    const target = parseInt(el.dataset.target, 10);
-    if (isNaN(target)) return;
-    const duration = 1600;
-    const startTime = performance.now();
-    function easeOutQuint(t) {
-      return 1 - Math.pow(1 - t, 5);
+ 
+  const parents = new Set();
+  counters.forEach((el) => {
+    const item = el.closest('[class*="stat"]') || el;
+    if (item.parentElement) parents.add(item.parentElement);
+    item.remove();
+  });
+ 
+  parents.forEach((parent) => {
+    if (parent.children.length) return;
+    const wrapper = parent.closest('[class*="stat"]') || parent;
+    const host = wrapper.parentElement;
+    wrapper.remove();
+    // If the whole stats band is now just a heading, drop it too.
+    if (
+      host &&
+      /stat/i.test(host.className + " " + host.id) &&
+      host.textContent.trim().length < 40
+    ) {
+      host.remove();
     }
-    function update(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const current = Math.round(easeOutQuint(progress) * target);
-      el.textContent = current + "+";
-      if (progress < 1) {
-        requestAnimationFrame(update);
-      }
-    }
-    requestAnimationFrame(update);
-  }
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  counters.forEach((el) => observer.observe(el));
+  });
 }
  
 // ---- Back to top button ----
@@ -442,53 +443,119 @@ const MEMBERS = [
  
 const MOBILE_NAV_BREAKPOINT = 900;
 const HEADSHOT_VERSION = "20260405-2";
-const RECRUITMENT_EXPECTATIONS = [
+
+ 
+/* ---------------------------------------------------------
+   6. INTERVIEW DATA
+   --------------------------------------------------------- */
+ 
+const INTERVIEW_ROUNDS = [
   {
-    title: "No policy background required",
-    body: "We recruit across every college. Analysts have come from ILR, Engineering, CALS, A&S, and Brooks. Curiosity matters more than coursework.",
+    round: "Round 1",
+    name: "Resume Review",
   },
   {
-    title: "Three rounds, one weekend",
-    body: "Resume review, a behavioral interview, and a group case interview.",
+    round: "Round 2",
+    name: "Behavioral Interview",
   },
   {
-    title: "Show your interest in APPS",
-    body: "A coffee chat, info session, or workshop is the easiest way to figure out whether APPS is right for you, and it makes your application stronger.",
-  },
-  {
-    title: "Prep is provided",
-    body: "The resume review and casing workshop are events to prepare you for our resume and group rounds.",
-  },
-  {
-    title: "Expect a real time commitment",
-    body: "New members join a project team and work with a real client through the semester, plus new member education meetings.",
-  },
-  {
-    title: "DEI Office Hours",
-    body: "Office hours open to anyone with questions regarding accommodations and DEI-related topics.",
+    round: "Round 3",
+    name: "Group Case Interview",
   },
 ];
  
 /* ---------------------------------------------------------
-   5. COFFEE CHAT DATA
+   7. STAKEHOLDERS / PARTNERS
+   Rendered on stakeholders.html.
+ 
+   Logos: drop image files at the paths below (assets/logos/).
+   If a file is missing or fails to load, the card falls back to a
+   typeset wordmark, so the page never shows a broken image.
    --------------------------------------------------------- */
  
-const COFFEE_CHAT_STEPS = [
+const STAKEHOLDERS = [
   {
-    title: "Submit the coffee chat form",
-    body: "The form opens on the first day of classes and stays open through recruitment. Tell us the policy areas you care about.",
+    name: "LGBT Tech",
+    legalName: "LGBT Technology Institute",
+    url: "https://www.lgbttech.org/",
+    focus: "Technology policy & digital equity",
+    about:
+      "LGBT Tech bridges the technology gap for LGBTQ+ individuals through partnerships with tech companies, non-profit groups, policy makers, scholars, and innovators. Its policy work spans data privacy, online safety, algorithmic bias, and digital inclusion.",
+    engagement:
+      "APPS provided research support for LGBT Tech's broader work on artificial intelligence and civil rights. Our analysis helped shape the development of the principles published in their 2026 Roadmap.",
+    logo: "assets/logos/lgbt-tech.png",
   },
   {
-    title: "A member emails you",
-    body: "We match you with someone who shares your interests. Expect an email from us within a few days!",
+    name: "Center for the Study of Social Policy",
+    legalName: "CSSP",
+    url: "https://cssp.org/",
+    focus: "Family autonomy, economic & health justice",
+    about:
+      "CSSP is a national policy organization advancing just policies in family autonomy, economic justice, and health justice.",
+    engagement:
+      "APPS supported a rapid response study on how immigration enforcement is affecting families' health and access to care in California, and analyzed key care policy features for CSSP to consider in a national care agenda. The partnership is continuing into new initiatives.",
+    logo: "assets/logos/cssp.png",
   },
   {
-    title: "Pick a time and a format",
-    body: "Reply with the slot that works and whether you would rather meet in person or over Zoom.",
+    name: "Institute for Policy Studies",
+    legalName: "Charity Reform Initiative",
+    url: "https://ips-dc.org/project/charity-reform-initiative/",
+    focus: "Philanthropy & wealth inequality",
+    about:
+      "The Charity Reform Initiative at IPS is the only research program of its kind examining the relationship between philanthropy and wealth inequality.",
+    engagement:
+      "Over one semester, APPS compiled detailed research profiles on 15+ billionaires. IPS is using our data to inform their future reports.",
+    logo: "assets/logos/ips.png",
   },
   {
-    title: "Chat for about 30 minutes",
-    body: "A brief informal conversation where you can ask questions to learn more about the club. This is the time for us to get to learn about you too!",
+    name: "Engine",
+    legalName: "Engine Advocacy & Foundation",
+    url: "https://www.engine.is/",
+    focus: "Startup & technology policy",
+    about:
+      "Engine is a non-profit that gives startups a voice in technology policy, connecting founders with policymakers in Washington and in the states.",
+    engagement:
+      "APPS supported Engine's policy research on the regulatory environment facing early-stage technology companies.",
+    logo: "assets/logos/engine.png",
+  },
+];
+ 
+/* ---- Published work ---- */
+const PUBLICATIONS = [
+  {
+    title: "Roadmap: Civil Rights Governance for Artificial Intelligence",
+    subtitle:
+      "Principles to Protect Safety, Privacy, Access, and Equal Opportunity",
+    publisher: "LGBT Tech",
+    year: "2026",
+    url: "https://www.lgbttech.org/_files/ugd/a3b7e3_6139fcb21ee741c2bace28c19d832556.pdf",
+    credit:
+      "LGBT Tech acknowledges the APPS team at Cornell for research support and contributions to their work on artificial intelligence and civil rights.",
+  },
+];
+ 
+const PUBLICATION_INDEX = {
+  label: "All LGBT Tech research & reports",
+  url: "https://www.lgbttech.org/research-and-reports",
+};
+ 
+/* ---- Member spotlights (from @appsatcornell) ---- */
+const SPOTLIGHTS = [
+  {
+    quote:
+      "Our team worked with the Institute of Policy Studies under their Charity Reform team—the only one of its kind that researches the relationship between philanthropy and wealth inequality. We were able to provide detailed information on 15+ billionaires this semester—a testament to everyone's hard work and dedication! Moving forward, IPS will be using our data to inform their future reports.",
+    name: "Emily Cho ’28",
+    role: "Project Manager",
+    partner: "Institute for Policy Studies",
+    photo: "assets/headshots/emily-cho.jpeg",
+  },
+  {
+    quote:
+      "Our team partnered with the Center for the Study of Social Policy (CSSP), an organization advancing just policies in family autonomy, economic, and health justice. We supported a rapid response study on how immigration enforcement is affecting families' health and access to care in California, and analyzed key care policy features CSSP should consider for a national care agenda. We're excited to continue this partnership to work on new initiatives for next semester!",
+    name: "Flora Kim ’28",
+    role: "Project Manager",
+    partner: "Center for the Study of Social Policy",
+    photo: "assets/headshots/flora-kim.jpeg",
   },
 ];
  
@@ -715,6 +782,12 @@ const APPS_SECTION_STYLES = `
   gap: 1rem;
   align-items: stretch;
 }
+.apps-grid--wide {
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+}
+@media (max-width: 520px) {
+  .apps-grid--wide { grid-template-columns: 1fr; }
+}
 .apps-card {
   background: var(--apps-surface);
   border: 1px solid var(--apps-line);
@@ -892,54 +965,208 @@ const APPS_SECTION_STYLES = `
   max-width: 72ch;
 }
  
-/* --- Projects --- */
-.apps-project {
+/* --- Logo wall --- */
+.apps-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.apps-logo {
   display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 118px;
+  padding: 1.25rem;
   background: var(--apps-surface);
   border: 1px solid var(--apps-line);
   border-radius: 14px;
-  padding: 1.35rem;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.apps-logo:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
   box-shadow: var(--apps-shadow);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.apps-project:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 36px rgba(16, 24, 40, 0.09);
+.apps-logo img {
+  max-width: 100%;
+  max-height: 68px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
-.apps-project__top {
+.apps-logo__wordmark {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--apps-ink);
+}
+.apps-logo__wordmark span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apps-accent);
+}
+ 
+/* --- Partner detail cards --- */
+.apps-partner {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--apps-surface);
+  border: 1px solid var(--apps-line);
+  border-radius: 14px;
+  padding: 1.4rem;
+  box-shadow: var(--apps-shadow);
 }
-.apps-project__area {
+.apps-partner__focus {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--apps-accent);
 }
-.apps-project__term { font-size: 0.75rem; color: var(--apps-muted); font-weight: 600; }
-.apps-project__title { margin: 0; font-size: 1.05rem; font-weight: 650; line-height: 1.3; }
-.apps-project__client { margin: 0; font-size: 0.83rem; color: var(--apps-muted); font-weight: 600; }
-.apps-project__summary { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--apps-muted); }
-.apps-project__deliverable {
+.apps-partner__name { margin: 0; font-size: 1.08rem; font-weight: 650; line-height: 1.3; }
+.apps-partner__legal { margin: 0; font-size: 0.8rem; color: var(--apps-muted); font-weight: 600; }
+.apps-partner__about { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--apps-muted); }
+.apps-partner__work {
   margin: 0.35rem 0 0;
-  margin-top: auto;
-  padding-top: 0.75rem;
+  padding-top: 0.85rem;
   border-top: 1px solid var(--apps-line);
-  font-size: 0.83rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
   color: var(--apps-ink);
 }
-.apps-project__deliverable b {
+.apps-partner__work b {
   display: block;
   font-size: 0.68rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--apps-muted);
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.3rem;
+}
+.apps-partner__link {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--apps-accent);
+  text-decoration: none;
+}
+.apps-partner__link:hover { text-decoration: underline; }
+ 
+/* --- Publications --- */
+.apps-pub {
+  display: block;
+  background: var(--apps-surface);
+  border: 1px solid var(--apps-line);
+  border-left: 4px solid var(--apps-accent);
+  border-radius: 12px;
+  padding: 1.3rem 1.4rem;
+  margin-bottom: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--apps-shadow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.apps-pub:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 36px rgba(16, 24, 40, 0.09);
+}
+.apps-pub__meta {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--apps-accent);
+  margin-bottom: 0.4rem;
+}
+.apps-pub__title { margin: 0 0 0.25rem; font-size: 1.05rem; font-weight: 650; line-height: 1.35; }
+.apps-pub__sub { margin: 0 0 0.7rem; font-size: 0.9rem; color: var(--apps-muted); }
+.apps-pub__credit {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--apps-muted);
+  border-left: 2px solid var(--apps-line);
+  padding-left: 0.8rem;
+}
+.apps-pub__cta {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: var(--apps-accent);
+}
+.apps-pub-index {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--apps-accent);
+  text-decoration: none;
+}
+.apps-pub-index:hover { text-decoration: underline; }
+ 
+/* --- Spotlights --- */
+.apps-spotlight {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: start;
+  background: var(--apps-surface);
+  border: 1px solid var(--apps-line);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--apps-shadow);
+}
+@media (max-width: 640px) {
+  .apps-spotlight { grid-template-columns: 1fr; gap: 1rem; }
+}
+.apps-spotlight__avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--apps-tint);
+  border: 1px solid var(--apps-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--apps-muted);
+}
+.apps-spotlight__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.apps-spotlight__quote {
+  margin: 0 0 1rem;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--apps-ink);
+  max-width: 74ch;
+}
+.apps-spotlight__quote::before {
+  content: "\\201C";
+  color: var(--apps-accent);
+  font-size: 2.4rem;
+  line-height: 0;
+  vertical-align: -0.35rem;
+  margin-right: 0.15rem;
+}
+.apps-spotlight__name { margin: 0; font-size: 0.95rem; font-weight: 700; }
+.apps-spotlight__role { margin: 0; font-size: 0.83rem; color: var(--apps-muted); }
+.apps-spotlight__partner {
+  margin: 0.3rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--apps-accent);
 }
 `;
  
@@ -1078,9 +1305,21 @@ function initFaqAccordion() {
    11. SECTION MOUNTING
    --------------------------------------------------------- */
  
+/* Should the recruitment sections auto-append on this page?
+   Default: only on the site root. Override per page with
+   <body data-apps-sections="on"> or "off". */
+function shouldAutoInject() {
+  const flag = document.body.dataset.appsSections;
+  if (flag === "on") return true;
+  if (flag === "off") return false;
+  const page = window.location.pathname.split("/").pop().toLowerCase();
+  return page === "" || page === "index.html";
+}
+ 
 /* Returns the <section> to render into. If the page already has an
    element with this id, we use it. Otherwise we create a section and
-   append it to the end of <main> (or <body>), before the footer. */
+   append it to the end of <main> (or <body>), before the footer —
+   but only on pages where auto-injection is allowed. */
 function getSectionHost(id, options = {}) {
   const existing = document.getElementById(id);
   if (existing) {
@@ -1088,6 +1327,8 @@ function getSectionHost(id, options = {}) {
     if (options.tint) existing.classList.add("apps-block--tint");
     return existing;
   }
+  if (!shouldAutoInject()) return null;
+ 
   const section = document.createElement("section");
   section.id = id;
   section.className = "apps-block";
@@ -1131,6 +1372,7 @@ function tipList(tips, extraClass = "") {
 function renderRecruitment() {
   if (!RECRUITMENT_TIMELINE.length) return;
   const section = getSectionHost("recruitment");
+  if (!section) return;
   const inner = sectionShell(section, {
     eyebrow: `${RECRUITMENT_CYCLE} Recruitment`,
     heading: "Timeline & what to expect",
@@ -1182,6 +1424,7 @@ function renderRecruitment() {
  
 function renderCoffeeChats() {
   const section = getSectionHost("coffee-chats", { tint: true });
+  if (!section) return;
   const inner = sectionShell(section, {
     eyebrow: "Coffee Chats",
     heading: "Talk to a member first",
@@ -1233,6 +1476,7 @@ function renderCoffeeChats() {
  
 function renderInterviewTips() {
   const section = getSectionHost("interview-tips");
+  if (!section) return;
   const inner = sectionShell(section, {
     eyebrow: "Interviews",
     heading: "How to prepare for each round",
@@ -1257,50 +1501,172 @@ function renderInterviewTips() {
   });
 }
  
-function renderProjects() {
-  if (!PAST_PROJECTS.length) return;
-  const section = getSectionHost("projects", { tint: true });
-  const inner = sectionShell(section, {
-    eyebrow: "Our Work",
-    heading: "Past projects",
-    lede:
-      "Every semester, project teams work with a real client and deliver real analysis. This is the work new members join.",
-    note: PROJECTS_ARE_PLACEHOLDER
-      ? "Placeholder content: replace the PAST_PROJECTS array in script.js with real client work, then set PROJECTS_ARE_PLACEHOLDER to false to remove this banner."
-      : "",
-  });
+/* ---- Stakeholders: logo wall ---- */
+function renderStakeholderLogos() {
+  const host = document.getElementById("stakeholderLogos");
+  if (!host || !STAKEHOLDERS.length) return;
+  host.className = "apps-logos";
+  host.innerHTML = "";
  
-  const grid = document.createElement("div");
-  grid.className = "apps-grid";
-  grid.innerHTML = PAST_PROJECTS.map(
-    (project) => `
-      <article class="apps-project">
-        <div class="apps-project__top">
-          <span class="apps-project__area">${escapeHtml(project.area || "")}</span>
-          <span class="apps-project__term">${escapeHtml(project.term || "")}</span>
-        </div>
-        <h3 class="apps-project__title">${escapeHtml(project.title)}</h3>
-        <p class="apps-project__client">${escapeHtml(project.client || "")}</p>
-        <p class="apps-project__summary">${escapeHtml(project.summary || "")}</p>
+  STAKEHOLDERS.forEach((org) => {
+    const link = document.createElement("a");
+    link.className = "apps-logo";
+    link.href = org.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", `${org.name} (opens in a new tab)`);
+ 
+    function showWordmark() {
+      link.innerHTML = "";
+      const mark = document.createElement("div");
+      mark.className = "apps-logo__wordmark";
+      mark.textContent = org.name;
+      if (org.legalName) {
+        const sub = document.createElement("span");
+        sub.textContent = org.legalName;
+        mark.appendChild(sub);
+      }
+      link.appendChild(mark);
+    }
+ 
+    if (org.logo) {
+      const img = document.createElement("img");
+      img.src = org.logo;
+      img.alt = `${org.name} logo`;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("error", showWordmark, { once: true });
+      link.appendChild(img);
+    } else {
+      showWordmark();
+    }
+    host.appendChild(link);
+  });
+}
+ 
+/* ---- Stakeholders: detail cards ---- */
+function renderStakeholderCards() {
+  const host = document.getElementById("stakeholderGrid");
+  if (!host || !STAKEHOLDERS.length) return;
+  host.className = "apps-grid apps-grid--wide";
+  host.innerHTML = STAKEHOLDERS.map(
+    (org) => `
+      <article class="apps-partner">
+        <span class="apps-partner__focus">${escapeHtml(org.focus || "")}</span>
+        <h3 class="apps-partner__name">${escapeHtml(org.name)}</h3>
         ${
-          project.deliverable
-            ? `<p class="apps-project__deliverable"><b>Deliverable</b>${escapeHtml(
-                project.deliverable
+          org.legalName
+            ? `<p class="apps-partner__legal">${escapeHtml(org.legalName)}</p>`
+            : ""
+        }
+        <p class="apps-partner__about">${escapeHtml(org.about || "")}</p>
+        ${
+          org.engagement
+            ? `<p class="apps-partner__work"><b>What APPS did</b>${escapeHtml(
+                org.engagement
               )}</p>`
             : ""
         }
+        <a class="apps-partner__link" href="${escapeHtml(
+          org.url
+        )}" target="_blank" rel="noopener noreferrer">Visit ${escapeHtml(
+      org.name
+    )} &rarr;</a>
       </article>`
   ).join("");
-  inner.appendChild(grid);
+}
+ 
+/* ---- Published work ---- */
+function renderPublications() {
+  const host = document.getElementById("publicationList");
+  if (!host || !PUBLICATIONS.length) return;
+  host.innerHTML =
+    PUBLICATIONS.map(
+      (pub) => `
+      <a class="apps-pub" href="${escapeHtml(
+        pub.url
+      )}" target="_blank" rel="noopener noreferrer">
+        <div class="apps-pub__meta">${escapeHtml(pub.publisher || "")}${
+        pub.year ? " &middot; " + escapeHtml(pub.year) : ""
+      }</div>
+        <h3 class="apps-pub__title">${escapeHtml(pub.title)}</h3>
+        ${
+          pub.subtitle
+            ? `<p class="apps-pub__sub">${escapeHtml(pub.subtitle)}</p>`
+            : ""
+        }
+        ${
+          pub.credit
+            ? `<p class="apps-pub__credit">${escapeHtml(pub.credit)}</p>`
+            : ""
+        }
+        <span class="apps-pub__cta">Read the report (PDF) &rarr;</span>
+      </a>`
+    ).join("") +
+    (PUBLICATION_INDEX
+      ? `<a class="apps-pub-index" href="${escapeHtml(
+          PUBLICATION_INDEX.url
+        )}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+          PUBLICATION_INDEX.label
+        )} &rarr;</a>`
+      : "");
+}
+ 
+/* ---- Member spotlights ---- */
+function renderSpotlights() {
+  const host = document.getElementById("spotlightList");
+  if (!host || !SPOTLIGHTS.length) return;
+  host.innerHTML = "";
+ 
+  SPOTLIGHTS.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "apps-spotlight";
+ 
+    const avatar = document.createElement("div");
+    avatar.className = "apps-spotlight__avatar";
+    function showInitials() {
+      avatar.innerHTML = "";
+      avatar.textContent = initialsFromName(item.name);
+    }
+    if (item.photo) {
+      const img = document.createElement("img");
+      img.src = `${item.photo}?v=${HEADSHOT_VERSION}`;
+      img.alt = `${item.name} headshot`;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("error", showInitials, { once: true });
+      avatar.appendChild(img);
+    } else {
+      showInitials();
+    }
+ 
+    const body = document.createElement("div");
+    body.innerHTML = `
+      <blockquote class="apps-spotlight__quote">${escapeHtml(
+        item.quote
+      )}</blockquote>
+      <p class="apps-spotlight__name">${escapeHtml(item.name)}</p>
+      <p class="apps-spotlight__role">${escapeHtml(item.role || "")}</p>
+      ${
+        item.partner
+          ? `<p class="apps-spotlight__partner">${escapeHtml(item.partner)}</p>`
+          : ""
+      }`;
+ 
+    card.appendChild(avatar);
+    card.appendChild(body);
+    host.appendChild(card);
+  });
 }
  
 /* Adds nav links for any sections this script created, so the new
-   content is reachable from the header on single-page layouts. */
+   content is reachable from the header on single-page layouts.
+   Also adds a Stakeholders link pointing at the partner page. */
 function addNavLinks() {
   const nav = document.getElementById("siteNav") || document.querySelector(".nav");
   if (!nav) return;
+ 
   const links = [
-    { id: "projects", label: "Projects" },
     { id: "recruitment", label: "Recruitment" },
     { id: "coffee-chats", label: "Coffee Chats" },
     { id: "interview-tips", label: "Interviews" },
@@ -1314,7 +1680,17 @@ function addNavLinks() {
     a.textContent = label;
     nav.appendChild(a);
   });
+ 
+  const onPartnerPage = !!document.getElementById("stakeholderGrid");
+  if (!onPartnerPage && !nav.querySelector('a[href*="stakeholders.html"]')) {
+    const a = document.createElement("a");
+    a.href = STAKEHOLDERS_PAGE;
+    a.textContent = "Stakeholders";
+    nav.appendChild(a);
+  }
 }
+ 
+const STAKEHOLDERS_PAGE = "stakeholders.html";
  
 /* ---------------------------------------------------------
    13. BOOT
@@ -1324,21 +1700,28 @@ document.addEventListener("DOMContentLoaded", () => {
   injectLightTokens();
   injectSectionStyles();
  
+  removeLegacyStats();
+ 
   initMobileNav();
   renderExec();
   renderMembers();
  
+  // Stakeholders page content (no-ops on pages without these ids).
+  renderStakeholderLogos();
+  renderStakeholderCards();
+  renderPublications();
+  renderSpotlights();
+ 
   // New sections must mount before scroll-reveal and nav wiring.
-  renderProjects();
   renderRecruitment();
   renderCoffeeChats();
   renderInterviewTips();
   addNavLinks();
  
   initScrollReveal();
-  initCounters();
   initBackToTop();
   initHeaderScroll();
   initActiveNav();
   initFaqAccordion();
 });
+ 
