@@ -482,14 +482,6 @@ const MEMBERS = [
     major: "Environment & Sustainability, Minor in International Relations",
     photo: "assets/headshots/ella-kim.jpeg",
   },
- {
-    name: "Gargi Singh",
-    role: "Project Manager",
-    graduationYear: 2029,
-    college: "Jeb E. Brooks School of Public Policy",
-    major: "Public Policy, Minors in Business and Law & Society",
-    photo: "assets/headshots/gargi-singh.jpeg",
-  },
    {
     name: "Sophia Kim",
     role: "Project Manager",
@@ -497,6 +489,14 @@ const MEMBERS = [
     college: "College of Engineering",
     major: "BME, Minor in Health Policy",
     photo: "assets/headshots/sophia-kim.jpeg",
+  },
+{
+    name: "Gargi Singh",
+    role: "Project Manager",
+    graduationYear: 2029,
+    college: "Jeb E. Brooks School of Public Policy",
+    major: "Public Policy, Minors in Business and Law & Society",
+    photo: "assets/headshots/gargi-singh.jpeg",
   },
   {
     name: "Charlie Rogers",
