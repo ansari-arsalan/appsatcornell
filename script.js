@@ -90,6 +90,10 @@ const CLEANUP = {
   removeRunningText: true,
   // Replace the front page photo. Set to "" to leave it alone.
   heroPhoto: "assets/apps-group-photo.jpg",
+  // The image being replaced, matched by filename anywhere in its src.
+  // This is the reliable way to find it — no CSS selector guessing.
+  // Leave "" to fall back to the HERO_PHOTO_SELECTORS list below.
+  heroPhotoReplaces: "DSC07251.JPG",
   // Set true to also stop the front page photo from animating.
   stopHeroMotion: false,
   // Remove nav links pointing at the retired stakeholders page.
@@ -160,15 +164,82 @@ const HERO_PHOTO_SELECTORS = [
 
 function swapHeroPhoto() {
   if (!CLEANUP.heroPhoto) return;
+
   let img = null;
-  for (const selector of HERO_PHOTO_SELECTORS) {
-    img = document.querySelector(selector);
-    if (img) break;
+  let matched = "";
+
+  // 1. Match by filename. Most reliable: no CSS selector guessing.
+  if (CLEANUP.heroPhotoReplaces) {
+    const needle = CLEANUP.heroPhotoReplaces.toLowerCase();
+    img =
+      Array.from(document.images).find((el) =>
+        (el.getAttribute("src") || "").toLowerCase().includes(needle)
+      ) || null;
+    if (img) matched = `filename "${CLEANUP.heroPhotoReplaces}"`;
   }
-  if (!img) return;
+
+  // 2. Fall back to the selector list.
+  if (!img) {
+    for (const selector of HERO_PHOTO_SELECTORS) {
+      img = document.querySelector(selector);
+      if (img) {
+        matched = selector;
+        break;
+      }
+    }
+  }
+
+  // Case A: no image matched. The photo is somewhere this script does
+  // not look, so nothing was swapped and the old photo is still there.
+  if (!img) {
+    const all = document.querySelectorAll("main img, header img, body img");
+    console.warn(
+      "[APPS] Hero photo NOT swapped: none of HERO_PHOTO_SELECTORS matched.\n" +
+        "Images found on this page (add the right one to HERO_PHOTO_SELECTORS):"
+    );
+    all.forEach((el, i) => {
+      console.warn(
+        `  [${i}] src="${el.getAttribute("src")}"  class="${el.className}"  ` +
+          `parent=<${el.parentElement ? el.parentElement.tagName.toLowerCase() : "?"} class="${
+            el.parentElement ? el.parentElement.className : ""
+          }">`
+      );
+    });
+    return;
+  }
+
+  // Case B: an image matched. Keep the old src so we can put it back if
+  // the new file is missing — a visible old photo beats a broken icon.
+  const previousSrc = img.getAttribute("src");
+
+  img.addEventListener(
+    "error",
+    () => {
+      console.error(
+        `[APPS] Hero photo failed to load: "${CLEANUP.heroPhoto}"\n` +
+          `  Resolved to: ${new URL(CLEANUP.heroPhoto, window.location.href).href}\n` +
+          "  The file is not at that path. Check that apps-group-photo.jpg is\n" +
+          "  inside your assets/ folder, and that the name matches exactly\n" +
+          "  (hosting is case-sensitive). Restoring the previous photo."
+      );
+      if (previousSrc) img.src = previousSrc;
+    },
+    { once: true }
+  );
+
+  img.addEventListener(
+    "load",
+    () => {
+      if (img.getAttribute("src") === CLEANUP.heroPhoto) {
+        console.log(`[APPS] Hero photo swapped via selector: ${matched}`);
+      }
+    },
+    { once: true }
+  );
 
   img.src = CLEANUP.heroPhoto;
   img.srcset = "";
+  img.removeAttribute("sizes");
   img.alt = "Applied Public Policy Strategies members";
 
   if (CLEANUP.stopHeroMotion) {
