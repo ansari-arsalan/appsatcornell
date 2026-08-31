@@ -537,6 +537,14 @@ const MEMBERS = [
     college: "School of Industrial and Labor Relations",
     major: "ILR / Art History",
     photo: "assets/headshots/jackie-cho.jpeg",
+  }, 
+   {
+    name: "Calista Chang",
+    role: "Policy Analyst",
+    graduationYear: 2028,
+    college: "Dyson School of Applied Economics and Management",
+    major: "Dyson",
+    photo: "assets/headshots/calista-chang.jpeg",
   },
   {
     name: "Julia Ostroff",
