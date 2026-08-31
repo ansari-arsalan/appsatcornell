@@ -543,7 +543,7 @@ const MEMBERS = [
     role: "Policy Analyst",
     graduationYear: 2028,
     college: "Dyson School of Applied Economics and Management",
-    major: "Dyson",
+    major: "Applied Economics & Management",
     photo: "assets/headshots/calista-chang.jpeg",
   },
   {
