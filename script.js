@@ -636,7 +636,7 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Agriculture and Life Sciences",
     major: "Biometry & Statistics",
-    photo: "assets/headshots/muntasir-ansary.jpeg",
+    photo: "assets/headshots/6E20216D-6BE3-4F59-A72A-70AAE4B51C15IMG_6598.jpeg",
   },
   {
     name: "Shreyash Shrestha",
