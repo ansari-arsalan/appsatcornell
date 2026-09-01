@@ -162,8 +162,49 @@ const HERO_PHOTO_SELECTORS = [
   "main > section:first-of-type img",
 ];
 
+/* Case 0: the photo is a CSS background-image, not an <img>.
+   A hero that animates is very often a background. Nothing that
+   only looks at <img> tags can find it, so check this first.
+   Returns the number of elements swapped. */
+function swapHeroBackground() {
+  const needle = (CLEANUP.heroPhotoReplaces || "").toLowerCase();
+  if (!needle) return 0;
+
+  let count = 0;
+  document.querySelectorAll("*").forEach((el) => {
+    let value = "";
+    try {
+      value = window.getComputedStyle(el).backgroundImage || "";
+    } catch (err) {
+      return;
+    }
+    if (!value || value === "none") return;
+    if (!value.toLowerCase().includes(needle)) return;
+
+    // Preserve any gradient/overlay layers, swap only the matching url().
+    const updated = value.replace(
+      /url\((['"]?)([^)'"]*)\1\)/gi,
+      (whole, quote, url) =>
+        url.toLowerCase().includes(needle)
+          ? `url("${CLEANUP.heroPhoto}")`
+          : whole
+    );
+    el.style.backgroundImage = updated;
+    count += 1;
+    console.log(
+      `[APPS] Hero photo swapped as a CSS background on <${el.tagName.toLowerCase()}` +
+        `${el.id ? " id=\"" + el.id + "\"" : ""}` +
+        `${el.className && typeof el.className === "string" ? ' class="' + el.className + '"' : ""}>`
+    );
+  });
+  return count;
+}
+
 function swapHeroPhoto() {
   if (!CLEANUP.heroPhoto) return;
+
+  // 0. CSS background-image.
+  const backgrounds = swapHeroBackground();
 
   let img = null;
   let matched = "";
@@ -178,8 +219,9 @@ function swapHeroPhoto() {
     if (img) matched = `filename "${CLEANUP.heroPhotoReplaces}"`;
   }
 
-  // 2. Fall back to the selector list.
-  if (!img) {
+  // 2. Fall back to the selector list — but only if nothing else
+  //    matched, so we never swap an unrelated image by accident.
+  if (!img && !backgrounds) {
     for (const selector of HERO_PHOTO_SELECTORS) {
       img = document.querySelector(selector);
       if (img) {
@@ -188,6 +230,8 @@ function swapHeroPhoto() {
       }
     }
   }
+
+  if (!img && backgrounds) return; // handled as a background
 
   // Case A: no image matched. The photo is somewhere this script does
   // not look, so nothing was swapped and the old photo is still there.
@@ -474,7 +518,7 @@ const MEMBERS = [
     major: "Public Policy",
     photo: "assets/headshots/annelie-chang.jpeg",
   },
-   {
+  {
     name: "Ella Kim",
     role: "Project Manager",
     graduationYear: 2029,
@@ -482,7 +526,7 @@ const MEMBERS = [
     major: "Environment & Sustainability, Minor in International Relations",
     photo: "assets/headshots/ella-kim.jpeg",
   },
-   {
+  {
     name: "Sophia Kim",
     role: "Project Manager",
     graduationYear: 2029,
@@ -490,7 +534,7 @@ const MEMBERS = [
     major: "BME, Minor in Health Policy",
     photo: "assets/headshots/sophia-kim.jpeg",
   },
-{
+  {
     name: "Gargi Singh",
     role: "Project Manager",
     graduationYear: 2029,
@@ -537,8 +581,8 @@ const MEMBERS = [
     college: "School of Industrial and Labor Relations",
     major: "ILR / Art History",
     photo: "assets/headshots/jackie-cho.jpeg",
-  }, 
-   {
+  },
+  {
     name: "Calista Chang",
     role: "Policy Analyst",
     graduationYear: 2028,
@@ -592,7 +636,7 @@ const MEMBERS = [
     graduationYear: 2029,
     college: "College of Agriculture and Life Sciences",
     major: "Biometry & Statistics",
-    photo: "assets/headshots/6E20216D-6BE3-4F59-A72A-70AAE4B51C15IMG_6598.jpeg",
+    photo: "assets/headshots/muntasir-ansary.jpeg",
   },
   {
     name: "Shreyash Shrestha",
@@ -636,7 +680,7 @@ const SERVICES = [
 
 const STAKEHOLDER_TYPES = [
   "Nonprofit, policy, social justice, and advocacy organizations",
-   "Government agencies",
+  "Government agencies",
   "Think tanks",
   "Private organizations and companies",
   "Publications",
@@ -730,6 +774,87 @@ const TESTIMONIALS = [
 ];
 
 /* ---------------------------------------------------------
+   6b. RECRUITMENT — Fall 2026
+   Public-facing only. Internal to-dos (Instagram posts, takeovers)
+   are intentionally left out.
+   --------------------------------------------------------- */
+
+const RECRUITMENT_CYCLE = "Fall 2026";
+
+const RECRUITMENT_EVENTS = [
+  {
+    date: "2026-09-05",
+    title: "Clubfest — Applications open",
+    detail: "The written application goes live.",
+    tag: "Apply",
+  },
+  {
+    date: "2026-09-06",
+    title: "APPS x ALPFA Resume Review",
+    detail: "Bring a copy of your resume for review.",
+    tag: "Workshop",
+  },
+  {
+    date: "2026-09-07",
+    title: "Labor Day — no APPS events",
+    detail: "",
+    tag: "Break",
+  },
+  {
+    date: "2026-09-08",
+    title: "First Information Session + Casing Workshop",
+    detail:
+      "Overview of APPS and the application, followed by a walkthrough of how we structure a policy case.",
+    tag: "Info session",
+  },
+  {
+    date: "2026-09-09",
+    title: "DEI Office Hours",
+    detail: "",
+    tag: "Office hours",
+  },
+  {
+    date: "2026-09-11",
+    title:
+      "Introduction to the Policy Space and Resume Review with CULSR and POLIS",
+    detail: "",
+    tag: "Workshop",
+  },
+  {
+    date: "2026-09-12",
+    title:
+      "Apps w/ APPS: Speed Dating with Members + Second Information Session",
+    detail: "Appetizers served. Rotating conversations with current members.",
+    tag: "Info session",
+  },
+  {
+    date: "2026-09-14",
+    title: "DEI + Recruitment Office Hours",
+    detail: "Open to anyone, including applicants who have not yet submitted.",
+    tag: "Office hours",
+  },
+  {
+    date: "2026-09-16",
+    title: "Applications close",
+    detail: "",
+    tag: "Deadline",
+  },
+];
+
+const APPLICATION_ROUNDS = [
+  { round: "Round 1", date: "2026-09-16", name: "Resume Review" },
+  { round: "Round 2", date: "2026-09-18", name: "Behavioral Interview" },
+  { round: "Round 3", date: "2026-09-19", name: "Casing Interview" },
+];
+
+const ROUND_ONE_REQUIREMENTS = [
+  "Resume",
+  "Why APPS (250 words)",
+  "Why policy / government consulting (250 words)",
+  "Writing sample (minimum 2 pages, maximum 6 pages). A class submission is acceptable; a government, policy, or research paper is recommended.",
+];
+
+/* ---------------------------------------------------------
    7. QUICK LINKS
    --------------------------------------------------------- */
 
@@ -787,6 +912,28 @@ function getDisplayYear(member, now = new Date()) {
   if (member.year) return member.year;
   if (member.graduationYear) return getYearInCollege(member.graduationYear, now);
   return "";
+}
+
+function parseLocalDate(iso) {
+  const p = String(iso).split("-").map(Number);
+  return new Date(p[0], p[1] - 1, p[2]);
+}
+
+function formatEventDate(iso) {
+  return parseLocalDate(iso).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+}
+
+function getTimelineStatus(iso) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const date = parseLocalDate(iso).getTime();
+  if (date < today.getTime()) return "past";
+  if (date === today.getTime()) return "today";
+  return "upcoming";
 }
 
 function escapeHtml(value) {
@@ -884,6 +1031,104 @@ const APPS_SECTION_STYLES = `
   background: var(--apps-accent);
 }
 .apps-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem 2.5rem; }
+
+/* Recruitment timeline */
+.apps-timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+.apps-timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--apps-line);
+}
+.apps-timeline__item { position: relative; padding: 0 0 1.45rem 2.25rem; }
+.apps-timeline__item:last-child { padding-bottom: 0; }
+.apps-timeline__dot {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--apps-surface);
+  border: 2px solid var(--apps-accent);
+  box-sizing: border-box;
+}
+.apps-timeline__item[data-status="past"] { opacity: 0.5; }
+.apps-timeline__item[data-status="past"] .apps-timeline__dot {
+  background: var(--apps-line);
+  border-color: var(--apps-line);
+}
+.apps-timeline__item[data-status="today"] .apps-timeline__dot {
+  background: var(--apps-accent);
+  box-shadow: 0 0 0 4px var(--apps-accent-soft);
+}
+.apps-timeline__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.apps-timeline__date {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--apps-muted);
+  min-width: 7rem;
+}
+.apps-timeline__title { font-size: 1rem; font-weight: 650; margin: 0; color: var(--apps-ink); }
+.apps-timeline__tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.16rem 0.5rem;
+  border-radius: 999px;
+  background: var(--apps-tint);
+  color: var(--apps-muted);
+  border: 1px solid var(--apps-line);
+}
+.apps-timeline__item[data-tag="Deadline"] .apps-timeline__tag,
+.apps-timeline__item[data-tag="Apply"] .apps-timeline__tag {
+  background: var(--apps-accent-soft);
+  color: var(--apps-accent);
+  border-color: #f2d5d5;
+}
+.apps-timeline__detail {
+  margin: 0;
+  font-size: 0.91rem;
+  line-height: 1.6;
+  color: var(--apps-muted);
+  max-width: 68ch;
+}
+
+/* Application rounds */
+.apps-rounds { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.apps-round {
+  background: var(--apps-surface);
+  border: 1px solid var(--apps-line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: var(--apps-shadow);
+}
+.apps-round__badge {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apps-accent);
+  background: var(--apps-accent-soft);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.apps-round__name { margin: 0 0 0.25rem; font-size: 1.02rem; font-weight: 650; }
+.apps-round__date { margin: 0; font-size: 0.85rem; color: var(--apps-muted); font-weight: 600; }
 
 /* Quick links */
 .apps-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
@@ -1351,6 +1596,74 @@ function renderWork() {
   }
 }
 
+/* ---- Recruitment ---- */
+function renderRecruitment() {
+  if (!RECRUITMENT_EVENTS.length) return;
+  const section = getSectionHost("recruitment", { tint: true });
+  if (!section) return;
+  const inner = sectionShell(section, {
+    eyebrow: "Recruitment",
+    heading: `${RECRUITMENT_CYCLE} recruitment timeline`,
+    lede:
+      "All events are open to prospective members. Attendance is not required to apply.",
+  });
+
+  const list = document.createElement("ol");
+  list.className = "apps-timeline";
+  list.innerHTML = RECRUITMENT_EVENTS.map(
+    (item) => `
+      <li class="apps-timeline__item" data-status="${getTimelineStatus(
+        item.date
+      )}" data-tag="${escapeHtml(item.tag || "")}">
+        <span class="apps-timeline__dot" aria-hidden="true"></span>
+        <div class="apps-timeline__head">
+          <span class="apps-timeline__date">${escapeHtml(
+            formatEventDate(item.date)
+          )}</span>
+          <h3 class="apps-timeline__title">${escapeHtml(item.title)}</h3>
+          ${
+            item.tag
+              ? `<span class="apps-timeline__tag">${escapeHtml(item.tag)}</span>`
+              : ""
+          }
+        </div>
+        ${
+          item.detail
+            ? `<p class="apps-timeline__detail">${escapeHtml(item.detail)}</p>`
+            : ""
+        }
+      </li>`
+  ).join("");
+  inner.appendChild(list);
+
+  // Review process
+  const roundsHead = document.createElement("h3");
+  roundsHead.className = "apps-subhead";
+  roundsHead.textContent = "Application review process";
+  inner.appendChild(roundsHead);
+
+  const rounds = document.createElement("div");
+  rounds.className = "apps-rounds";
+  rounds.innerHTML = APPLICATION_ROUNDS.map(
+    (r) => `
+      <article class="apps-round">
+        <span class="apps-round__badge">${escapeHtml(r.round)}</span>
+        <h4 class="apps-round__name">${escapeHtml(r.name)}</h4>
+        <p class="apps-round__date">${escapeHtml(formatEventDate(r.date))}</p>
+      </article>`
+  ).join("");
+  inner.appendChild(rounds);
+
+  // Round 1 submission requirements
+  if (ROUND_ONE_REQUIREMENTS.length) {
+    const reqHead = document.createElement("h3");
+    reqHead.className = "apps-subhead";
+    reqHead.textContent = "Round 1: what to submit";
+    inner.appendChild(reqHead);
+    inner.appendChild(bulletList(ROUND_ONE_REQUIREMENTS));
+  }
+}
+
 /* ---- Get involved ---- */
 function renderQuickLinks() {
   if (!QUICK_LINKS.length) return;
@@ -1417,18 +1730,22 @@ function addNavLinks() {
     }
   });
 
-  // Get Involved: immediately after Team.
-  const involved = document.getElementById("get-involved");
-  if (involved && !nav.querySelector('a[href="#get-involved"]')) {
-    const link = makeLink("get-involved", "Get Involved");
-    if (teamLink && teamLink.nextSibling) {
-      nav.insertBefore(link, teamLink.nextSibling);
-    } else if (teamLink) {
-      nav.appendChild(link);
+  // Get Involved, then Recruitment: immediately after Team, in order.
+  let anchor = teamLink;
+  [
+    { id: "get-involved", label: "Get Involved" },
+    { id: "recruitment", label: "Recruitment" },
+  ].forEach(({ id, label }) => {
+    if (!document.getElementById(id)) return;
+    if (nav.querySelector(`a[href="#${id}"]`)) return;
+    const link = makeLink(id, label);
+    if (anchor && anchor.nextSibling) {
+      nav.insertBefore(link, anchor.nextSibling);
     } else {
       nav.appendChild(link);
     }
-  }
+    anchor = link;
+  });
 }
 
 /* ---------------------------------------------------------
@@ -1452,6 +1769,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sections mount before scroll-reveal and nav wiring.
   renderServices();
   renderWork();
+  renderRecruitment();
   renderQuickLinks();
   addNavLinks();
 
