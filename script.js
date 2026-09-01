@@ -89,7 +89,7 @@ const CLEANUP = {
   // Remove the scrolling line of text running across the site.
   removeRunningText: true,
   // Replace the front page photo. Set to "" to leave it alone.
-  heroPhoto: "assets/apps-group-photo.jpg",
+  heroPhoto: "assets/group-candid-web.jpg",
   // The image being replaced, matched by filename anywhere in its src.
   // This is the reliable way to find it — no CSS selector guessing.
   // Leave "" to fall back to the HERO_PHOTO_SELECTORS list below.
@@ -216,7 +216,7 @@ function swapHeroPhoto() {
       Array.from(document.images).find((el) =>
         (el.getAttribute("src") || "").toLowerCase().includes(needle)
       ) || null;
-    if (img) matched = `filename "group-candid-web.jpg"`;
+    if (img) matched = `filename "${CLEANUP.heroPhotoReplaces}"`;
   }
 
   // 2. Fall back to the selector list — but only if nothing else
