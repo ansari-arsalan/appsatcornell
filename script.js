@@ -216,7 +216,7 @@ function swapHeroPhoto() {
       Array.from(document.images).find((el) =>
         (el.getAttribute("src") || "").toLowerCase().includes(needle)
       ) || null;
-    if (img) matched = `filename "${CLEANUP.heroPhotoReplaces}"`;
+    if (img) matched = `filename "group-candid-web.jpg"`;
   }
 
   // 2. Fall back to the selector list — but only if nothing else
