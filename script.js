@@ -575,14 +575,6 @@ const MEMBERS = [
     photo: "assets/headshots/gabrielle-abraham.jpeg",
   },
   {
-    name: "Jackie Cho",
-    role: "Policy Analyst",
-    graduationYear: 2027,
-    college: "School of Industrial and Labor Relations",
-    major: "ILR / Art History",
-    photo: "assets/headshots/jackie-cho.jpeg",
-  },
-  {
     name: "Calista Chang",
     role: "Policy Analyst",
     graduationYear: 2028,
