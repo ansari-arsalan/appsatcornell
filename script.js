@@ -813,17 +813,11 @@ const RECRUITMENT_EVENTS = [
     tag: "Workshop",
   },
   {
-    date: "2026-09-12",
+    date: "2026-09-14",
     title:
       "Apps w/ APPS: Speed Dating with Members + Second Information Session",
     detail: "Appetizers served. Rotating conversations with current members.",
     tag: "Info session",
-  },
-  {
-    date: "2026-09-14",
-    title: "DEI + Recruitment Office Hours",
-    detail: "Open to anyone, including applicants who have not yet submitted.",
-    tag: "Office hours",
   },
   {
     date: "2026-09-16",
@@ -835,8 +829,8 @@ const RECRUITMENT_EVENTS = [
 
 const APPLICATION_ROUNDS = [
   { round: "Round 1", date: "2026-09-16", name: "Resume Review" },
-  { round: "Round 2", date: "2026-09-18", name: "Behavioral Interview" },
-  { round: "Round 3", date: "2026-09-19", name: "Casing Interview" },
+  { round: "Round 2", date: "2026-09-19", name: "Behavioral Interview" },
+  { round: "Round 3", date: "2026-09-20", name: "Casing Interview" },
 ];
 
 const ROUND_ONE_REQUIREMENTS = [
