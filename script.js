@@ -582,28 +582,12 @@ const MEMBERS = [
     photo: "assets/headshots/calista-chang.jpeg",
   },
   {
-    name: "Julia Ostroff",
-    role: "Policy Analyst",
-    graduationYear: 2029,
-    college: "College of Arts and Sciences",
-    major: "Computer Science & Government",
-    photo: "assets/headshots/julia-ostroff.jpeg",
-  },
-  {
     name: "Judy Li",
     role: "Policy Analyst",
     graduationYear: 2029,
     college: "Jeb E. Brooks School of Public Policy",
     major: "Public Policy",
     photo: "assets/headshots/judy-li.jpeg",
-  },
-  {
-    name: "Madeline Shukovsky",
-    role: "Policy Analyst",
-    graduationYear: 2029,
-    college: "Jeb E. Brooks School of Public Policy",
-    major: "Public Policy",
-    photo: "assets/headshots/madeline-shukovsky.jpeg",
   },
   {
     name: "Marianna Wineinger",
@@ -1372,6 +1356,65 @@ function addNavLinks() {
 }
 
 /* ---------------------------------------------------------
+   9b. LAYOUT TWEAKS (contact placement, FAQ default state)
+   --------------------------------------------------------- */
+
+/* The contact block lives in index.html. It is found by id first,
+   then by its heading text, and moved to sit directly after the
+   "Our Work" section (which ends with the project manager quotes). */
+const CONTACT_SECTION_ID = "contact";
+const CONTACT_TEXT = "interested in partnering with apps";
+
+function moveContactBelowWork() {
+  const work = document.getElementById("work");
+  if (!work) return;
+
+  let block = document.getElementById(CONTACT_SECTION_ID);
+  if (!block) {
+    const match = Array.from(
+      document.querySelectorAll("h1, h2, h3, h4, p, span")
+    ).find((el) => el.textContent.trim().toLowerCase().includes(CONTACT_TEXT));
+    block = match ? match.closest("section") : null;
+  }
+
+  if (!block) {
+    console.warn("[APPS] Contact section not found, so it was not moved.");
+    return;
+  }
+  if (block === work || block.contains(work) || work.contains(block)) return;
+
+  work.after(block);
+}
+
+/* Starts every FAQ item closed. Native <details> lose their "open"
+   attribute. Custom accordions are closed by clicking their own toggle,
+   so the site's existing open/close logic does the work. */
+const FAQ_CONTAINER_SELECTORS =
+  '#faq, #faqs, [id*="faq"], [class*="faq"], [class*="accordion"]';
+
+function closeOpenFaqs() {
+  const containers = document.querySelectorAll(FAQ_CONTAINER_SELECTORS);
+  containers.forEach((box) => {
+    box.querySelectorAll("details[open]").forEach((d) => d.removeAttribute("open"));
+
+    box.querySelectorAll('[aria-expanded="true"]').forEach((toggle) => {
+      toggle.click();
+      // If no click handler closed it, close it by hand.
+      if (toggle.getAttribute("aria-expanded") === "true") {
+        toggle.setAttribute("aria-expanded", "false");
+        const item = toggle.parentElement;
+        [toggle, item].forEach((el) => {
+          if (el) el.classList.remove("open", "active", "is-open", "expanded");
+        });
+        const panelId = toggle.getAttribute("aria-controls");
+        const panel = panelId ? document.getElementById(panelId) : null;
+        if (panel) panel.hidden = true;
+      }
+    });
+  });
+}
+
+/* ---------------------------------------------------------
    10. BOOT
    --------------------------------------------------------- */
 
@@ -1392,10 +1435,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sections mount before scroll-reveal and nav wiring.
   renderServices();
   renderWork();
+  moveContactBelowWork();
   addNavLinks();
 
   initScrollReveal();
   initBackToTop();
   initHeaderScroll();
   initActiveNav();
+
+  // Runs after every other DOMContentLoaded handler, including the
+  // site's own FAQ script, so the first item cannot reopen itself.
+  setTimeout(closeOpenFaqs, 0);
 });
