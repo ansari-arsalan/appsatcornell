@@ -1356,34 +1356,63 @@ function addNavLinks() {
 }
 
 /* ---------------------------------------------------------
-   9b. LAYOUT TWEAKS (contact placement, FAQ default state)
+   9b. LAYOUT TWEAKS (FAQ and contact placement, FAQ default state)
    --------------------------------------------------------- */
 
-/* The contact block lives in index.html. It is found by id first,
-   then by its heading text, and moved to sit directly after the
-   "Our Work" section (which ends with the project manager quotes). */
+/* Order after "Our Work": FAQ section(s), then Contact.
+   Both live in index.html. FAQ sections are found by an id containing
+   "faq" or a heading starting with "FAQ". Contact is found by id first,
+   then by its heading text. */
 const CONTACT_SECTION_ID = "contact";
 const CONTACT_TEXT = "interested in partnering with apps";
 
-function moveContactBelowWork() {
+function findFaqSections() {
+  const found = new Set();
+  document.querySelectorAll('section[id*="faq" i]').forEach((s) => found.add(s));
+  document.querySelectorAll("h1, h2, h3, h4, p, span").forEach((el) => {
+    if (el.textContent.trim().toLowerCase().startsWith("faq")) {
+      const section = el.closest("section");
+      if (section) found.add(section);
+    }
+  });
+  // Keep only outermost sections, in page order.
+  return Array.from(found)
+    .filter((s) => !Array.from(found).some((o) => o !== s && o.contains(s)))
+    .sort((a, b) =>
+      a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+    );
+}
+
+function findContactSection() {
+  const byId = document.getElementById(CONTACT_SECTION_ID);
+  if (byId) return byId;
+  const match = Array.from(
+    document.querySelectorAll("h1, h2, h3, h4, p, span")
+  ).find((el) => el.textContent.trim().toLowerCase().includes(CONTACT_TEXT));
+  return match ? match.closest("section") : null;
+}
+
+function reorderClosingSections() {
   const work = document.getElementById("work");
   if (!work) return;
 
-  let block = document.getElementById(CONTACT_SECTION_ID);
-  if (!block) {
-    const match = Array.from(
-      document.querySelectorAll("h1, h2, h3, h4, p, span")
-    ).find((el) => el.textContent.trim().toLowerCase().includes(CONTACT_TEXT));
-    block = match ? match.closest("section") : null;
-  }
+  const contact = findContactSection();
+  const faqs = findFaqSections().filter(
+    (s) => s !== work && !s.contains(work) && s !== contact
+  );
 
-  if (!block) {
+  let anchor = work;
+  faqs.forEach((faq) => {
+    anchor.after(faq);
+    anchor = faq;
+  });
+
+  if (!contact) {
     console.warn("[APPS] Contact section not found, so it was not moved.");
     return;
   }
-  if (block === work || block.contains(work) || work.contains(block)) return;
-
-  work.after(block);
+  if (contact === work || contact.contains(work) || work.contains(contact)) return;
+  anchor.after(contact);
 }
 
 /* Starts every FAQ item closed. Native <details> lose their "open"
@@ -1435,7 +1464,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sections mount before scroll-reveal and nav wiring.
   renderServices();
   renderWork();
-  moveContactBelowWork();
+  reorderClosingSections();
   addNavLinks();
 
   initScrollReveal();
