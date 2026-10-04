@@ -8,11 +8,10 @@
      4.  People data (exec + members)
      5.  Services data
      6.  Stakeholders, published work, testimonials
-     7.  Quick links
-     8.  Helpers
-     9.  Injected styles
-     10. Renderers
-     11. Boot
+     7.  Helpers
+     8.  Injected styles
+     9.  Renderers
+     10. Boot
 
    All new sections inject their own markup AND their own styles.
    No changes to index.html or styles.css are required. If a section
@@ -766,7 +765,7 @@ const TESTIMONIALS = [
 ];
 
 /* ---------------------------------------------------------
-   8. HELPERS
+   7. HELPERS
    --------------------------------------------------------- */
 
 function initialsFromName(name) {
@@ -796,28 +795,6 @@ function getDisplayYear(member, now = new Date()) {
   return "";
 }
 
-function parseLocalDate(iso) {
-  const p = String(iso).split("-").map(Number);
-  return new Date(p[0], p[1] - 1, p[2]);
-}
-
-function formatEventDate(iso) {
-  return parseLocalDate(iso).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function getTimelineStatus(iso) {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const date = parseLocalDate(iso).getTime();
-  if (date < today.getTime()) return "past";
-  if (date === today.getTime()) return "today";
-  return "upcoming";
-}
-
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -827,7 +804,7 @@ function escapeHtml(value) {
 }
 
 /* ---------------------------------------------------------
-   9. INJECTED STYLES
+   8. INJECTED STYLES
    --------------------------------------------------------- */
 
 const APPS_SECTION_STYLES = `
@@ -913,129 +890,6 @@ const APPS_SECTION_STYLES = `
   background: var(--apps-accent);
 }
 .apps-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem 2.5rem; }
-
-/* Recruitment timeline */
-.apps-timeline { list-style: none; margin: 0; padding: 0; position: relative; }
-.apps-timeline::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: var(--apps-line);
-}
-.apps-timeline__item { position: relative; padding: 0 0 1.45rem 2.25rem; }
-.apps-timeline__item:last-child { padding-bottom: 0; }
-.apps-timeline__dot {
-  position: absolute;
-  left: 0;
-  top: 5px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--apps-surface);
-  border: 2px solid var(--apps-accent);
-  box-sizing: border-box;
-}
-.apps-timeline__item[data-status="past"] { opacity: 0.5; }
-.apps-timeline__item[data-status="past"] .apps-timeline__dot {
-  background: var(--apps-line);
-  border-color: var(--apps-line);
-}
-.apps-timeline__item[data-status="today"] .apps-timeline__dot {
-  background: var(--apps-accent);
-  box-shadow: 0 0 0 4px var(--apps-accent-soft);
-}
-.apps-timeline__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 0.75rem;
-  margin-bottom: 0.25rem;
-}
-.apps-timeline__date {
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--apps-muted);
-  min-width: 7rem;
-}
-.apps-timeline__title { font-size: 1rem; font-weight: 650; margin: 0; color: var(--apps-ink); }
-.apps-timeline__tag {
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.16rem 0.5rem;
-  border-radius: 999px;
-  background: var(--apps-tint);
-  color: var(--apps-muted);
-  border: 1px solid var(--apps-line);
-}
-.apps-timeline__item[data-tag="Deadline"] .apps-timeline__tag,
-.apps-timeline__item[data-tag="Apply"] .apps-timeline__tag {
-  background: var(--apps-accent-soft);
-  color: var(--apps-accent);
-  border-color: #f2d5d5;
-}
-.apps-timeline__detail {
-  margin: 0;
-  font-size: 0.91rem;
-  line-height: 1.6;
-  color: var(--apps-muted);
-  max-width: 68ch;
-}
-
-/* Application rounds */
-.apps-rounds { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-.apps-round {
-  background: var(--apps-surface);
-  border: 1px solid var(--apps-line);
-  border-radius: 14px;
-  padding: 1.25rem;
-  box-shadow: var(--apps-shadow);
-}
-.apps-round__badge {
-  display: inline-block;
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--apps-accent);
-  background: var(--apps-accent-soft);
-  border-radius: 999px;
-  padding: 0.2rem 0.6rem;
-  margin-bottom: 0.6rem;
-}
-.apps-round__name { margin: 0 0 0.25rem; font-size: 1.02rem; font-weight: 650; }
-.apps-round__date { margin: 0; font-size: 0.85rem; color: var(--apps-muted); font-weight: 600; }
-
-/* Quick links */
-.apps-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-.apps-link {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  border-radius: 14px;
-  border: 1px solid var(--apps-line);
-  background: var(--apps-surface);
-  box-shadow: var(--apps-shadow);
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-.apps-link:hover {
-  transform: translateY(-3px);
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 4px rgba(16, 24, 40, 0.05), 0 16px 36px rgba(16, 24, 40, 0.09);
-}
-.apps-link--primary { border-color: var(--apps-accent); background: var(--apps-accent-soft); }
-.apps-link__label { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--apps-ink); }
-.apps-link__desc { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--apps-muted); }
-.apps-link__cta { margin-top: auto; padding-top: 0.85rem; font-size: 0.85rem; font-weight: 700; color: var(--apps-accent); }
 
 /* Logo wall */
 .apps-logos {
@@ -1180,7 +1034,7 @@ function injectSectionStyles() {
 }
 
 /* ---------------------------------------------------------
-   10. RENDERERS
+   9. RENDERERS
    --------------------------------------------------------- */
 
 function shouldAutoInject() {
@@ -1478,103 +1332,7 @@ function renderWork() {
   }
 }
 
-/* ---- Recruitment ---- */
-function renderRecruitment() {
-  if (!RECRUITMENT_EVENTS.length) return;
-  const section = getSectionHost("recruitment", { tint: true });
-  if (!section) return;
-  const inner = sectionShell(section, {
-    eyebrow: "Recruitment",
-    heading: `${RECRUITMENT_CYCLE} recruitment timeline`,
-    lede:
-      "All events are open to prospective members. Attendance is not required to apply.",
-  });
-
-  const list = document.createElement("ol");
-  list.className = "apps-timeline";
-  list.innerHTML = RECRUITMENT_EVENTS.map(
-    (item) => `
-      <li class="apps-timeline__item" data-status="${getTimelineStatus(
-        item.date
-      )}" data-tag="${escapeHtml(item.tag || "")}">
-        <span class="apps-timeline__dot" aria-hidden="true"></span>
-        <div class="apps-timeline__head">
-          <span class="apps-timeline__date">${escapeHtml(
-            formatEventDate(item.date)
-          )}</span>
-          <h3 class="apps-timeline__title">${escapeHtml(item.title)}</h3>
-          ${
-            item.tag
-              ? `<span class="apps-timeline__tag">${escapeHtml(item.tag)}</span>`
-              : ""
-          }
-        </div>
-        ${
-          item.detail
-            ? `<p class="apps-timeline__detail">${escapeHtml(item.detail)}</p>`
-            : ""
-        }
-      </li>`
-  ).join("");
-  inner.appendChild(list);
-
-  // Review process
-  const roundsHead = document.createElement("h3");
-  roundsHead.className = "apps-subhead";
-  roundsHead.textContent = "Application review process";
-  inner.appendChild(roundsHead);
-
-  const rounds = document.createElement("div");
-  rounds.className = "apps-rounds";
-  rounds.innerHTML = APPLICATION_ROUNDS.map(
-    (r) => `
-      <article class="apps-round">
-        <span class="apps-round__badge">${escapeHtml(r.round)}</span>
-        <h4 class="apps-round__name">${escapeHtml(r.name)}</h4>
-        <p class="apps-round__date">${escapeHtml(formatEventDate(r.date))}</p>
-      </article>`
-  ).join("");
-  inner.appendChild(rounds);
-
-  // Round 1 submission requirements
-  if (ROUND_ONE_REQUIREMENTS.length) {
-    const reqHead = document.createElement("h3");
-    reqHead.className = "apps-subhead";
-    reqHead.textContent = "Round 1: what to submit";
-    inner.appendChild(reqHead);
-    inner.appendChild(bulletList(ROUND_ONE_REQUIREMENTS));
-  }
-}
-
-/* ---- Get involved ---- */
-function renderQuickLinks() {
-  if (!QUICK_LINKS.length) return;
-  const section = getSectionHost("get-involved");
-  if (!section) return;
-  const inner = sectionShell(section, {
-    eyebrow: "Get Involved",
-    heading: "Start here",
-    lede:
-      "A coffee chat with a current member is the most direct way to learn about APPS. All other resources are on our Linktree.",
-  });
-
-  const grid = document.createElement("div");
-  grid.className = "apps-links";
-  grid.innerHTML = QUICK_LINKS.map(
-    (link) => `
-      <a class="apps-link${link.primary ? " apps-link--primary" : ""}"
-         href="${escapeHtml(link.url)}"
-         target="_blank" rel="noopener noreferrer">
-        <p class="apps-link__label">${escapeHtml(link.label)}</p>
-        <p class="apps-link__desc">${escapeHtml(link.description || "")}</p>
-        <span class="apps-link__cta">${escapeHtml(link.cta || "Open")} &rarr;</span>
-      </a>`
-  ).join("");
-  inner.appendChild(grid);
-}
-
 /* ---- Nav ----
-   "Get Involved" is placed immediately to the right of the Team link.
    Services and Our Work go before Team if they are not already there. */
 function addNavLinks() {
   const nav = document.getElementById("siteNav") || document.querySelector(".nav");
@@ -1611,27 +1369,10 @@ function addNavLinks() {
       nav.appendChild(link);
     }
   });
-
-  // Get Involved, then Recruitment: immediately after Team, in order.
-  let anchor = teamLink;
-  [
-    { id: "get-involved", label: "Get Involved" },
-    { id: "recruitment", label: "Recruitment" },
-  ].forEach(({ id, label }) => {
-    if (!document.getElementById(id)) return;
-    if (nav.querySelector(`a[href="#${id}"]`)) return;
-    const link = makeLink(id, label);
-    if (anchor && anchor.nextSibling) {
-      nav.insertBefore(link, anchor.nextSibling);
-    } else {
-      nav.appendChild(link);
-    }
-    anchor = link;
-  });
 }
 
 /* ---------------------------------------------------------
-   11. BOOT
+   10. BOOT
    --------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1651,8 +1392,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sections mount before scroll-reveal and nav wiring.
   renderServices();
   renderWork();
-  renderRecruitment();
-  renderQuickLinks();
   addNavLinks();
 
   initScrollReveal();
