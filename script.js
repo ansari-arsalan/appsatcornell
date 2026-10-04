@@ -706,13 +706,13 @@ const STAKEHOLDERS = [
     logo: "assets/logos/ips.png",
   },
   {
-    name: "Engine",
-    legalName: "Engine Advocacy & Foundation",
-    url: "https://www.engine.is/",
-    area: "Technology Policy",
+    name: "Joint Center",
+    legalName: "Joint Center for Political and Economic Studies",
+    url: "https://jointcenter.org/",
+    area: "Social and Economic Policy",
     engagement:
-      "Policy research on the regulatory environment facing early-stage technology companies.",
-    logo: "assets/logos/engine.png",
+      "A landscape data analysis examining the impact of AI in relation to upskilling in rural minority counties in Mississippi.",
+    logo: "assets/logos/jointcenter.png",
   },
 ];
 
