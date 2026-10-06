@@ -526,14 +526,6 @@ const MEMBERS = [
     photo: "assets/headshots/ella-kim.jpeg",
   },
   {
-    name: "Sophia Kim",
-    role: "Project Manager",
-    graduationYear: 2029,
-    college: "College of Engineering",
-    major: "BME, Minor in Health Policy",
-    photo: "assets/headshots/sophia-kim.jpeg",
-  },
-  {
     name: "Gargi Singh",
     role: "Project Manager",
     graduationYear: 2029,
