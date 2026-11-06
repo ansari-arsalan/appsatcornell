@@ -719,6 +719,15 @@ const PUBLICATIONS = [
     credit:
       "LGBT Tech acknowledges the APPS team at Cornell for research support and contributions to their work on artificial intelligence and civil rights.",
   },
+  {
+    title: "The Care Families Use, The Care Families Want",
+    subtitle: "Five Policies to Support the Care for Young Children",
+    publisher: "Center for the Study of Social Policy",
+    year: "2026",
+    url: "https://cssp.org/wp-content/uploads/2026/11/2026-10-29_CSSP_CaregivingReport-Recommendations_Full_v2.pdf",
+    credit:
+      "CSSP acknowledges students at Applied Public Policy Strategies for research assistance and contributions.",
+  },
 ];
 
 const TESTIMONIALS = [
